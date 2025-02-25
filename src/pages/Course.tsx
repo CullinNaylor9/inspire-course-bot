@@ -101,6 +101,14 @@ const Course = () => {
     );
   }
 
+  const handleStartCourse = () => {
+    navigate(`/course/${id}/lesson/1`);
+  };
+
+  const handleLessonClick = (lessonId: number) => {
+    navigate(`/course/${id}/lesson/${lessonId}`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
       <div className="container py-8">
@@ -116,21 +124,21 @@ const Course = () => {
         <div className="space-y-8">
           <div className="relative h-[300px] rounded-lg overflow-hidden">
             <img
-              src={course.image}
-              alt={course.title}
+              src={course?.image}
+              alt={course?.title}
               className="object-cover w-full h-full"
             />
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
               <div className="text-center text-white p-6">
                 <h1 className="text-4xl font-bold tracking-tight mb-4">
-                  {course.title}
+                  {course?.title}
                 </h1>
                 <div className="flex items-center justify-center gap-4">
                   <Badge variant="secondary">
-                    {course.category}
+                    {course?.category}
                   </Badge>
                   <Badge variant="outline" className="bg-white/10">
-                    {course.duration}
+                    {course?.duration}
                   </Badge>
                 </div>
               </div>
@@ -138,17 +146,17 @@ const Course = () => {
           </div>
 
           <div className="flex justify-center">
-            <Button size="lg" className="gap-2">
+            <Button size="lg" className="gap-2" onClick={handleStartCourse}>
               <PlayCircle className="h-5 w-5" />
               Start Course
             </Button>
           </div>
 
-          <p className="text-lg text-muted-foreground">{course.description}</p>
+          <p className="text-lg text-muted-foreground">{course?.description}</p>
 
           <div className="grid gap-8 mt-8">
             <h2 className="text-3xl font-bold">Course Content</h2>
-            {course.lessons?.map((lesson, index) => (
+            {course?.lessons?.map((lesson, index) => (
               <div key={index} className="space-y-4 border rounded-lg p-6 hover:border-primary transition-colors">
                 <div className="flex items-start justify-between">
                   <div>
@@ -159,7 +167,11 @@ const Course = () => {
                       {lesson.duration}
                     </Badge>
                   </div>
-                  <Button variant="ghost" size="icon">
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    onClick={() => handleLessonClick(lesson.id)}
+                  >
                     <ChevronRight className="h-5 w-5" />
                   </Button>
                 </div>
