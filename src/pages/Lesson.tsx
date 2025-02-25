@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -102,6 +101,149 @@ Run Forever
         ],
         summary: "Understanding these movement controls is essential for programming your Inspire Bot. These basic movements can be combined to create complex patterns and behaviors.",
         practiceExercise: "Try creating different movement patterns by combining forward movements and turns. Can you make the robot move in a triangle pattern?"
+      },
+      {
+        id: 2,
+        title: "Advanced Pin Controls",
+        duration: "20 min",
+        description: "Dive deeper into pin control and learn about sensor integration.",
+        introduction: "Now that you understand the basics of pin control, let's explore more advanced concepts and how to integrate sensors with our robot.",
+        sections: [
+          {
+            title: "Sensor Integration",
+            content: "Learn how to use the ultrasonic sensor for obstacle detection:",
+            details: [
+              {
+                subtitle: "Ultrasonic Sensor (P2)",
+                explanation: "The ultrasonic sensor helps your robot detect obstacles. We'll learn how to read sensor data and make decisions based on it.",
+                codingChallenge: {
+                  question: "Create an obstacle avoidance program. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    If Distance < ???
+        Left Motor ???
+        Right Motor ???
+        Wait ??? milliseconds
+    Else
+        Left Motor Forward
+        Right Motor Forward`,
+                  solution: `
+Run Forever
+    If Distance < 20
+        Left Motor Reverse
+        Right Motor Forward
+        Wait 1000 milliseconds
+    Else
+        Left Motor Forward
+        Right Motor Forward`,
+                  hints: [
+                    "20cm is a good distance for obstacle detection",
+                    "To turn away from an obstacle, one motor should go forward while the other reverses",
+                    "The wait time determines how long the robot turns"
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        summary: "You've learned how to integrate sensors with motor controls to create smarter robot behaviors.",
+        practiceExercise: "Try modifying the obstacle avoidance program to make the robot turn right instead of left when it detects an obstacle."
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: "Motor Control Fundamentals",
+    lessons: [
+      {
+        id: 1,
+        title: "Basic Movement Controls",
+        duration: "25 min",
+        description: "Master the fundamentals of robot movement using motor controls.",
+        introduction: "In this lesson, we'll learn how to create precise movement patterns using motor control commands.",
+        sections: [
+          {
+            title: "Movement Patterns",
+            content: "Create complex movement patterns using motor controls:",
+            details: [
+              {
+                subtitle: "Creating Patterns",
+                explanation: "Learn to combine basic movements to create complex patterns.",
+                codingChallenge: {
+                  question: "Create a zigzag pattern. Fill in the missing values to make the robot move in a zigzag:",
+                  initialCode: `
+Run Forever
+    Left Motor ???
+    Right Motor Forward
+    Wait ??? milliseconds
+    Left Motor Forward
+    Right Motor ???
+    Wait ??? milliseconds`,
+                  solution: `
+Run Forever
+    Left Motor Stop
+    Right Motor Forward
+    Wait 1000 milliseconds
+    Left Motor Forward
+    Right Motor Stop
+    Wait 1000 milliseconds`,
+                  hints: [
+                    "To create a zigzag, alternate between turning left and right",
+                    "1000 milliseconds gives a good turning angle",
+                    "When one motor stops while the other moves, the robot turns"
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        summary: "You've learned how to create complex movement patterns by combining basic motor controls.",
+        practiceExercise: "Try creating a figure-eight pattern using the motor control commands you've learned."
+      },
+      {
+        id: 2,
+        title: "Speed Control",
+        duration: "30 min",
+        description: "Learn to control robot speed and create smooth movements.",
+        introduction: "In this lesson, we'll explore how to control the speed of your robot's motors for precise movements.",
+        sections: [
+          {
+            title: "Variable Speed Control",
+            content: "Learn to adjust motor speeds for smooth movement:",
+            details: [
+              {
+                subtitle: "Speed Adjustment",
+                explanation: "Control the speed of each motor independently for precise movements.",
+                codingChallenge: {
+                  question: "Create a smooth turning pattern. Set the appropriate speed values:",
+                  initialCode: `
+Run Forever
+    Set Left Motor Speed ???
+    Set Right Motor Speed ???
+    Wait ??? milliseconds
+    Set Left Motor Speed ???
+    Set Right Motor Speed ???
+    Wait ??? milliseconds`,
+                  solution: `
+Run Forever
+    Set Left Motor Speed 100
+    Set Right Motor Speed 50
+    Wait 2000 milliseconds
+    Set Left Motor Speed 50
+    Set Right Motor Speed 100
+    Wait 2000 milliseconds`,
+                  hints: [
+                    "Speed values range from 0 to 100",
+                    "Different speeds on each motor create turning motion",
+                    "Longer wait times create wider turns"
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        summary: "You now understand how to control motor speeds for precise movement control.",
+        practiceExercise: "Experiment with different speed combinations to create a smooth circular pattern."
       }
     ]
   }
