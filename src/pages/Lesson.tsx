@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -60,13 +61,13 @@ Run Forever
                   question: "Create a square movement pattern. Complete the missing values to make the robot move forward and turn right:",
                   initialCode: `
 Function Move Forward
-    Digital Write Pin P??? to 1
-    Digital Write Pin P??? to 1
+    Digital Write Pin P??? to ???
+    Digital Write Pin P??? to ???
     Wait 2000 milliseconds
 
 Function Turn Right
-    Digital Write Pin P??? to 1
-    Digital Write Pin P??? to 0
+    Digital Write Pin P??? to ???
+    Digital Write Pin P??? to ???
     Wait ??? milliseconds
 
 Run Forever
@@ -121,24 +122,24 @@ Run Forever
                   initialCode: `
 Run Forever
     If Distance < ???
-        Left Motor ???
-        Right Motor ???
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
         Wait ??? milliseconds
     Else
-        Left Motor Forward
-        Right Motor Forward`,
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???`,
                   solution: `
 Run Forever
     If Distance < 20
-        Left Motor Reverse
-        Right Motor Forward
+        Digital Write Pin P12 to 0
+        Digital Write Pin P14 to 1
         Wait 1000 milliseconds
     Else
-        Left Motor Forward
-        Right Motor Forward`,
+        Digital Write Pin P12 to 1
+        Digital Write Pin P14 to 1`,
                   hints: [
                     "20cm is a good distance for obstacle detection",
-                    "To turn away from an obstacle, one motor should go forward while the other reverses",
+                    "To turn away from an obstacle, make the motors rotate in opposite directions",
                     "The wait time determines how long the robot turns"
                   ]
                 }
@@ -173,24 +174,24 @@ Run Forever
                   question: "Create a zigzag pattern. Fill in the missing values to make the robot move in a zigzag:",
                   initialCode: `
 Run Forever
-    Left Motor ???
-    Right Motor Forward
+    Digital Write Pin P??? to ???
+    Digital Write Pin P??? to ???
     Wait ??? milliseconds
-    Left Motor Forward
-    Right Motor ???
+    Digital Write Pin P??? to ???
+    Digital Write Pin P??? to ???
     Wait ??? milliseconds`,
                   solution: `
 Run Forever
-    Left Motor Stop
-    Right Motor Forward
+    Digital Write Pin P12 to 0
+    Digital Write Pin P14 to 1
     Wait 1000 milliseconds
-    Left Motor Forward
-    Right Motor Stop
+    Digital Write Pin P12 to 1
+    Digital Write Pin P14 to 0
     Wait 1000 milliseconds`,
                   hints: [
                     "To create a zigzag, alternate between turning left and right",
                     "1000 milliseconds gives a good turning angle",
-                    "When one motor stops while the other moves, the robot turns"
+                    "When motors rotate in opposite directions, the robot turns"
                   ]
                 }
               }
@@ -218,23 +219,23 @@ Run Forever
                   question: "Create a smooth turning pattern. Set the appropriate speed values:",
                   initialCode: `
 Run Forever
-    Set Left Motor Speed ???
-    Set Right Motor Speed ???
+    Digital Write Pin P??? to ???
+    Digital Write Pin P??? to ???
     Wait ??? milliseconds
-    Set Left Motor Speed ???
-    Set Right Motor Speed ???
+    Digital Write Pin P??? to ???
+    Digital Write Pin P??? to ???
     Wait ??? milliseconds`,
                   solution: `
 Run Forever
-    Set Left Motor Speed 100
-    Set Right Motor Speed 50
+    Digital Write Pin P12 to 1
+    Digital Write Pin P14 to 1
     Wait 2000 milliseconds
-    Set Left Motor Speed 50
-    Set Right Motor Speed 100
+    Digital Write Pin P12 to 1
+    Digital Write Pin P14 to 0
     Wait 2000 milliseconds`,
                   hints: [
-                    "Speed values range from 0 to 100",
-                    "Different speeds on each motor create turning motion",
+                    "Digital write pins can be set to 0 or 1",
+                    "Different pin settings create different movement patterns",
                     "Longer wait times create wider turns"
                   ]
                 }
@@ -242,8 +243,8 @@ Run Forever
             ]
           }
         ],
-        summary: "You now understand how to control motor speeds for precise movement control.",
-        practiceExercise: "Experiment with different speed combinations to create a smooth circular pattern."
+        summary: "You now understand how to control motor pins for precise movement control.",
+        practiceExercise: "Experiment with different pin combinations to create a smooth circular pattern."
       }
     ]
   }
