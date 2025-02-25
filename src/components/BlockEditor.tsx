@@ -113,12 +113,16 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
                     [block.id]: [...(prev[block.id] || []), value]
                   }))}
                 >
-                  <SelectTrigger className="w-20 h-8 px-2 py-0">
+                  <SelectTrigger className="w-20 h-8 px-2 py-0 bg-white/90 text-black border-white/20">
                     <SelectValue placeholder="Pin" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white border-white/20">
                     {PINS.map((pin) => (
-                      <SelectItem key={pin} value={pin}>
+                      <SelectItem 
+                        key={pin} 
+                        value={pin}
+                        className="text-black hover:bg-gray-100"
+                      >
                         {pin}
                       </SelectItem>
                     ))}
@@ -137,7 +141,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
                   ...prev,
                   [block.id]: Object.assign([...(prev[block.id] || [])], { [inputIndex]: e.target.value })
                 }))}
-                className="w-20 h-8 px-2 py-0"
+                className="w-20 h-8 px-2 py-0 bg-white/90 text-black border-white/20"
               />
             );
           }
