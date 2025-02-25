@@ -3,7 +3,7 @@ import { AIHelper } from "@/components/AIHelper";
 import { CourseCard } from "@/components/CourseCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Robot, ChevronRight, Zap, BookOpen, Award } from "lucide-react";
+import { Search, Bot, ChevronRight, Zap, BookOpen, Award } from "lucide-react";
 import { useState } from "react";
 
 const courses = [
@@ -99,7 +99,7 @@ const Index = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="md:w-1/2 space-y-6">
               <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-2 animate-fade-in">
-                <Robot className="w-4 h-4 mr-2" /> 
+                <Bot className="w-4 h-4 mr-2" /> 
                 Interactive Robotics Learning
               </div>
               <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-foreground">
