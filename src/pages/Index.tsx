@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Bot, ChevronRight, Zap, BookOpen, Award } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const courses = [
   {
@@ -249,6 +250,7 @@ const features = [
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
+  const navigate = useNavigate();
   
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -256,6 +258,31 @@ const Index = () => {
     const matchesCategory = category ? course.category === category : true;
     return matchesSearch && matchesCategory;
   });
+
+  const handleGetStarted = () => {
+    // Navigate to the first course
+    if (courses.length > 0) {
+      navigate(`/course/1`);
+    }
+  };
+
+  const handleBrowseCourses = () => {
+    // Scroll to the courses section
+    const coursesSection = document.getElementById('courses-section');
+    if (coursesSection) {
+      coursesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleGetStartedToday = () => {
+    // Navigate to the first beginner course
+    const beginnerCourse = courses.find(course => course.category === "Beginner");
+    if (beginnerCourse) {
+      navigate(`/course/${beginnerCourse.id}`);
+    } else if (courses.length > 0) {
+      navigate(`/course/1`);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
@@ -275,11 +302,11 @@ const Index = () => {
                 Comprehensive lessons covering pin control, sensors, and advanced robotics. Perfect for beginners and experienced programmers alike.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="font-medium">
+                <Button size="lg" className="font-medium" onClick={handleGetStarted}>
                   Get Started
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button size="lg" variant="outline" className="font-medium">
+                <Button size="lg" variant="outline" className="font-medium" onClick={handleBrowseCourses}>
                   Browse Courses
                 </Button>
               </div>
@@ -319,7 +346,7 @@ const Index = () => {
       </div>
 
       {/* Course Section */}
-      <div className="container mx-auto px-4 py-8 space-y-8">
+      <div id="courses-section" className="container mx-auto px-4 py-8 space-y-8">
         <div className="text-center space-y-4">
           <h2 className="text-3xl font-bold tracking-tight">
             Explore Our Courses
@@ -399,7 +426,7 @@ const Index = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             Start with our beginner courses and work your way up to creating fully autonomous robots.
           </p>
-          <Button size="lg" className="font-medium">
+          <Button size="lg" className="font-medium" onClick={handleGetStartedToday}>
             Get Started Today
           </Button>
         </div>
