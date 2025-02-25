@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -108,42 +107,28 @@ Run Forever
                 subtitle: "Basic Movement",
                 explanation: "By controlling the direction and enable pins together, you can create different movement patterns. For example, setting both direction pins to 1 makes the robot move forward, while setting them differently makes it turn.",
                 codingChallenge: {
-                  question: "Create a square movement pattern. Fill in the missing values to make the robot move forward and turn right to trace a square path:",
+                  question: "Create a square movement pattern using the motor control pins. Program the robot to move in a square by alternating between moving forward and turning right.",
                   initialCode: `
-Function Move Forward
+Run Forever
     Digital Write Pin P??? to ???
     Digital Write Pin P??? to ???
     Wait 2000 milliseconds
-
-Function Turn Right
     Digital Write Pin P??? to ???
     Digital Write Pin P??? to ???
-    Wait ??? milliseconds
-
-Run Forever
-    Repeat 4 times
-        Move Forward
-        Turn Right`,
+    Wait 1000 milliseconds`,
                   solution: `
-Function Move Forward
+Run Forever
     Digital Write Pin P12 to 1
     Digital Write Pin P14 to 1
     Wait 2000 milliseconds
-
-Function Turn Right
     Digital Write Pin P12 to 1
     Digital Write Pin P14 to 0
-    Wait 1000 milliseconds
-
-Run Forever
-    Repeat 4 times
-        Move Forward
-        Turn Right`,
+    Wait 1000 milliseconds`,
                   hints: [
                     "For forward movement, both motors should move forward (P12=1, P14=1)",
-                    "For a right turn, the left motor should move forward while the right motor moves backward or stops",
-                    "The robot needs to make 4 movements to create a square (forward, turn, forward, turn, etc.)",
-                    "Make sure to give enough time for the turning (about 1000ms for a 90-degree turn)"
+                    "For a right turn, the left motor should move forward while the right motor moves backward or stops (P12=1, P14=0)",
+                    "The robot should move forward for 2 seconds, then turn right for 1 second",
+                    "This pattern creates one corner of a square - repeating this pattern four times makes a complete square"
                   ]
                 }
               },
@@ -255,7 +240,7 @@ Run Forever
         id: 1,
         title: "Basic Movement Controls",
         duration: "25 min",
-        description: "Master the fundamentals of robot movement using motor controls.",
+        description: "Master the fundamentals of robot movement using motor control commands.",
         introduction: "In this lesson, we'll learn how to create precise movement patterns using motor control commands.",
         sections: [
           {
