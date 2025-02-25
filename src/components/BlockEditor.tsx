@@ -133,7 +133,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
             );
           } else if (part === '???') {
             const inputIndex = (block.content.substring(0, block.content.indexOf(part)).match(/\?\?\?/g) || []).filter(match => 
-              !block.content.substring(0, block.content.indexOf(match)).includes('P')
+              !block.content.substring(block.content.indexOf(match) - 1, block.content.indexOf(match)).includes('P')
             ).length;
             return (
               <Select
@@ -150,6 +150,9 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
                 <SelectContent className="bg-white border-white/20">
                   <SelectItem value="0" className="text-black hover:bg-gray-100">0</SelectItem>
                   <SelectItem value="1" className="text-black hover:bg-gray-100">1</SelectItem>
+                  <SelectItem value="500" className="text-black hover:bg-gray-100">500</SelectItem>
+                  <SelectItem value="1000" className="text-black hover:bg-gray-100">1000</SelectItem>
+                  <SelectItem value="2000" className="text-black hover:bg-gray-100">2000</SelectItem>
                 </SelectContent>
               </Select>
             );
