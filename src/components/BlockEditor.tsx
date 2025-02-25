@@ -65,6 +65,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
       const newBlock = { 
         ...palette[result.source.index],
         hasPin: palette[result.source.index].content.includes('P???'),
+        hasInput: palette[result.source.index].content.includes('???'),
       };
       setWorkspace([...workspace, newBlock]);
     }
@@ -76,7 +77,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
       if (block.hasPin && content.includes('P???')) {
         content = content.replace('P???', `P${pinInputs[block.id] || '0'}`);
       }
-      if (block.hasInput && content.includes('???')) {
+      if (block.hasInput && block.content.includes('???')) {
         content = content.replace('???', blockInputs[block.id] || '0');
       }
       return content;
@@ -97,10 +98,10 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
               [block.id]: value
             })}
           >
-            <SelectTrigger className="w-20 h-6 px-1 py-0">
+            <SelectTrigger className="w-20 h-8 px-2 py-0 bg-white/10">
               <SelectValue placeholder="Pin" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white/90 text-black">
               {PINS.map((pin) => (
                 <SelectItem key={pin} value={pin}>
                   {pin}
@@ -108,7 +109,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
               ))}
             </SelectContent>
           </Select>
-          <span>{after}</span>
+          <span className="whitespace-nowrap">{after}</span>
         </div>
       );
     }
@@ -124,9 +125,9 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
               ...blockInputs,
               [block.id]: e.target.value
             })}
-            className="w-20 h-6 px-1 py-0 bg-white/10 border-white/20"
+            className="w-20 h-8 px-2 py-0 bg-white/10 border-white/20 text-white"
           />
-          <span>{after}</span>
+          <span className="whitespace-nowrap">{after}</span>
         </div>
       );
     }
