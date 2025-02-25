@@ -25,6 +25,21 @@ interface BlockEditorProps {
   onSubmit: (code: string) => void;
 }
 
+const parseCodeToBlocks = (code: string): CodeBlock[] => {
+  return code.trim().split('\n').filter(line => line.trim()).map((line, index) => {
+    const content = line.trim();
+    return {
+      id: `block-${index}-${Date.now()}`,
+      content,
+      type: content.toLowerCase().includes('wait') ? 'basic' :
+            content.toLowerCase().includes('run forever') ? 'control' :
+            content.toLowerCase().includes('digital write') ? 'servo' : 'basic',
+      hasInput: content.includes('???'),
+      hasPin: content.includes('P???')
+    };
+  });
+};
+
 const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlocks, onSubmit }) => {
   const [workspace, setWorkspace] = useState<CodeBlock[]>(initialBlocks);
   const [palette, setPalette] = useState<CodeBlock[]>(availableBlocks.map(block => ({
@@ -69,7 +84,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
       const sourceBlock = palette[result.source.index];
       const newBlock = { 
         ...sourceBlock,
-        id: `${sourceBlock.id}-${Date.now()}`, // Ensure unique ID for the new block
+        id: `${sourceBlock.id}-${Date.now()}`,
         hasPin: sourceBlock.content.includes('P???'),
         hasInput: sourceBlock.content.includes('???'),
       };
@@ -80,10 +95,10 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   const generateCode = () => {
     const code = workspace.map(block => {
       let content = block.content;
-      if (block.hasPin && content.includes('P???')) {
+      if (block.hasPin && block.content.includes('P???')) {
         content = content.replace('P???', `P${pinInputs[block.id] || '0'}`);
       }
-      if (block.hasInput && content.includes('???')) {
+      if (block.hasInput && block.content.includes('???')) {
         content = content.replace('???', blockInputs[block.id] || '0');
       }
       return content;
@@ -104,10 +119,10 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
               [block.id]: value
             })}
           >
-            <SelectTrigger className="w-20 h-8 px-2 py-0 bg-white/10">
+            <SelectTrigger className="w-20 h-8 px-2 py-0 bg-white">
               <SelectValue placeholder="Pin" />
             </SelectTrigger>
-            <SelectContent className="bg-white/90 text-black">
+            <SelectContent className="bg-white text-black">
               {PINS.map((pin) => (
                 <SelectItem key={pin} value={pin}>
                   {pin}
@@ -115,7 +130,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
               ))}
             </SelectContent>
           </Select>
-          <span className="whitespace-nowrap">{after}</span>
+          <span>{after}</span>
         </div>
       );
     }
@@ -131,9 +146,9 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
               ...blockInputs,
               [block.id]: e.target.value
             })}
-            className="w-20 h-8 px-2 py-0 bg-white/10 border-white/20 text-white"
+            className="w-20 h-8 px-2 py-0 bg-white text-black border-gray-300"
           />
-          <span className="whitespace-nowrap">{after}</span>
+          <span>{after}</span>
         </div>
       );
     }

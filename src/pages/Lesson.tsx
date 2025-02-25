@@ -28,14 +28,12 @@ const courses = [
                 explanation: "P0 is dedicated to the robot's built-in servo motor. This pin can output PWM signals to control the servo's position with precision. The signal ranges from 0° to 180°.",
                 codingChallenge: {
                   question: "Make the servo move back and forth continuously. Set the servo angle and add appropriate pauses:",
-                  initialCode: `
-Run Forever
+                  initialCode: `Run Forever
     Digital Write Pin P??? to ???
     Wait ??? milliseconds
     Digital Write Pin P??? to ???
     Wait ??? milliseconds`,
-                  solution: `
-Run Forever
+                  solution: `Run Forever
     Digital Write Pin P0 to 0
     Wait 1000 milliseconds
     Digital Write Pin P0 to 180
@@ -159,7 +157,7 @@ Run Forever
         id: 1,
         title: "Basic Movement Controls",
         duration: "25 min",
-        description: "Master the fundamentals of robot movement using motor controls.",
+        description: "Master the fundamentals of robot movement using motor control commands.",
         introduction: "In this lesson, we'll learn how to create precise movement patterns using motor control commands.",
         sections: [
           {
