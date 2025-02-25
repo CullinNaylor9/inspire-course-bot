@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { BlockType, getBlockType, PINS } from '@/lib/blockTypes';
@@ -103,14 +102,15 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
       <div className="flex items-center gap-2 flex-wrap">
         {parts.map((part, index) => {
           if (part === 'P???') {
+            const pinIndex = (block.content.substring(0, block.content.indexOf(part)).match(/P\?\?\?/g) || []).length;
             return (
               <React.Fragment key={index}>
                 <span>P</span>
                 <Select
-                  value={pinInputs[block.id]?.[0] || ''}
+                  value={pinInputs[block.id]?.[pinIndex] || ''}
                   onValueChange={(value) => setPinInputs(prev => ({
                     ...prev,
-                    [block.id]: [...(prev[block.id] || []), value]
+                    [block.id]: Object.assign([...(prev[block.id] || [])], { [pinIndex]: value })
                   }))}
                 >
                   <SelectTrigger className="w-20 h-8 px-2 py-0 bg-white/90 text-black border-white/20">
@@ -131,7 +131,9 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
               </React.Fragment>
             );
           } else if (part === '???') {
-            const inputIndex = (block.content.substring(0, block.content.indexOf(part)).match(/\?\?\?/g) || []).length;
+            const inputIndex = (block.content.substring(0, block.content.indexOf(part)).match(/\?\?\?/g) || []).filter(match => 
+              !block.content.substring(0, block.content.indexOf(match)).includes('P')
+            ).length;
             return (
               <Input
                 key={index}
