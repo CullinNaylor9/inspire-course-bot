@@ -1,8 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 
 const courses = [
   {
@@ -27,49 +29,31 @@ const courses = [
                   "0° = 500μs pulse",
                   "90° = 1500μs pulse",
                   "180° = 2500μs pulse"
-                ]
-              },
-              {
-                subtitle: "Additional Servo Port (P1)",
-                explanation: "P1 provides connectivity for an external servo motor, allowing you to add more movement capabilities to your robot. This pin follows the same PWM principles as P0."
-              }
-            ]
-          },
-          {
-            title: "Sensor Integration",
-            content: "The Inspire Bot features multiple sensor pins for environmental awareness:",
-            details: [
-              {
-                subtitle: "Ultrasonic Sensor System (P2, P8)",
-                explanation: "The ultrasonic sensor system uses two pins for distance measurement:",
-                points: [
-                  "P2 (Trigger): Sends the ultrasonic pulse",
-                  "P8 (Echo): Receives the reflected signal",
-                  "Distance calculation: (Echo time × Speed of sound) ÷ 2"
-                ]
-              },
-              {
-                subtitle: "Line Following Sensor (P3)",
-                explanation: "P3 connects to the line following sensor, enabling the robot to follow paths and detect surface changes. The sensor returns:",
-                points: [
-                  "Digital 1: When over a dark surface",
-                  "Digital 0: When over a light surface"
-                ]
-              }
-            ]
-          },
-          {
-            title: "LED Control System",
-            content: "P16 manages the robot's LED indicators:",
-            details: [
-              {
-                subtitle: "LED Programming (P16)",
-                explanation: "This pin controls the onboard LED, useful for status indication and debugging:",
-                points: [
-                  "Digital HIGH (1): LED ON",
-                  "Digital LOW (0): LED OFF",
-                  "PWM signals: Adjustable brightness"
-                ]
+                ],
+                makeCodeExample: `
+// Control built-in servo on P0
+pins.servoWritePin(AnalogPin.P0, 90)
+// Wait 1 second
+basic.pause(1000)
+// Move servo to different position
+pins.servoWritePin(AnalogPin.P0, 180)
+`,
+                codingChallenge: {
+                  question: "Fix the code below to make the servo move from 0° to 180° and back:",
+                  initialCode: `
+// Broken servo control code
+pins.servoWritePin(AnalogPin.P0, ???)
+basic.pause(1000)
+pins.servoWritePin(AnalogPin.P0, ???)
+basic.pause(1000)
+`,
+                  solution: `
+pins.servoWritePin(AnalogPin.P0, 0)
+basic.pause(1000)
+pins.servoWritePin(AnalogPin.P0, 180)
+basic.pause(1000)
+`
+                }
               }
             ]
           },
@@ -78,125 +62,87 @@ const courses = [
             content: "Four pins (P12-P15) work in pairs to control the robot's movement:",
             details: [
               {
-                subtitle: "Left Motor Control (P12, P13)",
-                explanation: "These pins work together to control the left motor direction:",
-                table: [
-                  ["P12", "P13", "Result"],
-                  ["0", "1", "Forward"],
-                  ["1", "0", "Reverse"],
-                  ["0", "0", "Stop"]
-                ]
-              },
-              {
-                subtitle: "Right Motor Control (P14, P15)",
-                explanation: "Similarly, these pins control the right motor:",
-                table: [
-                  ["P14", "P15", "Result"],
-                  ["1", "0", "Forward"],
-                  ["0", "1", "Reverse"],
-                  ["0", "0", "Stop"]
-                ]
+                subtitle: "Basic Movement",
+                explanation: "Control both motors for forward movement:",
+                makeCodeExample: `
+// Move forward
+pins.digitalWritePin(DigitalPin.P12, 0)
+pins.digitalWritePin(DigitalPin.P13, 1)
+pins.digitalWritePin(DigitalPin.P14, 1)
+pins.digitalWritePin(DigitalPin.P15, 0)
+`,
+                codingChallenge: {
+                  question: "Complete the code to make the robot turn right:",
+                  initialCode: `
+// Left motor forward, right motor stop
+pins.digitalWritePin(DigitalPin.P12, 0)
+pins.digitalWritePin(DigitalPin.P13, 1)
+// Complete right motor control
+pins.digitalWritePin(DigitalPin.P14, ???)
+pins.digitalWritePin(DigitalPin.P15, ???)
+`,
+                  solution: `
+pins.digitalWritePin(DigitalPin.P12, 0)
+pins.digitalWritePin(DigitalPin.P13, 1)
+pins.digitalWritePin(DigitalPin.P14, 0)
+pins.digitalWritePin(DigitalPin.P15, 0)
+`
+                }
               }
             ]
           }
         ],
         summary: "Understanding these pin configurations is essential for programming your Inspire Bot. Each pin serves a specific purpose and, when used correctly, allows you to create complex behaviors and interactions.",
         practiceExercise: "Try connecting an LED to P16 and create a simple blinking pattern. This will help you understand digital output control."
-      },
-      {
-        id: 2,
-        title: "Motor Control Basics",
-        duration: "15 min",
-        description: "Learn the fundamental pin combinations for motor control and how to control your robot's movement.",
-        introduction: "Understanding motor control is fundamental to making your Inspire Bot move. We'll explore the basic principles of controlling DC motors and how to achieve different movement patterns.",
-        sections: [
-          {
-            title: "Basic Motor Operations",
-            content: "Let's understand how to control individual motors:",
-            details: [
-              {
-                subtitle: "Left Motor Control",
-                explanation: "The left motor uses pins P12 and P13 for directional control:",
-                table: [
-                  ["P12", "P13", "Result"],
-                  ["0", "1", "Forward"],
-                  ["1", "0", "Reverse"],
-                  ["0", "0", "Stop"]
-                ]
-              }
-            ]
-          }
-        ],
-        summary: "Mastering motor control is essential for creating complex movement patterns with your Inspire Bot.",
-        practiceExercise: "Try making your robot move forward for 2 seconds, then stop. This will help you understand basic motor control timing."
-      }
-    ]
-  },
-  {
-    id: 2,
-    title: "Motor Control Fundamentals",
-    lessons: [
-      {
-        id: 1,
-        title: "Basic Movement Controls",
-        duration: "20 min",
-        description: "Understanding how to control individual motors for basic movement patterns.",
-        introduction: "Learn how to coordinate multiple motors to achieve different movement patterns.",
-        sections: [
-          {
-            title: "Movement Patterns",
-            content: "Understanding basic movement combinations:",
-            details: [
-              {
-                subtitle: "Forward Movement",
-                explanation: "To move forward, both motors need to rotate in the forward direction:",
-                points: [
-                  "Left Motor: P12=0, P13=1",
-                  "Right Motor: P14=1, P15=0"
-                ]
-              }
-            ]
-          }
-        ],
-        summary: "Basic movement control is fundamental to creating more complex behaviors.",
-        practiceExercise: "Create a square movement pattern using the motor controls you've learned."
-      },
-      {
-        id: 2,
-        title: "Pin Control Combinations",
-        duration: "25 min",
-        description: "Master the pin combinations for precise movement control.",
-        introduction: "Different pin combinations produce different movement patterns. Let's explore these combinations in detail.",
-        sections: [
-          {
-            title: "Advanced Movement Patterns",
-            content: "Learn how to combine different motor states:",
-            details: [
-              {
-                subtitle: "Turning Movements",
-                explanation: "Differential drive allows the robot to turn by running motors at different speeds or directions:",
-                points: [
-                  "Left turn: Right motor forward, left motor reverse",
-                  "Right turn: Left motor forward, right motor reverse",
-                  "Spot turn: Motors rotating in opposite directions"
-                ]
-              }
-            ]
-          }
-        ],
-        summary: "Understanding pin combinations is crucial for precise robot control.",
-        practiceExercise: "Program your robot to perform a figure-eight pattern using the turning combinations learned."
       }
     ]
   }
 ];
 
+const CodeEditor = ({ challenge, onSubmit }: { 
+  challenge: { 
+    question: string; 
+    initialCode: string; 
+    solution: string; 
+  }; 
+  onSubmit: (code: string) => void; 
+}) => {
+  const [code, setCode] = useState(challenge.initialCode);
+
+  return (
+    <div className="space-y-4">
+      <p className="text-lg font-medium">{challenge.question}</p>
+      <Textarea
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        className="font-mono min-h-[200px] bg-black/90 text-white p-4"
+        placeholder="Write your code here..."
+      />
+      <Button onClick={() => onSubmit(code)}>
+        Submit Solution
+      </Button>
+    </div>
+  );
+};
+
 const Lesson = () => {
   const { courseId, lessonId } = useParams();
   const navigate = useNavigate();
+  const [showSolution, setShowSolution] = useState<Record<string, boolean>>({});
 
   const course = courses.find(c => c.id === Number(courseId));
   const lesson = course?.lessons.find(l => l.id === Number(lessonId));
+
+  const handleCodeSubmit = (code: string, sectionIndex: number, detailIndex: number) => {
+    setShowSolution({ ...showSolution, [`${sectionIndex}-${detailIndex}`]: true });
+  };
+
+  const goToNextLesson = () => {
+    const currentLessonIndex = course?.lessons.findIndex(l => l.id === Number(lessonId)) ?? -1;
+    if (course && currentLessonIndex < course.lessons.length - 1) {
+      navigate(`/course/${courseId}/lesson/${course.lessons[currentLessonIndex + 1].id}`);
+    }
+  };
 
   if (!course || !lesson) {
     return (
@@ -216,17 +162,27 @@ const Lesson = () => {
     );
   }
 
+  const isLastLesson = course.lessons[course.lessons.length - 1].id === Number(lessonId);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
       <div className="container py-8">
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate(`/course/${courseId}`)}
-          className="mb-6"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Course
-        </Button>
+        <div className="flex justify-between items-center mb-8">
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate(`/course/${courseId}`)}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Course
+          </Button>
+
+          {!isLastLesson && (
+            <Button onClick={goToNextLesson}>
+              Next Lesson
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
+          )}
+        </div>
 
         <div className="space-y-8">
           <div>
@@ -241,8 +197,8 @@ const Lesson = () => {
           <div className="prose prose-gray dark:prose-invert max-w-none">
             <p className="text-xl mb-8">{lesson.introduction}</p>
 
-            {lesson.sections?.map((section, index) => (
-              <Card key={index} className="p-6 mb-8">
+            {lesson.sections?.map((section, sectionIndex) => (
+              <Card key={sectionIndex} className="p-6 mb-8">
                 <h2 className="text-2xl font-bold mb-4">{section.title}</h2>
                 <p className="text-lg mb-6">{section.content}</p>
 
@@ -250,6 +206,29 @@ const Lesson = () => {
                   <div key={detailIndex} className="mb-6">
                     <h3 className="text-xl font-semibold mb-3">{detail.subtitle}</h3>
                     <p className="mb-4">{detail.explanation}</p>
+
+                    {detail.makeCodeExample && (
+                      <div className="bg-black/90 text-white p-4 rounded-md mb-4 font-mono whitespace-pre">
+                        {detail.makeCodeExample}
+                      </div>
+                    )}
+
+                    {detail.codingChallenge && (
+                      <div className="mt-6 bg-accent/20 p-6 rounded-lg">
+                        <CodeEditor 
+                          challenge={detail.codingChallenge}
+                          onSubmit={(code) => handleCodeSubmit(code, sectionIndex, detailIndex)}
+                        />
+                        {showSolution[`${sectionIndex}-${detailIndex}`] && (
+                          <div className="mt-4">
+                            <h4 className="font-semibold mb-2">Solution:</h4>
+                            <div className="bg-black/90 text-white p-4 rounded-md font-mono whitespace-pre">
+                              {detail.codingChallenge.solution}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     {detail.points && (
                       <ul className="list-disc pl-6 space-y-2 mb-4">
