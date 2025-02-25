@@ -27,7 +27,11 @@ interface BlockEditorProps {
 
 const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlocks, onSubmit }) => {
   const [workspace, setWorkspace] = useState<CodeBlock[]>(initialBlocks);
-  const [palette, setPalette] = useState<CodeBlock[]>(availableBlocks);
+  const [palette, setPalette] = useState<CodeBlock[]>(availableBlocks.map(block => ({
+    ...block,
+    hasPin: block.content.includes('P???'),
+    hasInput: block.content.includes('???'),
+  })));
   const [blockInputs, setBlockInputs] = useState<Record<string, string>>({});
   const [pinInputs, setPinInputs] = useState<Record<string, string>>({});
 
@@ -62,10 +66,12 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
         setPalette(items);
       }
     } else if (result.destination.droppableId === 'workspace') {
+      const sourceBlock = palette[result.source.index];
       const newBlock = { 
-        ...palette[result.source.index],
-        hasPin: palette[result.source.index].content.includes('P???'),
-        hasInput: palette[result.source.index].content.includes('???'),
+        ...sourceBlock,
+        id: `${sourceBlock.id}-${Date.now()}`, // Ensure unique ID for the new block
+        hasPin: sourceBlock.content.includes('P???'),
+        hasInput: sourceBlock.content.includes('???'),
       };
       setWorkspace([...workspace, newBlock]);
     }
@@ -77,7 +83,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
       if (block.hasPin && content.includes('P???')) {
         content = content.replace('P???', `P${pinInputs[block.id] || '0'}`);
       }
-      if (block.hasInput && block.content.includes('???')) {
+      if (block.hasInput && content.includes('???')) {
         content = content.replace('???', blockInputs[block.id] || '0');
       }
       return content;
