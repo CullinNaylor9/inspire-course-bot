@@ -1,11 +1,12 @@
 
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { BlockType, getBlockType } from '@/lib/blockTypes';
 
 interface CodeBlock {
   id: string;
   content: string;
-  type: 'function' | 'control' | 'pins' | 'basic';
+  type: BlockType;
 }
 
 interface BlockEditorProps {
@@ -18,14 +19,14 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   const [workspace, setWorkspace] = useState<CodeBlock[]>(initialBlocks);
   const [palette, setPalette] = useState<CodeBlock[]>(availableBlocks);
 
-  const getBlockStyle = (type: CodeBlock['type']) => {
+  const getBlockStyle = (type: BlockType) => {
     switch (type) {
-      case 'function':
-        return 'bg-purple-500';
       case 'control':
         return 'bg-yellow-500';
-      case 'pins':
+      case 'movement':
         return 'bg-blue-500';
+      case 'servo':
+        return 'bg-purple-500';
       case 'basic':
         return 'bg-green-500';
       default:
@@ -65,7 +66,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
     <div className="flex gap-4">
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="w-1/3 bg-accent/10 p-4 rounded-lg">
-          <h3 className="font-bold mb-4">Available Blocks</h3>
+          <h3 className="font-bold mb-4">Code Blocks</h3>
           <Droppable droppableId="palette">
             {(provided) => (
               <div
@@ -95,7 +96,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
 
         <div className="w-2/3">
           <div className="bg-black/90 p-4 rounded-lg mb-4">
-            <h3 className="font-bold text-white mb-4">Workspace</h3>
+            <h3 className="font-bold text-white mb-4">Program</h3>
             <Droppable droppableId="workspace">
               {(provided) => (
                 <div

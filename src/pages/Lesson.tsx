@@ -96,43 +96,26 @@ const courses = [
             details: [
               {
                 subtitle: "Built-in Servo (P0)",
-                explanation: "P0 is dedicated to the robot's built-in servo motor. This pin can output PWM signals to control the servo's position with precision. The signal ranges from 0° to 180°, where:",
-                examples: [
-                  "0° = 500μs pulse",
-                  "90° = 1500μs pulse",
-                  "180° = 2500μs pulse"
-                ],
-                makeCodeExample: `
-// Control built-in servo on P0
-pins.servoWritePin(AnalogPin.P0, 90)
-// Wait 1 second
-basic.pause(1000)
-// Move servo to different position
-pins.servoWritePin(AnalogPin.P0, 180)
-`,
+                explanation: "P0 is dedicated to the robot's built-in servo motor. This pin can output PWM signals to control the servo's position with precision. The signal ranges from 0° to 180°.",
                 codingChallenge: {
-                  question: "Fix the code below to make the servo move from 0° to 180° and back in a continuous loop:",
+                  question: "Make the servo move back and forth continuously. Set the servo angle and add appropriate pauses:",
                   initialCode: `
-// Complete the basic.forever function
-basic.forever(function () {
-    // Move servo to 0 degrees
-    pins.servoWritePin(AnalogPin.P0, ???)
-    // Wait for 1 second
-    basic.pause(???)
-    // Move servo to 180 degrees
-    pins.servoWritePin(AnalogPin.P0, ???)
-    // Add another pause here
-})`,
+Run Forever {
+    Set Servo P0 to ???
+    Wait ??? milliseconds
+    Set Servo P0 to ???
+    Wait ??? milliseconds
+}`,
                   solution: `
-basic.forever(function () {
-    pins.servoWritePin(AnalogPin.P0, 0)
-    basic.pause(1000)
-    pins.servoWritePin(AnalogPin.P0, 180)
-    basic.pause(1000)
-})`,
+Run Forever {
+    Set Servo P0 to 0
+    Wait 1000 milliseconds
+    Set Servo P0 to 180
+    Wait 1000 milliseconds
+}`,
                   hints: [
                     "Remember that servo angles range from 0 to 180 degrees",
-                    "The pause function takes milliseconds as input (1000ms = 1 second)",
+                    "1000 milliseconds equals 1 second",
                     "Don't forget to add pauses between movements to see the servo move"
                   ]
                 }
@@ -145,76 +128,59 @@ basic.forever(function () {
             details: [
               {
                 subtitle: "Basic Movement",
-                explanation: "Control both motors for forward movement:",
-                makeCodeExample: `
-// Move forward
-pins.digitalWritePin(DigitalPin.P12, 0)
-pins.digitalWritePin(DigitalPin.P13, 1)
-pins.digitalWritePin(DigitalPin.P14, 1)
-pins.digitalWritePin(DigitalPin.P15, 0)
-`,
+                explanation: "Control both motors to make the robot move in different patterns:",
                 codingChallenge: {
-                  question: "Create a function that makes the robot move in a square pattern. Complete the missing pin values:",
+                  question: "Create a square movement pattern. Complete the missing values to make the robot move forward and turn right:",
                   initialCode: `
-// Function to move forward for 2 seconds
-function moveForward() {
-    pins.digitalWritePin(DigitalPin.P12, ???)
-    pins.digitalWritePin(DigitalPin.P13, ???)
-    pins.digitalWritePin(DigitalPin.P14, ???)
-    pins.digitalWritePin(DigitalPin.P15, ???)
-    basic.pause(2000)
+Function Move Forward {
+    Left Motor Forward
+    Right Motor Forward
+    Wait 2000 milliseconds
 }
 
-// Function to turn right for 1 second
-function turnRight() {
-    pins.digitalWritePin(DigitalPin.P12, ???)
-    pins.digitalWritePin(DigitalPin.P13, ???)
-    pins.digitalWritePin(DigitalPin.P14, ???)
-    pins.digitalWritePin(DigitalPin.P15, ???)
-    basic.pause(1000)
+Function Turn Right {
+    Left Motor Forward
+    Right Motor Stop
+    Wait ??? milliseconds
 }
 
-// Create square pattern
-basic.forever(function () {
-    // Add your code here to create a square pattern
-    // Hint: Use moveForward() and turnRight() functions
-})`,
+Run Forever {
+    // Create a square pattern
+    // Hint: Use Move Forward and Turn Right
+    // Repeat 4 times
+}`,
                   solution: `
-function moveForward() {
-    pins.digitalWritePin(DigitalPin.P12, 0)
-    pins.digitalWritePin(DigitalPin.P13, 1)
-    pins.digitalWritePin(DigitalPin.P14, 1)
-    pins.digitalWritePin(DigitalPin.P15, 0)
-    basic.pause(2000)
+Function Move Forward {
+    Left Motor Forward
+    Right Motor Forward
+    Wait 2000 milliseconds
 }
 
-function turnRight() {
-    pins.digitalWritePin(DigitalPin.P12, 0)
-    pins.digitalWritePin(DigitalPin.P13, 1)
-    pins.digitalWritePin(DigitalPin.P14, 0)
-    pins.digitalWritePin(DigitalPin.P15, 0)
-    basic.pause(1000)
+Function Turn Right {
+    Left Motor Forward
+    Right Motor Stop
+    Wait 1000 milliseconds
 }
 
-basic.forever(function () {
-    for (let i = 0; i < 4; i++) {
-        moveForward()
-        turnRight()
+Run Forever {
+    Repeat 4 times {
+        Move Forward
+        Turn Right
     }
-})`,
+}`,
                   hints: [
-                    "For forward movement, both motors should rotate forward",
-                    "For right turns, only the left motor should rotate",
-                    "Remember: P12/P13 control the left motor, P14/P15 control the right motor",
-                    "The square pattern requires 4 repetitions of forward movement and right turns"
+                    "The robot needs to make 4 movements to create a square",
+                    "After each forward movement, turn right 90 degrees",
+                    "Use the Repeat block to avoid writing the same code multiple times",
+                    "1000 milliseconds gives enough time for a 90-degree turn"
                   ]
                 }
               }
             ]
           }
         ],
-        summary: "Understanding these pin configurations is essential for programming your Inspire Bot. Each pin serves a specific purpose and, when used correctly, allows you to create complex behaviors and interactions.",
-        practiceExercise: "Try connecting an LED to P16 and create a simple blinking pattern. This will help you understand digital output control."
+        summary: "Understanding these movement controls is essential for programming your Inspire Bot. These basic movements can be combined to create complex patterns and behaviors.",
+        practiceExercise: "Try creating different movement patterns by combining forward movements and turns. Can you make the robot move in a triangle pattern?"
       }
     ]
   }
