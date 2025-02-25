@@ -2,8 +2,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { useNavigate } from "react-router-dom";
 
 interface CourseCardProps {
+  id?: number;
   title: string;
   description: string;
   image: string;
@@ -11,9 +13,14 @@ interface CourseCardProps {
   duration: string;
 }
 
-export function CourseCard({ title, description, image, category, duration }: CourseCardProps) {
+export function CourseCard({ id = 1, title, description, image, category, duration }: CourseCardProps) {
+  const navigate = useNavigate();
+
   return (
-    <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+    <Card 
+      className="overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer"
+      onClick={() => navigate(`/course/${id}`)}
+    >
       <AspectRatio ratio={16 / 9} className="bg-accent">
         <img
           src={image}
