@@ -5,6 +5,53 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+
+const CodeEditor = ({ challenge, onSubmit }: { 
+  challenge: { 
+    question: string; 
+    initialCode: string; 
+    solution: string; 
+    hints?: string[];
+  }; 
+  onSubmit: (code: string) => void; 
+}) => {
+  const [code, setCode] = useState(challenge.initialCode);
+  const [currentHint, setCurrentHint] = useState(0);
+  const { toast } = useToast();
+
+  const showHint = () => {
+    if (challenge.hints && currentHint < challenge.hints.length) {
+      toast({
+        title: "Hint",
+        description: challenge.hints[currentHint],
+      });
+      setCurrentHint(prev => prev + 1);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <p className="text-lg font-medium">{challenge.question}</p>
+      <Textarea
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        className="font-mono min-h-[200px] bg-black/90 text-white p-4"
+        placeholder="Write your code here..."
+      />
+      <div className="flex gap-2">
+        <Button onClick={() => onSubmit(code)}>
+          Submit Solution
+        </Button>
+        {challenge.hints && currentHint < challenge.hints.length && (
+          <Button variant="outline" onClick={showHint}>
+            Get Hint
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const courses = [
   {
@@ -39,20 +86,30 @@ basic.pause(1000)
 pins.servoWritePin(AnalogPin.P0, 180)
 `,
                 codingChallenge: {
-                  question: "Fix the code below to make the servo move from 0° to 180° and back:",
+                  question: "Fix the code below to make the servo move from 0° to 180° and back in a continuous loop:",
                   initialCode: `
-// Broken servo control code
-pins.servoWritePin(AnalogPin.P0, ???)
-basic.pause(1000)
-pins.servoWritePin(AnalogPin.P0, ???)
-basic.pause(1000)
-`,
+// Complete the basic.forever function
+basic.forever(function () {
+    // Move servo to 0 degrees
+    pins.servoWritePin(AnalogPin.P0, ???)
+    // Wait for 1 second
+    basic.pause(???)
+    // Move servo to 180 degrees
+    pins.servoWritePin(AnalogPin.P0, ???)
+    // Add another pause here
+})`,
                   solution: `
-pins.servoWritePin(AnalogPin.P0, 0)
-basic.pause(1000)
-pins.servoWritePin(AnalogPin.P0, 180)
-basic.pause(1000)
-`
+basic.forever(function () {
+    pins.servoWritePin(AnalogPin.P0, 0)
+    basic.pause(1000)
+    pins.servoWritePin(AnalogPin.P0, 180)
+    basic.pause(1000)
+})`,
+                  hints: [
+                    "Remember that servo angles range from 0 to 180 degrees",
+                    "The pause function takes milliseconds as input (1000ms = 1 second)",
+                    "Don't forget to add pauses between movements to see the servo move"
+                  ]
                 }
               }
             ]
@@ -72,21 +129,60 @@ pins.digitalWritePin(DigitalPin.P14, 1)
 pins.digitalWritePin(DigitalPin.P15, 0)
 `,
                 codingChallenge: {
-                  question: "Complete the code to make the robot turn right:",
+                  question: "Create a function that makes the robot move in a square pattern. Complete the missing pin values:",
                   initialCode: `
-// Left motor forward, right motor stop
-pins.digitalWritePin(DigitalPin.P12, 0)
-pins.digitalWritePin(DigitalPin.P13, 1)
-// Complete right motor control
-pins.digitalWritePin(DigitalPin.P14, ???)
-pins.digitalWritePin(DigitalPin.P15, ???)
-`,
+// Function to move forward for 2 seconds
+function moveForward() {
+    pins.digitalWritePin(DigitalPin.P12, ???)
+    pins.digitalWritePin(DigitalPin.P13, ???)
+    pins.digitalWritePin(DigitalPin.P14, ???)
+    pins.digitalWritePin(DigitalPin.P15, ???)
+    basic.pause(2000)
+}
+
+// Function to turn right for 1 second
+function turnRight() {
+    pins.digitalWritePin(DigitalPin.P12, ???)
+    pins.digitalWritePin(DigitalPin.P13, ???)
+    pins.digitalWritePin(DigitalPin.P14, ???)
+    pins.digitalWritePin(DigitalPin.P15, ???)
+    basic.pause(1000)
+}
+
+// Create square pattern
+basic.forever(function () {
+    // Add your code here to create a square pattern
+    // Hint: Use moveForward() and turnRight() functions
+})`,
                   solution: `
-pins.digitalWritePin(DigitalPin.P12, 0)
-pins.digitalWritePin(DigitalPin.P13, 1)
-pins.digitalWritePin(DigitalPin.P14, 0)
-pins.digitalWritePin(DigitalPin.P15, 0)
-`
+function moveForward() {
+    pins.digitalWritePin(DigitalPin.P12, 0)
+    pins.digitalWritePin(DigitalPin.P13, 1)
+    pins.digitalWritePin(DigitalPin.P14, 1)
+    pins.digitalWritePin(DigitalPin.P15, 0)
+    basic.pause(2000)
+}
+
+function turnRight() {
+    pins.digitalWritePin(DigitalPin.P12, 0)
+    pins.digitalWritePin(DigitalPin.P13, 1)
+    pins.digitalWritePin(DigitalPin.P14, 0)
+    pins.digitalWritePin(DigitalPin.P15, 0)
+    basic.pause(1000)
+}
+
+basic.forever(function () {
+    for (let i = 0; i < 4; i++) {
+        moveForward()
+        turnRight()
+    }
+})`,
+                  hints: [
+                    "For forward movement, both motors should rotate forward",
+                    "For right turns, only the left motor should rotate",
+                    "Remember: P12/P13 control the left motor, P14/P15 control the right motor",
+                    "The square pattern requires 4 repetitions of forward movement and right turns"
+                  ]
                 }
               }
             ]
@@ -99,42 +195,35 @@ pins.digitalWritePin(DigitalPin.P15, 0)
   }
 ];
 
-const CodeEditor = ({ challenge, onSubmit }: { 
-  challenge: { 
-    question: string; 
-    initialCode: string; 
-    solution: string; 
-  }; 
-  onSubmit: (code: string) => void; 
-}) => {
-  const [code, setCode] = useState(challenge.initialCode);
-
-  return (
-    <div className="space-y-4">
-      <p className="text-lg font-medium">{challenge.question}</p>
-      <Textarea
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        className="font-mono min-h-[200px] bg-black/90 text-white p-4"
-        placeholder="Write your code here..."
-      />
-      <Button onClick={() => onSubmit(code)}>
-        Submit Solution
-      </Button>
-    </div>
-  );
-};
-
 const Lesson = () => {
   const { courseId, lessonId } = useParams();
   const navigate = useNavigate();
   const [showSolution, setShowSolution] = useState<Record<string, boolean>>({});
+  const { toast } = useToast();
 
   const course = courses.find(c => c.id === Number(courseId));
   const lesson = course?.lessons.find(l => l.id === Number(lessonId));
 
   const handleCodeSubmit = (code: string, sectionIndex: number, detailIndex: number) => {
-    setShowSolution({ ...showSolution, [`${sectionIndex}-${detailIndex}`]: true });
+    const detail = lesson?.sections[sectionIndex].details[detailIndex];
+    if (!detail?.codingChallenge?.solution) return;
+
+    const solution = detail.codingChallenge.solution.replace(/\s/g, '');
+    const submission = code.replace(/\s/g, '');
+    
+    if (submission === solution) {
+      toast({
+        title: "Correct!",
+        description: "Your solution matches the expected output. Great job!",
+      });
+      setShowSolution({ ...showSolution, [`${sectionIndex}-${detailIndex}`]: true });
+    } else {
+      toast({
+        title: "Not quite right",
+        description: "Try again! Use the hints if you need help.",
+        variant: "destructive",
+      });
+    }
   };
 
   const goToNextLesson = () => {
