@@ -21,6 +21,30 @@ const courses = [
         introduction: "The Inspire Bot is equipped with multiple pins that control various functions. Understanding these pins is crucial for programming your robot effectively. Let's explore each pin category and its purpose.",
         sections: [
           {
+            title: "Inspire Bot Pin Layout",
+            content: "Your Inspire Bot has 17 programmable pins (P0 to P16), each with a specific function:",
+            details: [
+              {
+                subtitle: "Complete Pin Reference",
+                explanation: "Here's a complete reference of all the pins and their functions on your Inspire Bot:",
+                listItems: [
+                  "P0: Built-in Servo Motor Control (0-180 degrees)",
+                  "P1: External Servo Connection",
+                  "P2: Ultrasonic Sensor (Trigger)",
+                  "P3: Line Following Sensor",
+                  "P4-P7: General Purpose I/O",
+                  "P8: Ultrasonic Sensor (Echo)",
+                  "P9-P11: General Purpose I/O",
+                  "P12: Left Motor Forward/Reverse Control",
+                  "P13: Left Motor Speed Control",
+                  "P14: Right Motor Forward/Reverse Control", 
+                  "P15: Right Motor Speed Control",
+                  "P16: Onboard LED Control"
+                ]
+              }
+            ]
+          },
+          {
             title: "Servo Control System",
             content: "The servo system uses P0 pin for precise motor control:",
             details: [
@@ -54,6 +78,16 @@ Run Forever
             title: "Motor Control System",
             content: "Four pins (P12-P15) work in pairs to control the robot's movement:",
             details: [
+              {
+                subtitle: "Motor Pin Reference",
+                explanation: "The motors are controlled using these specific pins:",
+                listItems: [
+                  "P12: Left Motor Direction (0 = Backward, 1 = Forward)",
+                  "P13: Left Motor Enable (0 = Stop, 1 = Run)",
+                  "P14: Right Motor Direction (0 = Backward, 1 = Forward)",
+                  "P15: Right Motor Enable (0 = Stop, 1 = Run)"
+                ]
+              },
               {
                 subtitle: "Basic Movement",
                 explanation: "Control both motors using digital write pins to make the robot move in different patterns:",
@@ -96,6 +130,17 @@ Run Forever
                     "1000 milliseconds gives enough time for a 90-degree turn"
                   ]
                 }
+              },
+              {
+                subtitle: "Common Movement Commands",
+                explanation: "Here are the common pin combinations for different movements:",
+                listItems: [
+                  "Move Forward: P12=1, P14=1",
+                  "Move Backward: P12=0, P14=0",
+                  "Turn Left: P12=0, P14=1",
+                  "Turn Right: P12=1, P14=0",
+                  "Stop: Set P13=0 and P15=0 (motor enable pins)"
+                ]
               }
             ]
           }
@@ -110,6 +155,22 @@ Run Forever
         description: "Dive deeper into pin control and learn about sensor integration.",
         introduction: "Now that you understand the basics of pin control, let's explore more advanced concepts and how to integrate sensors with our robot.",
         sections: [
+          {
+            title: "Sensor Pins Reference",
+            content: "Your Inspire Bot has several sensor pins:",
+            details: [
+              {
+                subtitle: "Sensor Pin Layout",
+                explanation: "These pins connect to various sensors on your robot:",
+                listItems: [
+                  "P2: Ultrasonic Sensor Trigger Pin",
+                  "P8: Ultrasonic Sensor Echo Pin",
+                  "P3: Line Following Sensor Input",
+                  "P16: Onboard LED (useful for status indicators)"
+                ]
+              }
+            ]
+          },
           {
             title: "Sensor Integration",
             content: "Learn how to use the ultrasonic sensor for obstacle detection:",
@@ -164,6 +225,33 @@ Run Forever
         introduction: "In this lesson, we'll learn how to create precise movement patterns using motor control commands.",
         sections: [
           {
+            title: "Motor Pins Overview",
+            content: "Before we begin programming movements, let's review the motor control pins:",
+            details: [
+              {
+                subtitle: "Motor Control Pins",
+                explanation: "The Inspire Bot uses these pins for motor control:",
+                listItems: [
+                  "P12: Left Motor Direction (0 = Backward, 1 = Forward)",
+                  "P13: Left Motor Enable (0 = Stop, 1 = Run)",
+                  "P14: Right Motor Direction (0 = Backward, 1 = Forward)",
+                  "P15: Right Motor Enable (0 = Stop, 1 = Run)"
+                ]
+              },
+              {
+                subtitle: "Movement Combinations",
+                explanation: "Remember these common pin combinations:",
+                listItems: [
+                  "Move Forward: P12=1, P14=1",
+                  "Move Backward: P12=0, P14=0",
+                  "Turn Left: P12=0, P14=1",
+                  "Turn Right: P12=1, P14=0",
+                  "Stop: P13=0, P15=0"
+                ]
+              }
+            ]
+          },
+          {
             title: "Movement Patterns",
             content: "Create complex movement patterns using motor controls:",
             details: [
@@ -212,6 +300,14 @@ Run Forever
             title: "Variable Speed Control",
             content: "Learn to adjust motor speeds for smooth movement:",
             details: [
+              {
+                subtitle: "Digital Pin States",
+                explanation: "Remember that each motor has a direction pin and an enable pin:",
+                listItems: [
+                  "Direction Pins (P12, P14): Control forward/backward (1=forward, 0=backward)",
+                  "Enable Pins (P13, P15): Control whether the motor runs (1=run, 0=stop)"
+                ]
+              },
               {
                 subtitle: "Speed Adjustment",
                 explanation: "Control the speed of each motor independently for precise movements.",
@@ -409,6 +505,14 @@ const Lesson = () => {
                   <div key={detailIndex} className="mb-6">
                     <h3 className="text-xl font-semibold mb-3">{detail.subtitle}</h3>
                     <p className="mb-4">{detail.explanation}</p>
+                    
+                    {detail.listItems && (
+                      <ul className="list-disc pl-6 space-y-2 mb-4">
+                        {detail.listItems.map((item, i) => (
+                          <li key={i} className="text-muted-foreground">{item}</li>
+                        ))}
+                      </ul>
+                    )}
 
                     {detail.codingChallenge && (
                       <div className="mt-6 bg-accent/20 p-6 rounded-lg">
