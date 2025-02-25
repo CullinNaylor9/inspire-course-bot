@@ -8,15 +8,14 @@ export const BLOCK_TYPES = {
     'If',
     'Else',
     'Function',
+    'on button A pressed',
+    'on button B pressed'
   ],
   MOVEMENT: [
-    'Digital Write Pin P??? to',
-    'Move Forward',
-    'Turn Right',
-    'Turn Left',
+    'Digital Write Pin P??? to ???'
   ],
   SERVO: [
-    'Digital Write Pin P??? to',
+    'Digital Write Pin P??? to ???'
   ],
   BASIC: [
     'Wait 500 milliseconds',

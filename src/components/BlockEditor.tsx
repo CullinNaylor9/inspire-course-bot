@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { BlockType, getBlockType, PINS } from '@/lib/blockTypes';
@@ -33,11 +34,11 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   const getBlockStyle = (type: BlockType) => {
     switch (type) {
       case 'control':
-        return 'bg-yellow-500';
-      case 'movement':
-        return 'bg-blue-500';
-      case 'servo':
         return 'bg-purple-500';
+      case 'movement':
+        return 'bg-red-500';
+      case 'servo':
+        return 'bg-blue-500';
       case 'basic':
         return 'bg-green-500';
       default:
@@ -135,16 +136,22 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
               !block.content.substring(0, block.content.indexOf(match)).includes('P')
             ).length;
             return (
-              <Input
+              <Select
                 key={index}
-                type="number"
                 value={blockInputs[block.id]?.[inputIndex] || ''}
-                onChange={(e) => setBlockInputs(prev => ({
+                onValueChange={(value) => setBlockInputs(prev => ({
                   ...prev,
-                  [block.id]: Object.assign([...(prev[block.id] || [])], { [inputIndex]: e.target.value })
+                  [block.id]: Object.assign([...(prev[block.id] || [])], { [inputIndex]: value })
                 }))}
-                className="w-20 h-8 px-2 py-0 bg-white/90 text-black border-white/20"
-              />
+              >
+                <SelectTrigger className="w-20 h-8 px-2 py-0 bg-white/90 text-black border-white/20">
+                  <SelectValue placeholder="Value" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-white/20">
+                  <SelectItem value="0" className="text-black hover:bg-gray-100">0</SelectItem>
+                  <SelectItem value="1" className="text-black hover:bg-gray-100">1</SelectItem>
+                </SelectContent>
+              </Select>
             );
           }
           return <span key={index}>{part}</span>;
