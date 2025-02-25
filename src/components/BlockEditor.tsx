@@ -28,8 +28,8 @@ interface BlockEditorProps {
 const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlocks, onSubmit }) => {
   const [workspace, setWorkspace] = useState<CodeBlock[]>(initialBlocks);
   const [palette, setPalette] = useState<CodeBlock[]>(availableBlocks);
-  const [blockInputs, setBlockInputs] = useState<Record<string, string>>({});
-  const [pinInputs, setPinInputs] = useState<Record<string, string>>({});
+  const [blockInputs, setBlockInputs] = useState<Record<string, string[]>>({});
+  const [pinInputs, setPinInputs] = useState<Record<string, string[]>>({});
 
   const getBlockStyle = (type: BlockType) => {
     switch (type) {
@@ -64,8 +64,9 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
     } else if (result.destination.droppableId === 'workspace') {
       const newBlock = { 
         ...palette[result.source.index],
-        hasPin: palette[result.source.index].content.includes('P???'),
+        id: `${palette[result.source.index].id}-${Date.now()}`,
         hasInput: palette[result.source.index].content.includes('???'),
+        hasPin: palette[result.source.index].content.includes('P???'),
       };
       setWorkspace([...workspace, newBlock]);
     }
@@ -74,11 +75,21 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   const generateCode = () => {
     const code = workspace.map(block => {
       let content = block.content;
-      if (block.hasPin && content.includes('P???')) {
-        content = content.replace('P???', `P${pinInputs[block.id] || '0'}`);
+      if (block.hasPin) {
+        const pinCount = (content.match(/P\?\?\?/g) || []).length;
+        for (let i = 0; i < pinCount; i++) {
+          content = content.replace('P???', `P${pinInputs[block.id]?.[i] || '0'}`);
+        }
       }
-      if (block.hasInput && block.content.includes('???')) {
-        content = content.replace('???', blockInputs[block.id] || '0');
+      if (block.hasInput) {
+        const inputCount = (content.match(/\?\?\?/g) || []).filter(match => !content.substring(content.indexOf(match) - 1, content.indexOf(match)).includes('P')).length;
+        let inputIndex = 0;
+        content = content.replace(/\?\?\?/g, (match, offset) => {
+          if (content.substring(offset - 1, offset).includes('P')) {
+            return match;
+          }
+          return blockInputs[block.id]?.[inputIndex++] || '0';
+        });
       }
       return content;
     }).join('\n');
@@ -86,52 +97,54 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   };
 
   const renderBlockContent = (block: CodeBlock) => {
-    if (block.hasPin && block.content.includes('P???')) {
-      const [before, after] = block.content.split('P???');
-      return (
-        <div className="flex items-center gap-2">
-          <span>{before}P</span>
-          <Select
-            value={pinInputs[block.id] || ''}
-            onValueChange={(value) => setPinInputs({
-              ...pinInputs,
-              [block.id]: value
-            })}
-          >
-            <SelectTrigger className="w-20 h-8 px-2 py-0 bg-white/10">
-              <SelectValue placeholder="Pin" />
-            </SelectTrigger>
-            <SelectContent className="bg-white/90 text-black">
-              {PINS.map((pin) => (
-                <SelectItem key={pin} value={pin}>
-                  {pin}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <span className="whitespace-nowrap">{after}</span>
-        </div>
-      );
-    }
-    if (block.hasInput && block.content.includes('???')) {
-      const [before, after] = block.content.split('???');
-      return (
-        <div className="flex items-center gap-2">
-          <span>{before}</span>
-          <Input
-            type="number"
-            value={blockInputs[block.id] || ''}
-            onChange={(e) => setBlockInputs({
-              ...blockInputs,
-              [block.id]: e.target.value
-            })}
-            className="w-20 h-8 px-2 py-0 bg-white/10 border-white/20 text-white"
-          />
-          <span className="whitespace-nowrap">{after}</span>
-        </div>
-      );
-    }
-    return block.content;
+    const parts = block.content.split(/(\?\?\?|P\?\?\?)/g);
+    
+    return (
+      <div className="flex items-center gap-2 flex-wrap">
+        {parts.map((part, index) => {
+          if (part === 'P???') {
+            return (
+              <React.Fragment key={index}>
+                <span>P</span>
+                <Select
+                  value={pinInputs[block.id]?.[0] || ''}
+                  onValueChange={(value) => setPinInputs(prev => ({
+                    ...prev,
+                    [block.id]: [...(prev[block.id] || []), value]
+                  }))}
+                >
+                  <SelectTrigger className="w-20 h-8 px-2 py-0">
+                    <SelectValue placeholder="Pin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PINS.map((pin) => (
+                      <SelectItem key={pin} value={pin}>
+                        {pin}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </React.Fragment>
+            );
+          } else if (part === '???') {
+            const inputIndex = (block.content.substring(0, block.content.indexOf(part)).match(/\?\?\?/g) || []).length;
+            return (
+              <Input
+                key={index}
+                type="number"
+                value={blockInputs[block.id]?.[inputIndex] || ''}
+                onChange={(e) => setBlockInputs(prev => ({
+                  ...prev,
+                  [block.id]: Object.assign([...(prev[block.id] || [])], { [inputIndex]: e.target.value })
+                }))}
+                className="w-20 h-8 px-2 py-0"
+              />
+            );
+          }
+          return <span key={index}>{part}</span>;
+        })}
+      </div>
+    );
   };
 
   return (
