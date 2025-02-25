@@ -21,7 +21,7 @@ const courses = [
         sections: [
           {
             title: "Servo Control System",
-            content: "The servo system uses two primary pins for precise motor control:",
+            content: "The servo system uses P0 pin for precise motor control:",
             details: [
               {
                 subtitle: "Built-in Servo (P0)",
@@ -30,15 +30,15 @@ const courses = [
                   question: "Make the servo move back and forth continuously. Set the servo angle and add appropriate pauses:",
                   initialCode: `
 Run Forever
-    Set Servo P0 to ???
+    Digital Write Pin P0 to ???
     Wait ??? milliseconds
-    Set Servo P0 to ???
+    Digital Write Pin P0 to ???
     Wait ??? milliseconds`,
                   solution: `
 Run Forever
-    Set Servo P0 to 0
+    Digital Write Pin P0 to 0
     Wait 1000 milliseconds
-    Set Servo P0 to 180
+    Digital Write Pin P0 to 180
     Wait 1000 milliseconds`,
                   hints: [
                     "Remember that servo angles range from 0 to 180 degrees",
@@ -55,18 +55,18 @@ Run Forever
             details: [
               {
                 subtitle: "Basic Movement",
-                explanation: "Control both motors to make the robot move in different patterns:",
+                explanation: "Control both motors using digital write pins to make the robot move in different patterns:",
                 codingChallenge: {
                   question: "Create a square movement pattern. Complete the missing values to make the robot move forward and turn right:",
                   initialCode: `
 Function Move Forward
-    Left Motor Forward
-    Right Motor Forward
+    Digital Write Pin P12 to 1
+    Digital Write Pin P14 to 1
     Wait 2000 milliseconds
 
 Function Turn Right
-    Left Motor Forward
-    Right Motor Stop
+    Digital Write Pin P12 to 1
+    Digital Write Pin P14 to 0
     Wait ??? milliseconds
 
 Run Forever
@@ -75,13 +75,13 @@ Run Forever
         Turn Right`,
                   solution: `
 Function Move Forward
-    Left Motor Forward
-    Right Motor Forward
+    Digital Write Pin P12 to 1
+    Digital Write Pin P14 to 1
     Wait 2000 milliseconds
 
 Function Turn Right
-    Left Motor Forward
-    Right Motor Stop
+    Digital Write Pin P12 to 1
+    Digital Write Pin P14 to 0
     Wait 1000 milliseconds
 
 Run Forever
@@ -99,8 +99,8 @@ Run Forever
             ]
           }
         ],
-        summary: "Understanding these movement controls is essential for programming your Inspire Bot. These basic movements can be combined to create complex patterns and behaviors.",
-        practiceExercise: "Try creating different movement patterns by combining forward movements and turns. Can you make the robot move in a triangle pattern?"
+        summary: "Understanding these pin controls is essential for programming your Inspire Bot. These basic movements can be combined to create complex patterns and behaviors.",
+        practiceExercise: "Try creating different movement patterns by combining pin controls. Can you make the robot move in a triangle pattern?"
       },
       {
         id: 2,

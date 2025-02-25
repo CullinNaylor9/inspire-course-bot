@@ -8,18 +8,16 @@ export const BLOCK_TYPES = {
     'Function',
   ],
   MOVEMENT: [
-    'Left Motor Forward',
-    'Right Motor Forward',
-    'Left Motor Stop',
-    'Right Motor Stop',
+    'Digital Write Pin P12 to',
+    'Digital Write Pin P13 to',
+    'Digital Write Pin P14 to',
+    'Digital Write Pin P15 to',
     'Move Forward',
     'Turn Right',
     'Turn Left',
   ],
   SERVO: [
-    'Set Servo P0 to 0',
-    'Set Servo P0 to 90',
-    'Set Servo P0 to 180',
+    'Digital Write Pin P0 to',
   ],
   BASIC: [
     'Wait 500 milliseconds',
