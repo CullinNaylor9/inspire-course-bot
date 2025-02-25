@@ -18,15 +18,26 @@ const courses = [
         title: "Understanding Pin Layout",
         duration: "15 min",
         description: "Learn about the essential pin configuration of your Inspire Bot and how each pin contributes to different functionalities.",
-        introduction: "The Inspire Bot is equipped with multiple pins that control various functions. Understanding these pins is crucial for programming your robot effectively. Let's explore each pin category and its purpose.",
+        introduction: "Welcome to your first lesson on the Inspire Bot! Your robot is equipped with 17 programmable pins that control everything from motor movement to sensor readings. Understanding these pins is the foundation of all robot programming. In this lesson, we'll explore the purpose of each pin and how they work together.",
         sections: [
           {
-            title: "Inspire Bot Pin Layout",
-            content: "Your Inspire Bot has 17 programmable pins (P0 to P16), each with a specific function:",
+            title: "Inspire Bot Pin Layout Overview",
+            content: "The Inspire Bot features a comprehensive pin layout that gives you complete control over its functionality:",
             details: [
               {
+                subtitle: "Pin Categories and Organization",
+                explanation: "The 17 pins (P0-P16) are organized into functional groups that control different aspects of your robot:",
+                listItems: [
+                  "Control Pins (P0, P1): For servo motor control",
+                  "Sensor Pins (P2, P3, P8): For ultrasonic and line following sensors",
+                  "General Purpose I/O (P4-P7, P9-P11): For custom components",
+                  "Motor Control Pins (P12-P15): For movement control",
+                  "Indicator Pin (P16): For onboard LED control"
+                ]
+              },
+              {
                 subtitle: "Complete Pin Reference",
-                explanation: "Here's a complete reference of all the pins and their functions on your Inspire Bot:",
+                explanation: "Here's a detailed breakdown of all pins and their specific functions:",
                 listItems: [
                   "P0: Built-in Servo Motor Control (0-180 degrees)",
                   "P1: External Servo Connection",
@@ -35,24 +46,24 @@ const courses = [
                   "P4-P7: General Purpose I/O",
                   "P8: Ultrasonic Sensor (Echo)",
                   "P9-P11: General Purpose I/O",
-                  "P12: Left Motor Forward/Reverse Control",
-                  "P13: Left Motor Speed Control",
-                  "P14: Right Motor Forward/Reverse Control", 
-                  "P15: Right Motor Speed Control",
-                  "P16: Onboard LED Control"
+                  "P12: Left Motor Direction Control (0=Backward, 1=Forward)",
+                  "P13: Left Motor Speed Control (0=Stop, 1=Run)",
+                  "P14: Right Motor Direction Control (0=Backward, 1=Forward)", 
+                  "P15: Right Motor Speed Control (0=Stop, 1=Run)",
+                  "P16: Onboard LED Control (0=Off, 1=On)"
                 ]
               }
             ]
           },
           {
             title: "Servo Control System",
-            content: "The servo system uses P0 pin for precise motor control:",
+            content: "Servo motors allow for precise angle control, making them perfect for robot arms, sensors, and other components that need exact positioning:",
             details: [
               {
                 subtitle: "Built-in Servo (P0)",
-                explanation: "P0 is dedicated to the robot's built-in servo motor. This pin can output PWM signals to control the servo's position with precision. The signal ranges from 0° to 180°.",
+                explanation: "P0 controls the robot's main servo motor. This versatile component can be positioned at any angle between 0° and 180°, allowing for precise movement control. You can use this servo for a robotic arm, sensor platform, or even a head that can look around.",
                 codingChallenge: {
-                  question: "Make the servo move back and forth continuously. Set the servo angle and add appropriate pauses:",
+                  question: "Program the servo to sweep back and forth continuously. Fill in the missing values to control the servo angle:",
                   initialCode: `
 Run Forever
     Digital Write Pin P??? to ???
@@ -66,21 +77,26 @@ Run Forever
     Digital Write Pin P0 to 180
     Wait 1000 milliseconds`,
                   hints: [
-                    "Remember that servo angles range from 0 to 180 degrees",
-                    "1000 milliseconds equals 1 second",
-                    "Don't forget to add pauses between movements to see the servo move"
+                    "The servo is connected to pin P0",
+                    "Servo angles range from 0 to 180 degrees",
+                    "1000 milliseconds equals 1 second of waiting time",
+                    "Make sure to add pauses between movements to see the servo move"
                   ]
                 }
+              },
+              {
+                subtitle: "External Servo Connection (P1)",
+                explanation: "Pin P1 allows you to connect an additional servo motor to your robot. This gives you the flexibility to add more complex movement capabilities, such as a gripper or a second joint in a robotic arm. Just like the built-in servo, this one can also be controlled with angles from 0° to 180°."
               }
             ]
           },
           {
             title: "Motor Control System",
-            content: "Four pins (P12-P15) work in pairs to control the robot's movement:",
+            content: "The four motor control pins (P12-P15) work together in pairs to control your robot's movement. Understanding how these pins interact is essential for creating any kind of movement pattern:",
             details: [
               {
                 subtitle: "Motor Pin Reference",
-                explanation: "The motors are controlled using these specific pins:",
+                explanation: "The motors are controlled using these specific pins working in pairs:",
                 listItems: [
                   "P12: Left Motor Direction (0 = Backward, 1 = Forward)",
                   "P13: Left Motor Enable (0 = Stop, 1 = Run)",
@@ -90,9 +106,9 @@ Run Forever
               },
               {
                 subtitle: "Basic Movement",
-                explanation: "Control both motors using digital write pins to make the robot move in different patterns:",
+                explanation: "By controlling the direction and enable pins together, you can create different movement patterns. For example, setting both direction pins to 1 makes the robot move forward, while setting them differently makes it turn.",
                 codingChallenge: {
-                  question: "Create a square movement pattern. Complete the missing values to make the robot move forward and turn right:",
+                  question: "Create a square movement pattern. Fill in the missing values to make the robot move forward and turn right to trace a square path:",
                   initialCode: `
 Function Move Forward
     Digital Write Pin P??? to ???
@@ -124,29 +140,47 @@ Run Forever
         Move Forward
         Turn Right`,
                   hints: [
-                    "Use pins P12 and P14 for forward movement",
-                    "The robot needs to make 4 movements to create a square",
-                    "After each forward movement, turn right 90 degrees",
-                    "1000 milliseconds gives enough time for a 90-degree turn"
+                    "For forward movement, both motors should move forward (P12=1, P14=1)",
+                    "For a right turn, the left motor should move forward while the right motor moves backward or stops",
+                    "The robot needs to make 4 movements to create a square (forward, turn, forward, turn, etc.)",
+                    "Make sure to give enough time for the turning (about 1000ms for a 90-degree turn)"
                   ]
                 }
               },
               {
                 subtitle: "Common Movement Commands",
-                explanation: "Here are the common pin combinations for different movements:",
+                explanation: "Here are the standard pin combinations for different movement patterns:",
                 listItems: [
-                  "Move Forward: P12=1, P14=1",
-                  "Move Backward: P12=0, P14=0",
-                  "Turn Left: P12=0, P14=1",
-                  "Turn Right: P12=1, P14=0",
-                  "Stop: Set P13=0 and P15=0 (motor enable pins)"
+                  "Move Forward: P12=1, P14=1 (Both motors forward)",
+                  "Move Backward: P12=0, P14=0 (Both motors backward)",
+                  "Turn Left: P12=0, P14=1 (Left backward, right forward)",
+                  "Turn Right: P12=1, P14=0 (Left forward, right backward)",
+                  "Stop: Set P13=0 and P15=0 (Disable both motors)"
                 ]
+              }
+            ]
+          },
+          {
+            title: "Sensor Interface System",
+            content: "The Inspire Bot is equipped with several sensor pins that allow it to detect and interact with its environment:",
+            details: [
+              {
+                subtitle: "Ultrasonic Sensor (P2, P8)",
+                explanation: "The ultrasonic sensor helps your robot detect objects and measure distances. It works by sending out sound waves from the trigger pin (P2) and measuring how long it takes for them to bounce back to the echo pin (P8). This can be used for obstacle avoidance, mapping, and object detection."
+              },
+              {
+                subtitle: "Line Following Sensor (P3)",
+                explanation: "The line following sensor on pin P3 detects contrast differences between surfaces, making it perfect for following lines on the floor. This is commonly used in robotics competitions and demonstrations, allowing the robot to automatically follow a predefined path."
+              },
+              {
+                subtitle: "LED Indicator (P16)",
+                explanation: "The onboard LED connected to pin P16 gives your robot the ability to provide visual feedback. You can use it as a status indicator, a warning light, or even to signal different operational modes. For instance, you might have it blink when the robot detects an obstacle or stay solid when it's following a line."
               }
             ]
           }
         ],
-        summary: "Understanding these pin controls is essential for programming your Inspire Bot. These basic movements can be combined to create complex patterns and behaviors.",
-        practiceExercise: "Try creating different movement patterns by combining pin controls. Can you make the robot move in a triangle pattern?"
+        summary: "In this lesson, you've learned about the comprehensive pin layout of your Inspire Bot. You now understand how the servo control pins (P0, P1), motor control pins (P12-P15), sensor pins (P2, P3, P8), and the LED pin (P16) all work together to create a fully functional robot. This knowledge serves as the foundation for all the programming you'll do with your robot in future lessons.",
+        practiceExercise: "Try creating a more complex movement pattern by combining the pin controls you've learned. Can you make the robot move in a triangle pattern? How about a zigzag? Remember to use the appropriate pin combinations and timing to achieve the desired movements."
       },
       {
         id: 2,
