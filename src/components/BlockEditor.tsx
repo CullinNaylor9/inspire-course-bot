@@ -2,11 +2,13 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { BlockType, getBlockType } from '@/lib/blockTypes';
+import { Input } from "@/components/ui/input";
 
 interface CodeBlock {
   id: string;
   content: string;
   type: BlockType;
+  hasInput?: boolean;
 }
 
 interface BlockEditorProps {
@@ -18,6 +20,7 @@ interface BlockEditorProps {
 const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlocks, onSubmit }) => {
   const [workspace, setWorkspace] = useState<CodeBlock[]>(initialBlocks);
   const [palette, setPalette] = useState<CodeBlock[]>(availableBlocks);
+  const [blockInputs, setBlockInputs] = useState<Record<string, string>>({});
 
   const getBlockStyle = (type: BlockType) => {
     switch (type) {
@@ -58,8 +61,35 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   };
 
   const generateCode = () => {
-    const code = workspace.map(block => block.content).join('\n');
+    const code = workspace.map(block => {
+      if (block.hasInput && block.content.includes('???')) {
+        return block.content.replace('???', blockInputs[block.id] || '0');
+      }
+      return block.content;
+    }).join('\n');
     onSubmit(code);
+  };
+
+  const renderBlockContent = (block: CodeBlock) => {
+    if (block.hasInput && block.content.includes('???')) {
+      const [before, after] = block.content.split('???');
+      return (
+        <div className="flex items-center gap-2">
+          <span>{before}</span>
+          <Input
+            type="number"
+            value={blockInputs[block.id] || ''}
+            onChange={(e) => setBlockInputs({
+              ...blockInputs,
+              [block.id]: e.target.value
+            })}
+            className="w-20 h-6 px-1 py-0 bg-white/10 border-white/20"
+          />
+          <span>{after}</span>
+        </div>
+      );
+    }
+    return block.content;
   };
 
   return (
@@ -83,7 +113,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
                         {...provided.dragHandleProps}
                         className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-move`}
                       >
-                        {block.content}
+                        {renderBlockContent(block)}
                       </div>
                     )}
                   </Draggable>
@@ -113,7 +143,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
                           {...provided.dragHandleProps}
                           className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-move`}
                         >
-                          {block.content}
+                          {renderBlockContent(block)}
                         </div>
                       )}
                     </Draggable>

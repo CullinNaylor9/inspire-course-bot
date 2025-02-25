@@ -8,6 +8,105 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import BlockEditor from '@/components/BlockEditor';
 
+const courses = [
+  {
+    id: 1,
+    title: "Introduction to Inspire Bot Pins",
+    lessons: [
+      {
+        id: 1,
+        title: "Understanding Pin Layout",
+        duration: "15 min",
+        description: "Learn about the essential pin configuration of your Inspire Bot and how each pin contributes to different functionalities.",
+        introduction: "The Inspire Bot is equipped with multiple pins that control various functions. Understanding these pins is crucial for programming your robot effectively. Let's explore each pin category and its purpose.",
+        sections: [
+          {
+            title: "Servo Control System",
+            content: "The servo system uses two primary pins for precise motor control:",
+            details: [
+              {
+                subtitle: "Built-in Servo (P0)",
+                explanation: "P0 is dedicated to the robot's built-in servo motor. This pin can output PWM signals to control the servo's position with precision. The signal ranges from 0° to 180°.",
+                codingChallenge: {
+                  question: "Make the servo move back and forth continuously. Set the servo angle and add appropriate pauses:",
+                  initialCode: `
+Run Forever
+    Set Servo P0 to ???
+    Wait ??? milliseconds
+    Set Servo P0 to ???
+    Wait ??? milliseconds`,
+                  solution: `
+Run Forever
+    Set Servo P0 to 0
+    Wait 1000 milliseconds
+    Set Servo P0 to 180
+    Wait 1000 milliseconds`,
+                  hints: [
+                    "Remember that servo angles range from 0 to 180 degrees",
+                    "1000 milliseconds equals 1 second",
+                    "Don't forget to add pauses between movements to see the servo move"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            title: "Motor Control System",
+            content: "Four pins (P12-P15) work in pairs to control the robot's movement:",
+            details: [
+              {
+                subtitle: "Basic Movement",
+                explanation: "Control both motors to make the robot move in different patterns:",
+                codingChallenge: {
+                  question: "Create a square movement pattern. Complete the missing values to make the robot move forward and turn right:",
+                  initialCode: `
+Function Move Forward
+    Left Motor Forward
+    Right Motor Forward
+    Wait 2000 milliseconds
+
+Function Turn Right
+    Left Motor Forward
+    Right Motor Stop
+    Wait ??? milliseconds
+
+Run Forever
+    Repeat 4 times
+        Move Forward
+        Turn Right`,
+                  solution: `
+Function Move Forward
+    Left Motor Forward
+    Right Motor Forward
+    Wait 2000 milliseconds
+
+Function Turn Right
+    Left Motor Forward
+    Right Motor Stop
+    Wait 1000 milliseconds
+
+Run Forever
+    Repeat 4 times
+        Move Forward
+        Turn Right`,
+                  hints: [
+                    "The robot needs to make 4 movements to create a square",
+                    "After each forward movement, turn right 90 degrees",
+                    "Use the Repeat block to avoid writing the same code multiple times",
+                    "1000 milliseconds gives enough time for a 90-degree turn"
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        summary: "Understanding these movement controls is essential for programming your Inspire Bot. These basic movements can be combined to create complex patterns and behaviors.",
+        practiceExercise: "Try creating different movement patterns by combining forward movements and turns. Can you make the robot move in a triangle pattern?"
+      }
+    ]
+  }
+];
+
 const CodeEditor = ({ challenge, onSubmit }: { 
   challenge: { 
     question: string; 
@@ -26,25 +125,14 @@ const CodeEditor = ({ challenge, onSubmit }: {
     const blocks = lines.map((line, index) => ({
       id: `block-${index}`,
       content: line.trim(),
-      type: line.includes('pins.') ? 'pins' : 
-            line.includes('function') ? 'function' :
-            line.includes('for') || line.includes('if') ? 'control' : 'basic'
+      type: line.includes('Wait') ? 'basic' : 
+            line.includes('Function') || line.includes('Run Forever') || line.includes('Repeat') ? 'control' :
+            line.includes('Motor') ? 'movement' : 'servo',
+      hasInput: line.includes('???')
     }));
 
     const initialBlocks = blocks.filter(b => !b.content.includes('???'));
-    const availableBlocks = [
-      ...blocks.filter(b => b.content.includes('???')),
-      {
-        id: 'block-pause-1000',
-        content: 'basic.pause(1000)',
-        type: 'basic'
-      },
-      {
-        id: 'block-pause-2000',
-        content: 'basic.pause(2000)',
-        type: 'basic'
-      }
-    ];
+    const availableBlocks = blocks.filter(b => b.content.includes('???'));
 
     return { availableBlocks, initialBlocks };
   };
@@ -77,114 +165,6 @@ const CodeEditor = ({ challenge, onSubmit }: {
     </div>
   );
 };
-
-const courses = [
-  {
-    id: 1,
-    title: "Introduction to Inspire Bot Pins",
-    lessons: [
-      {
-        id: 1,
-        title: "Understanding Pin Layout",
-        duration: "15 min",
-        description: "Learn about the essential pin configuration of your Inspire Bot and how each pin contributes to different functionalities.",
-        introduction: "The Inspire Bot is equipped with multiple pins that control various functions. Understanding these pins is crucial for programming your robot effectively. Let's explore each pin category and its purpose.",
-        sections: [
-          {
-            title: "Servo Control System",
-            content: "The servo system uses two primary pins for precise motor control:",
-            details: [
-              {
-                subtitle: "Built-in Servo (P0)",
-                explanation: "P0 is dedicated to the robot's built-in servo motor. This pin can output PWM signals to control the servo's position with precision. The signal ranges from 0° to 180°.",
-                codingChallenge: {
-                  question: "Make the servo move back and forth continuously. Set the servo angle and add appropriate pauses:",
-                  initialCode: `
-Run Forever {
-    Set Servo P0 to ???
-    Wait ??? milliseconds
-    Set Servo P0 to ???
-    Wait ??? milliseconds
-}`,
-                  solution: `
-Run Forever {
-    Set Servo P0 to 0
-    Wait 1000 milliseconds
-    Set Servo P0 to 180
-    Wait 1000 milliseconds
-}`,
-                  hints: [
-                    "Remember that servo angles range from 0 to 180 degrees",
-                    "1000 milliseconds equals 1 second",
-                    "Don't forget to add pauses between movements to see the servo move"
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            title: "Motor Control System",
-            content: "Four pins (P12-P15) work in pairs to control the robot's movement:",
-            details: [
-              {
-                subtitle: "Basic Movement",
-                explanation: "Control both motors to make the robot move in different patterns:",
-                codingChallenge: {
-                  question: "Create a square movement pattern. Complete the missing values to make the robot move forward and turn right:",
-                  initialCode: `
-Function Move Forward {
-    Left Motor Forward
-    Right Motor Forward
-    Wait 2000 milliseconds
-}
-
-Function Turn Right {
-    Left Motor Forward
-    Right Motor Stop
-    Wait ??? milliseconds
-}
-
-Run Forever {
-    // Create a square pattern
-    // Hint: Use Move Forward and Turn Right
-    // Repeat 4 times
-}`,
-                  solution: `
-Function Move Forward {
-    Left Motor Forward
-    Right Motor Forward
-    Wait 2000 milliseconds
-}
-
-Function Turn Right {
-    Left Motor Forward
-    Right Motor Stop
-    Wait 1000 milliseconds
-}
-
-Run Forever {
-    Repeat 4 times {
-        Move Forward
-        Turn Right
-    }
-}`,
-                  hints: [
-                    "The robot needs to make 4 movements to create a square",
-                    "After each forward movement, turn right 90 degrees",
-                    "Use the Repeat block to avoid writing the same code multiple times",
-                    "1000 milliseconds gives enough time for a 90-degree turn"
-                  ]
-                }
-              }
-            ]
-          }
-        ],
-        summary: "Understanding these movement controls is essential for programming your Inspire Bot. These basic movements can be combined to create complex patterns and behaviors.",
-        practiceExercise: "Try creating different movement patterns by combining forward movements and turns. Can you make the robot move in a triangle pattern?"
-      }
-    ]
-  }
-];
 
 const Lesson = () => {
   const { courseId, lessonId } = useParams();
