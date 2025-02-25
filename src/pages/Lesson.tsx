@@ -1,9 +1,9 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import BlockEditor from '@/components/BlockEditor';
@@ -267,12 +267,6 @@ const Lesson = () => {
                     <h3 className="text-xl font-semibold mb-3">{detail.subtitle}</h3>
                     <p className="mb-4">{detail.explanation}</p>
 
-                    {detail.makeCodeExample && (
-                      <div className="bg-black/90 text-white p-4 rounded-md mb-4 font-mono whitespace-pre">
-                        {detail.makeCodeExample}
-                      </div>
-                    )}
-
                     {detail.codingChallenge && (
                       <div className="mt-6 bg-accent/20 p-6 rounded-lg">
                         <CodeEditor 
@@ -287,48 +281,6 @@ const Lesson = () => {
                             </div>
                           </div>
                         )}
-                      </div>
-                    )}
-
-                    {detail.points && (
-                      <ul className="list-disc pl-6 space-y-2 mb-4">
-                        {detail.points.map((point, pointIndex) => (
-                          <li key={pointIndex} className="text-muted-foreground">{point}</li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {detail.examples && (
-                      <div className="bg-muted p-4 rounded-md mb-4">
-                        <h4 className="font-semibold mb-2">Examples:</h4>
-                        <ul className="list-disc pl-6 space-y-2">
-                          {detail.examples.map((example, exampleIndex) => (
-                            <li key={exampleIndex} className="text-muted-foreground">{example}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {detail.table && (
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-border">
-                          <thead>
-                            <tr>
-                              {detail.table[0].map((header, i) => (
-                                <th key={i} className="px-4 py-2 text-left font-semibold">{header}</th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-border">
-                            {detail.table.slice(1).map((row, rowIndex) => (
-                              <tr key={rowIndex}>
-                                {row.map((cell, cellIndex) => (
-                                  <td key={cellIndex} className="px-4 py-2">{cell}</td>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
                       </div>
                     )}
                   </div>
