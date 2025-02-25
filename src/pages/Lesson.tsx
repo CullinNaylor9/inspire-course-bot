@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import BlockEditor from '@/components/BlockEditor';
 
 const CodeEditor = ({ challenge, onSubmit }: { 
   challenge: { 
@@ -16,9 +17,39 @@ const CodeEditor = ({ challenge, onSubmit }: {
   }; 
   onSubmit: (code: string) => void; 
 }) => {
-  const [code, setCode] = useState(challenge.initialCode);
   const [currentHint, setCurrentHint] = useState(0);
   const { toast } = useToast();
+
+  const parseCodeToBlocks = (code: string): { availableBlocks: any[], initialBlocks: any[] } => {
+    const lines = code.trim().split('\n').filter(line => line.trim() !== '');
+    
+    const blocks = lines.map((line, index) => ({
+      id: `block-${index}`,
+      content: line.trim(),
+      type: line.includes('pins.') ? 'pins' : 
+            line.includes('function') ? 'function' :
+            line.includes('for') || line.includes('if') ? 'control' : 'basic'
+    }));
+
+    const initialBlocks = blocks.filter(b => !b.content.includes('???'));
+    const availableBlocks = [
+      ...blocks.filter(b => b.content.includes('???')),
+      {
+        id: 'block-pause-1000',
+        content: 'basic.pause(1000)',
+        type: 'basic'
+      },
+      {
+        id: 'block-pause-2000',
+        content: 'basic.pause(2000)',
+        type: 'basic'
+      }
+    ];
+
+    return { availableBlocks, initialBlocks };
+  };
+
+  const { availableBlocks, initialBlocks } = parseCodeToBlocks(challenge.initialCode);
 
   const showHint = () => {
     if (challenge.hints && currentHint < challenge.hints.length) {
@@ -33,22 +64,16 @@ const CodeEditor = ({ challenge, onSubmit }: {
   return (
     <div className="space-y-4">
       <p className="text-lg font-medium">{challenge.question}</p>
-      <Textarea
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        className="font-mono min-h-[200px] bg-black/90 text-white p-4"
-        placeholder="Write your code here..."
+      <BlockEditor
+        initialBlocks={initialBlocks}
+        availableBlocks={availableBlocks}
+        onSubmit={onSubmit}
       />
-      <div className="flex gap-2">
-        <Button onClick={() => onSubmit(code)}>
-          Submit Solution
+      {challenge.hints && currentHint < challenge.hints.length && (
+        <Button variant="outline" onClick={showHint}>
+          Get Hint
         </Button>
-        {challenge.hints && currentHint < challenge.hints.length && (
-          <Button variant="outline" onClick={showHint}>
-            Get Hint
-          </Button>
-        )}
-      </div>
+      )}
     </div>
   );
 };
