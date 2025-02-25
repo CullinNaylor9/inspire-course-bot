@@ -2,7 +2,7 @@
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, PlayCircle, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const courses = [
@@ -13,9 +13,11 @@ const courses = [
     image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800",
     category: "Beginner",
     duration: "30 min",
-    content: [
+    lessons: [
       {
+        id: 1,
         title: "Understanding Pin Layout",
+        duration: "15 min",
         description: "The Inspire Bot features multiple pins for different functionalities:",
         points: [
           "Servo Control Pins: P0 (Built-in Servo), P1 (Additional Servo)",
@@ -26,7 +28,9 @@ const courses = [
         ]
       },
       {
+        id: 2,
         title: "Motor Control Basics",
+        duration: "15 min",
         description: "Learn the fundamental pin combinations for motor control:",
         points: [
           "Left Motor Forward: P12 = 0, P13 = 1",
@@ -44,9 +48,11 @@ const courses = [
     image: "https://images.unsplash.com/photo-1483058712412-4245e9b90334?auto=format&fit=crop&q=80&w=800",
     category: "Beginner",
     duration: "45 min",
-    content: [
+    lessons: [
       {
+        id: 1,
         title: "Basic Movement Controls",
+        duration: "20 min",
         description: "Understanding how to control individual motors:",
         points: [
           "Forward Movement: Both motors forward",
@@ -56,7 +62,9 @@ const courses = [
         ]
       },
       {
+        id: 2,
         title: "Pin Control Combinations",
+        duration: "25 min",
         description: "Learn the exact pin states for each movement:",
         points: [
           "Forward: Left(P12=0, P13=1) + Right(P14=1, P15=0)",
@@ -67,7 +75,6 @@ const courses = [
       }
     ]
   }
-  // ... Additional courses would be defined here
 ];
 
 const Course = () => {
@@ -130,15 +137,35 @@ const Course = () => {
             </div>
           </div>
 
+          <div className="flex justify-center">
+            <Button size="lg" className="gap-2">
+              <PlayCircle className="h-5 w-5" />
+              Start Course
+            </Button>
+          </div>
+
           <p className="text-lg text-muted-foreground">{course.description}</p>
 
           <div className="grid gap-8 mt-8">
-            {course.content?.map((section, index) => (
-              <div key={index} className="space-y-4">
-                <h2 className="text-2xl font-semibold">{section.title}</h2>
-                <p className="text-muted-foreground">{section.description}</p>
+            <h2 className="text-3xl font-bold">Course Content</h2>
+            {course.lessons?.map((lesson, index) => (
+              <div key={index} className="space-y-4 border rounded-lg p-6 hover:border-primary transition-colors">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="text-xl font-semibold">
+                      Lesson {index + 1}: {lesson.title}
+                    </h3>
+                    <Badge variant="outline" className="mt-2">
+                      {lesson.duration}
+                    </Badge>
+                  </div>
+                  <Button variant="ghost" size="icon">
+                    <ChevronRight className="h-5 w-5" />
+                  </Button>
+                </div>
+                <p className="text-muted-foreground">{lesson.description}</p>
                 <ul className="list-disc pl-6 space-y-2">
-                  {section.points.map((point, i) => (
+                  {lesson.points.map((point, i) => (
                     <li key={i} className="text-muted-foreground">{point}</li>
                   ))}
                 </ul>
