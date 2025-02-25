@@ -102,40 +102,90 @@ const courses = [
         ],
         summary: "Understanding these pin configurations is essential for programming your Inspire Bot. Each pin serves a specific purpose and, when used correctly, allows you to create complex behaviors and interactions.",
         practiceExercise: "Try connecting an LED to P16 and create a simple blinking pattern. This will help you understand digital output control."
+      },
+      {
+        id: 2,
+        title: "Motor Control Basics",
+        duration: "15 min",
+        description: "Learn the fundamental pin combinations for motor control and how to control your robot's movement.",
+        introduction: "Understanding motor control is fundamental to making your Inspire Bot move. We'll explore the basic principles of controlling DC motors and how to achieve different movement patterns.",
+        sections: [
+          {
+            title: "Basic Motor Operations",
+            content: "Let's understand how to control individual motors:",
+            details: [
+              {
+                subtitle: "Left Motor Control",
+                explanation: "The left motor uses pins P12 and P13 for directional control:",
+                table: [
+                  ["P12", "P13", "Result"],
+                  ["0", "1", "Forward"],
+                  ["1", "0", "Reverse"],
+                  ["0", "0", "Stop"]
+                ]
+              }
+            ]
+          }
+        ],
+        summary: "Mastering motor control is essential for creating complex movement patterns with your Inspire Bot.",
+        practiceExercise: "Try making your robot move forward for 2 seconds, then stop. This will help you understand basic motor control timing."
       }
     ]
   },
   {
     id: 2,
     title: "Motor Control Fundamentals",
-    description: "Master motor control using pins 12-15. Learn how to make your Inspire Bot move forward, reverse, and turn using precise pin control combinations.",
-    image: "https://images.unsplash.com/photo-1483058712412-4245e9b90334?auto=format&fit=crop&q=80&w=800",
-    category: "Beginner",
-    duration: "45 min",
     lessons: [
       {
         id: 1,
         title: "Basic Movement Controls",
         duration: "20 min",
-        description: "Understanding how to control individual motors:",
-        points: [
-          "Forward Movement: Both motors forward",
-          "Reverse Movement: Both motors reverse",
-          "Left Turn: Right motor forward, left motor stop/reverse",
-          "Right Turn: Left motor forward, right motor stop/reverse"
-        ]
+        description: "Understanding how to control individual motors for basic movement patterns.",
+        introduction: "Learn how to coordinate multiple motors to achieve different movement patterns.",
+        sections: [
+          {
+            title: "Movement Patterns",
+            content: "Understanding basic movement combinations:",
+            details: [
+              {
+                subtitle: "Forward Movement",
+                explanation: "To move forward, both motors need to rotate in the forward direction:",
+                points: [
+                  "Left Motor: P12=0, P13=1",
+                  "Right Motor: P14=1, P15=0"
+                ]
+              }
+            ]
+          }
+        ],
+        summary: "Basic movement control is fundamental to creating more complex behaviors.",
+        practiceExercise: "Create a square movement pattern using the motor controls you've learned."
       },
       {
         id: 2,
         title: "Pin Control Combinations",
         duration: "25 min",
-        description: "Learn the exact pin states for each movement:",
-        points: [
-          "Forward: Left(P12=0, P13=1) + Right(P14=1, P15=0)",
-          "Reverse: Left(P12=1, P13=0) + Right(P14=0, P15=1)",
-          "Left Turn: Left(P12=1, P13=0) + Right(P14=1, P15=0)",
-          "Right Turn: Left(P12=0, P13=1) + Right(P14=0, P15=1)"
-        ]
+        description: "Master the pin combinations for precise movement control.",
+        introduction: "Different pin combinations produce different movement patterns. Let's explore these combinations in detail.",
+        sections: [
+          {
+            title: "Advanced Movement Patterns",
+            content: "Learn how to combine different motor states:",
+            details: [
+              {
+                subtitle: "Turning Movements",
+                explanation: "Differential drive allows the robot to turn by running motors at different speeds or directions:",
+                points: [
+                  "Left turn: Right motor forward, left motor reverse",
+                  "Right turn: Left motor forward, right motor reverse",
+                  "Spot turn: Motors rotating in opposite directions"
+                ]
+              }
+            ]
+          }
+        ],
+        summary: "Understanding pin combinations is crucial for precise robot control.",
+        practiceExercise: "Program your robot to perform a figure-eight pattern using the turning combinations learned."
       }
     ]
   }
