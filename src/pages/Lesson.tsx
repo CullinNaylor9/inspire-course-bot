@@ -30,9 +30,9 @@ const courses = [
                   question: "Make the servo move back and forth continuously. Set the servo angle and add appropriate pauses:",
                   initialCode: `
 Run Forever
-    Digital Write Pin P0 to ???
+    Digital Write Pin P??? to ???
     Wait ??? milliseconds
-    Digital Write Pin P0 to ???
+    Digital Write Pin P??? to ???
     Wait ??? milliseconds`,
                   solution: `
 Run Forever
@@ -60,13 +60,13 @@ Run Forever
                   question: "Create a square movement pattern. Complete the missing values to make the robot move forward and turn right:",
                   initialCode: `
 Function Move Forward
-    Digital Write Pin P12 to 1
-    Digital Write Pin P14 to 1
+    Digital Write Pin P??? to 1
+    Digital Write Pin P??? to 1
     Wait 2000 milliseconds
 
 Function Turn Right
-    Digital Write Pin P12 to 1
-    Digital Write Pin P14 to 0
+    Digital Write Pin P??? to 1
+    Digital Write Pin P??? to 0
     Wait ??? milliseconds
 
 Run Forever
@@ -89,9 +89,9 @@ Run Forever
         Move Forward
         Turn Right`,
                   hints: [
+                    "Use pins P12 and P14 for forward movement",
                     "The robot needs to make 4 movements to create a square",
                     "After each forward movement, turn right 90 degrees",
-                    "Use the Repeat block to avoid writing the same code multiple times",
                     "1000 milliseconds gives enough time for a 90-degree turn"
                   ]
                 }

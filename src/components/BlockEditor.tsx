@@ -1,14 +1,22 @@
 
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import { BlockType, getBlockType } from '@/lib/blockTypes';
+import { BlockType, getBlockType, PINS } from '@/lib/blockTypes';
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface CodeBlock {
   id: string;
   content: string;
   type: BlockType;
   hasInput?: boolean;
+  hasPin?: boolean;
 }
 
 interface BlockEditorProps {
@@ -21,6 +29,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   const [workspace, setWorkspace] = useState<CodeBlock[]>(initialBlocks);
   const [palette, setPalette] = useState<CodeBlock[]>(availableBlocks);
   const [blockInputs, setBlockInputs] = useState<Record<string, string>>({});
+  const [pinInputs, setPinInputs] = useState<Record<string, string>>({});
 
   const getBlockStyle = (type: BlockType) => {
     switch (type) {
@@ -41,7 +50,6 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
     if (!result.destination) return;
 
     if (result.source.droppableId === result.destination.droppableId) {
-      // Reordering within the same list
       const items = Array.from(
         result.source.droppableId === 'workspace' ? workspace : palette
       );
@@ -54,23 +62,56 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
         setPalette(items);
       }
     } else if (result.destination.droppableId === 'workspace') {
-      // Adding block to workspace
-      const newBlock = { ...palette[result.source.index] };
+      const newBlock = { 
+        ...palette[result.source.index],
+        hasPin: palette[result.source.index].content.includes('P???'),
+      };
       setWorkspace([...workspace, newBlock]);
     }
   };
 
   const generateCode = () => {
     const code = workspace.map(block => {
-      if (block.hasInput && block.content.includes('???')) {
-        return block.content.replace('???', blockInputs[block.id] || '0');
+      let content = block.content;
+      if (block.hasPin && content.includes('P???')) {
+        content = content.replace('P???', `P${pinInputs[block.id] || '0'}`);
       }
-      return block.content;
+      if (block.hasInput && content.includes('???')) {
+        content = content.replace('???', blockInputs[block.id] || '0');
+      }
+      return content;
     }).join('\n');
     onSubmit(code);
   };
 
   const renderBlockContent = (block: CodeBlock) => {
+    if (block.hasPin && block.content.includes('P???')) {
+      const [before, after] = block.content.split('P???');
+      return (
+        <div className="flex items-center gap-2">
+          <span>{before}P</span>
+          <Select
+            value={pinInputs[block.id] || ''}
+            onValueChange={(value) => setPinInputs({
+              ...pinInputs,
+              [block.id]: value
+            })}
+          >
+            <SelectTrigger className="w-20 h-6 px-1 py-0">
+              <SelectValue placeholder="Pin" />
+            </SelectTrigger>
+            <SelectContent>
+              {PINS.map((pin) => (
+                <SelectItem key={pin} value={pin}>
+                  {pin}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <span>{after}</span>
+        </div>
+      );
+    }
     if (block.hasInput && block.content.includes('???')) {
       const [before, after] = block.content.split('???');
       return (

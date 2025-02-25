@@ -1,4 +1,6 @@
 
+export const PINS = Array.from({ length: 17 }, (_, i) => i.toString());
+
 export const BLOCK_TYPES = {
   CONTROL: [
     'Run Forever',
@@ -8,16 +10,13 @@ export const BLOCK_TYPES = {
     'Function',
   ],
   MOVEMENT: [
-    'Digital Write Pin P12 to',
-    'Digital Write Pin P13 to',
-    'Digital Write Pin P14 to',
-    'Digital Write Pin P15 to',
+    'Digital Write Pin P??? to',
     'Move Forward',
     'Turn Right',
     'Turn Left',
   ],
   SERVO: [
-    'Digital Write Pin P0 to',
+    'Digital Write Pin P??? to',
   ],
   BASIC: [
     'Wait 500 milliseconds',
