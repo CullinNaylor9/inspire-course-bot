@@ -111,6 +111,45 @@ const courses = [
           "Implementing obstacle detection algorithms",
           "Creating responsive behaviors based on distance"
         ]
+      },
+      {
+        id: 3,
+        title: "Servo Position Control",
+        duration: "20 min",
+        description: "Master precise servo control for mechanical operations:",
+        points: [
+          "Setting exact servo angles (0°, 90°, 180°)",
+          "Creating smooth servo sweeps with delays",
+          "Building servo control sequences",
+          "Calibrating servo positions for your robot",
+          "Power considerations for multiple servos"
+        ]
+      },
+      {
+        id: 4,
+        title: "Sensor-Driven Behaviors",
+        duration: "30 min",
+        description: "Create intelligent robot behaviors using sensor input:",
+        points: [
+          "Reading and interpreting ultrasonic sensor data",
+          "Setting up threshold-based actions",
+          "Programming servo responses to obstacles",
+          "Creating adaptive behaviors based on distance",
+          "Building a complete obstacle avoidance system"
+        ]
+      },
+      {
+        id: 5,
+        title: "Building a Smart Arm",
+        duration: "40 min",
+        description: "Combine servos and sensors to create an intelligent robot arm:",
+        points: [
+          "Designing the mechanical arm structure",
+          "Programming coordinated servo movements",
+          "Implementing object detection with ultrasonic sensors",
+          "Creating pick-and-place operations",
+          "Testing and refining precision movements"
+        ]
       }
     ]
   },
