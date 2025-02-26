@@ -291,9 +291,16 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="md:w-1/2 space-y-6">
-              <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-2 animate-fade-in">
-                <Bot className="w-4 h-4 mr-2" /> 
-                Interactive Robotics Learning
+              <div className="flex items-center gap-3 mb-4">
+                <img 
+                  src="https://learning.bishopsprep.org.za/prospective2022/wp-content/uploads/sites/53/2021/05/favicon.png" 
+                  alt="Bishops Prep Logo" 
+                  className="h-12 w-auto"
+                />
+                <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary animate-fade-in">
+                  <Bot className="w-4 h-4 mr-2" /> 
+                  Interactive Robotics Learning
+                </div>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-foreground">
                 Master the <span className="text-primary">Inspire Bot</span> with Our Courses
