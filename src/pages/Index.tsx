@@ -300,7 +300,7 @@ const robotImages = [
   "https://pixeldrain.com/api/file/Bp7fcBWz",
   "https://pixeldrain.com/api/file/hCtDup1x",
   "https://pixeldrain.com/api/file/QPjLjsgP",
-  "https://pixeldrain.com/api/file/A1LVe748"
+  "https://pixeldrain.com/api/file/A1LVe748",
 ];
 
 const Index = () => {
