@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { BlockType, getBlockType, PINS } from '@/lib/blockTypes';
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui/select"
 
 interface CodeBlock {
   id: string;
@@ -31,38 +31,6 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   const [blockInputs, setBlockInputs] = useState<Record<string, string[]>>({});
   const [pinInputs, setPinInputs] = useState<Record<string, string[]>>({});
   const [waitInputs, setWaitInputs] = useState<Record<string, string>>({});
-  const [isMobileView, setIsMobileView] = useState(false);
-
-  // Detect mobile view
-  useEffect(() => {
-    const checkMobileView = () => {
-      setIsMobileView(window.innerWidth < 768);
-    };
-    
-    checkMobileView();
-    window.addEventListener('resize', checkMobileView);
-    
-    return () => {
-      window.removeEventListener('resize', checkMobileView);
-    };
-  }, []);
-  
-  // iOS Safari needs this to fix the dragging issues
-  useEffect(() => {
-    // Disable page scrolling when dragging on touch devices
-    const preventDefaultTouchMove = (e: TouchEvent) => {
-      if (e.target instanceof Element && 
-          (e.target.closest('.draggable-item') || e.target.closest('.droppable-area'))) {
-        e.preventDefault();
-      }
-    };
-
-    document.addEventListener('touchmove', preventDefaultTouchMove, { passive: false });
-    
-    return () => {
-      document.removeEventListener('touchmove', preventDefaultTouchMove);
-    };
-  }, []);
 
   const getBlockStyle = (type: BlockType) => {
     switch (type) {
@@ -139,33 +107,11 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
     onSubmit(code);
   };
 
-  // Add block from palette to workspace on touch devices
-  const handleAddBlock = (blockIndex: number) => {
-    if (isMobileView) {
-      const newBlock = { 
-        ...palette[blockIndex],
-        id: `${palette[blockIndex].id}-${Date.now()}`,
-        hasInput: palette[blockIndex].content.includes('???'),
-        hasPin: palette[blockIndex].content.includes('P???')
-      };
-      setWorkspace([...workspace, newBlock]);
-    }
-  };
-
-  // Remove block from workspace on touch devices
-  const handleRemoveBlock = (blockIndex: number) => {
-    if (isMobileView) {
-      const newWorkspace = [...workspace];
-      newWorkspace.splice(blockIndex, 1);
-      setWorkspace(newWorkspace);
-    }
-  };
-
   const renderBlockContent = (block: CodeBlock) => {
     // Special handling for wait blocks to allow custom milliseconds input
     if (block.content.includes('Wait') && block.content.includes('milliseconds')) {
       return (
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2">
           <span>Wait</span>
           <Input
             type="number"
@@ -247,83 +193,55 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-4">
-      {isMobileView ? (
-        // Mobile/iPad specific UI with tap interface instead of drag and drop
-        <>
-          <div className="w-full bg-accent/10 p-4 rounded-lg mb-4">
-            <h3 className="font-bold mb-4">Code Blocks</h3>
-            <div className="space-y-2 droppable-area">
-              {palette.map((block, index) => (
-                <div 
-                  key={block.id} 
-                  className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white draggable-item relative`}
-                  onClick={() => handleAddBlock(index)}
-                >
-                  {renderBlockContent(block)}
-                  <div className="absolute right-2 top-2 bg-white/20 px-2 py-1 rounded text-xs">
-                    Tap to add
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="w-full">
-            <div className="bg-black/90 p-4 rounded-lg mb-4">
-              <h3 className="font-bold text-white mb-4">Program</h3>
-              <div className="min-h-[200px] space-y-2 droppable-area">
-                {workspace.map((block, index) => (
-                  <div 
-                    key={block.id} 
-                    className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white draggable-item relative`}
-                  >
-                    {renderBlockContent(block)}
-                    <button 
-                      className="absolute right-2 top-2 bg-white/20 text-white h-6 w-6 flex items-center justify-center rounded-full"
-                      onClick={() => handleRemoveBlock(index)}
-                    >
-                      ×
-                    </button>
-                  </div>
+    <div className="flex gap-4">
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <div className="w-1/3 bg-accent/10 p-4 rounded-lg">
+          <h3 className="font-bold mb-4">Code Blocks</h3>
+          <Droppable droppableId="palette">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="space-y-2"
+              >
+                {palette.map((block, index) => (
+                  <Draggable key={block.id} draggableId={block.id} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-move`}
+                      >
+                        {renderBlockContent(block)}
+                      </div>
+                    )}
+                  </Draggable>
                 ))}
-                {workspace.length === 0 && (
-                  <p className="text-gray-400 text-center py-10">Tap blocks above to add them here</p>
-                )}
+                {provided.placeholder}
               </div>
-            </div>
-            <button
-              onClick={generateCode}
-              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg w-full"
-            >
-              Run Code
-            </button>
-          </div>
-        </>
-      ) : (
-        // Desktop drag-and-drop UI
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <div className="w-full md:w-1/3 bg-accent/10 p-4 rounded-lg mb-4 md:mb-0">
-            <h3 className="font-bold mb-4">Code Blocks</h3>
-            <Droppable droppableId="palette">
+            )}
+          </Droppable>
+        </div>
+
+        <div className="w-2/3">
+          <div className="bg-black/90 p-4 rounded-lg mb-4">
+            <h3 className="font-bold text-white mb-4">Program</h3>
+            <Droppable droppableId="workspace">
               {(provided) => (
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  className="space-y-2 droppable-area"
+                  className="min-h-[200px] space-y-2"
                 >
-                  {palette.map((block, index) => (
+                  {workspace.map((block, index) => (
                     <Draggable key={block.id} draggableId={block.id} index={index}>
                       {(provided) => (
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-move draggable-item`}
-                          style={{
-                            ...provided.draggableProps.style,
-                            touchAction: 'none' // Improve touch handling
-                          }}
+                          className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-move`}
                         >
                           {renderBlockContent(block)}
                         </div>
@@ -335,49 +253,14 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
               )}
             </Droppable>
           </div>
-
-          <div className="w-full md:w-2/3">
-            <div className="bg-black/90 p-4 rounded-lg mb-4">
-              <h3 className="font-bold text-white mb-4">Program</h3>
-              <Droppable droppableId="workspace">
-                {(provided) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className="min-h-[200px] space-y-2 droppable-area"
-                  >
-                    {workspace.map((block, index) => (
-                      <Draggable key={block.id} draggableId={block.id} index={index}>
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-move draggable-item`}
-                            style={{
-                              ...provided.draggableProps.style,
-                              touchAction: 'none' // Improve touch handling
-                            }}
-                          >
-                            {renderBlockContent(block)}
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </div>
-            <button
-              onClick={generateCode}
-              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg w-full md:w-auto"
-            >
-              Run Code
-            </button>
-          </div>
-        </DragDropContext>
-      )}
+          <button
+            onClick={generateCode}
+            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg"
+          >
+            Run Code
+          </button>
+        </div>
+      </DragDropContext>
     </div>
   );
 };
