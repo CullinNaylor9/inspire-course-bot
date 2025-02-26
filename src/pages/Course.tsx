@@ -59,7 +59,8 @@ const courses = [
           "Forward Movement: Both motors forward",
           "Reverse Movement: Both motors reverse",
           "Left Turn: Right motor forward, left motor stop/reverse",
-          "Right Turn: Left motor forward, right motor stop/reverse"
+          "Right Turn: Left motor forward, right motor stop/reverse",
+          "Interactive exercise: Program your first movement sequence"
         ]
       },
       {
@@ -71,7 +72,8 @@ const courses = [
           "Forward: Left(P12=0, P13=1) + Right(P14=1, P15=0)",
           "Reverse: Left(P12=1, P13=0) + Right(P14=0, P15=1)",
           "Left Turn: Left(P12=1, P13=0) + Right(P14=1, P15=0)",
-          "Right Turn: Left(P12=0, P13=1) + Right(P14=0, P15=1)"
+          "Right Turn: Left(P12=0, P13=1) + Right(P14=0, P15=1)",
+          "Challenge: Create a dance routine with pin combinations"
         ]
       }
     ]
@@ -94,7 +96,7 @@ const courses = [
           "Programming the built-in servo on P0",
           "Adding an external servo on P1",
           "Creating smooth movements with timing",
-          "Building a grabber mechanism"
+          "Activity: Build a robotic arm that waves hello"
         ]
       },
       {
@@ -107,7 +109,7 @@ const courses = [
           "Calculating distance from echo time",
           "Setting up detection thresholds",
           "Implementing obstacle detection algorithms",
-          "Creating responsive behaviors based on distance"
+          "Game: Create a 'Hot and Cold' distance detector"
         ]
       }
     ]
@@ -130,7 +132,7 @@ const courses = [
           "Calibrating for different surfaces",
           "Reading and interpreting sensor values",
           "Creating control loops for line following",
-          "Handling intersections and gaps"
+          "Challenge: Race through a line maze course"
         ]
       },
       {
@@ -143,7 +145,7 @@ const courses = [
           "Color-coded status indicators",
           "Using LEDs for debugging",
           "Creating light patterns for different robot states",
-          "Implementing low-light operation modes"
+          "Project: Create a light show synchronized with movements"
         ]
       }
     ]
@@ -166,7 +168,7 @@ const courses = [
           "Creating precise turning angles (45°, 90°, 180°)",
           "Programming complex patterns (figure-8, spiral, etc.)",
           "Using timing and sequencing for choreographed movements",
-          "Calibrating motor outputs for straight lines"
+          "Competition: Program your bot to draw shapes with precision"
         ]
       },
       {
@@ -179,7 +181,7 @@ const courses = [
           "Implementing wall-following algorithms",
           "Creating decision trees for path selection",
           "Handling different surface types",
-          "Recovering from difficult positions"
+          "Challenge: Navigate a mystery obstacle course blindfolded"
         ]
       }
     ]
@@ -202,7 +204,7 @@ const courses = [
           "Creating a sensor fusion system for improved environmental awareness",
           "Developing a prioritization system for conflicting inputs",
           "Building an event-driven architecture for responsive behavior",
-          "Implementing error detection and recovery systems"
+          "Hackathon: Build a robot assistant that responds to multiple stimuli"
         ]
       },
       {
@@ -215,7 +217,7 @@ const courses = [
           "Implementing adaptive pathfinding algorithms",
           "Developing environmental analysis capabilities",
           "Programming complex decision-making logic",
-          "Building in self-testing and diagnostic capabilities"
+          "Final Project: Program a search and rescue mission simulation"
         ]
       }
     ]
