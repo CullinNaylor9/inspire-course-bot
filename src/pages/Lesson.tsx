@@ -745,10 +745,12 @@ Run Forever
         ],
         summary: "You've learned the fundamentals of line following with your Inspire Bot, including how the line sensor works and how to implement a basic following algorithm. This skill allows your robot to autonomously navigate predefined paths.",
         practiceExercise: "Try modifying the line following program to move more smoothly by adjusting the wait time. Experiment with longer waits for smoother, wider turns, and shorter waits for more responsive tracking."
-      },
-      {
-        id: 2,
-        title: "Advanced LED Control",
-        duration: "15 min",
-        description: "Create complex LED patterns for visual feedback.",
-        introduction: "The LED indicator on your Inspire Bot is a versatile tool for providing visual feedback. In this lesson, you'll learn how to create complex bl
+      }
+    ]
+  }
+];
+
+const LessonPage = () => {
+  const { courseId, lessonId } = useParams();
+  const [currentCourseId, setCurrentCourseId] = useState(parseInt(courseId || "1"));
+  
