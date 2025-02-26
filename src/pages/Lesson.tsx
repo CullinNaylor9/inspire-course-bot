@@ -1,9 +1,10 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ArrowRight, CheckCircle2, BookOpen, FlaskConical, Trophy, Code, Play } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -912,4 +913,583 @@ main();`,
               "Inspire Bot with distance sensors",
               "Various obstacles (books, boxes, etc.)",
               "Tape for marking start and finish lines",
-              "
+              "Timer or stopwatch"
+            ],
+            procedure: [
+              "Have a friend create a maze-like obstacle course unknown to you",
+              "Place your robot at the designated starting point",
+              "Program your robot to navigate through the maze using only sensor data",
+              "Incorporate different navigation strategies (wall following, open space navigation, etc.)",
+              "Measure success by time to completion and number of collisions"
+            ],
+            extension: "Add complexity with multiple targets, simulated hazards, or limited battery life requiring charging stations."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 6,
+    title: "Advanced Robotics Project",
+    lessons: [
+      {
+        id: 1,
+        title: "Multi-System Integration",
+        duration: "75 min",
+        description: "Combine all robot subsystems into a unified control architecture.",
+        content: "In this comprehensive lesson, you'll learn how to integrate all the individual systems of your Inspire Bot into a cohesive control architecture that allows for sophisticated autonomous behavior. This represents the transition from individual component programming to creating a truly intelligent robot.",
+        sections: [
+          {
+            title: "State Machine Architecture",
+            content: "Implement a robust state machine to manage robot behaviors:",
+            points: [
+              "Creating clearly defined operational states (searching, following, avoiding, etc.)",
+              "Building transition conditions between states based on sensor inputs",
+              "Implementing state-specific behaviors and control logic",
+              "Developing initialization and shutdown sequences",
+              "Testing and debugging state transitions with logging"
+            ]
+          },
+          {
+            title: "Sensor Fusion Systems",
+            content: "Combine multiple sensor inputs for improved environmental awareness:",
+            points: [
+              "Integrating ultrasonic and line sensor data for comprehensive sensing",
+              "Implementing weighted sensor data interpretation",
+              "Creating confidence metrics for different sensor readings",
+              "Using historical data to improve current readings",
+              "Handling conflicting sensor information gracefully"
+            ]
+          },
+          {
+            title: "Advanced Control Architecture",
+            content: "Build sophisticated control systems for responsive behavior:",
+            points: [
+              "Implementing PID (Proportional-Integral-Derivative) control for motor precision",
+              "Creating adaptive control parameters based on environmental conditions",
+              "Developing event-driven responses to external stimuli",
+              "Building behavior hierarchies with priority management",
+              "Testing control system performance under various conditions"
+            ]
+          }
+        ],
+        exercises: [
+          {
+            title: "System Integration Programming",
+            description: "Practice building complex, coordinated systems with these coding challenges.",
+            steps: [
+              "Create a state machine with at least 5 different operational states",
+              "Implement transition logic between states based on multiple sensor inputs",
+              "Develop a centralized control system that coordinates all robot subsystems",
+              "Create a debugging system that reports current state and sensor readings"
+            ],
+            hint: "Start by clearly defining each state and the exact conditions that should trigger transitions."
+          }
+        ],
+        activities: [
+          {
+            title: "Robot Assistant Challenge",
+            description: "Create a robot that can respond to multiple types of inputs and perform helpful tasks.",
+            materials: [
+              "Fully equipped Inspire Bot with multiple sensors",
+              "Small objects for robot to interact with",
+              "Tape for marking zones or boundaries",
+              "Timer for measuring response time"
+            ],
+            procedure: [
+              "Define at least 3 different 'assistant' tasks your robot can perform",
+              "Program detection systems for different trigger conditions (light levels, proximity, line detection, etc.)",
+              "Create a main control loop that continuously checks for trigger conditions",
+              "Implement appropriate responses for each detected condition",
+              "Test your robot's ability to switch between different assistant tasks"
+            ],
+            extension: "Add remote control capabilities, voice control simulation, or program your robot to learn from and adapt to user preferences over time."
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Advanced Mission Programming",
+        duration: "105 min",
+        description: "Design and implement complex autonomous missions.",
+        content: "In this advanced lesson, you'll take your robot programming skills to the next level by creating sophisticated mission programming capabilities. You'll learn how to define objectives, create decision-making frameworks, and adapt to changing environments for true autonomous operation.",
+        sections: [
+          {
+            title: "Mission Planning Systems",
+            content: "Create sophisticated mission planning capabilities for your robot:",
+            points: [
+              "Defining clear mission objectives and success criteria",
+              "Breaking complex missions into achievable sub-tasks",
+              "Implementing mission progress tracking and reporting",
+              "Creating contingency plans for handling obstacles or failures",
+              "Testing mission execution in varied environmental conditions"
+            ]
+          },
+          {
+            title: "Adaptive Navigation",
+            content: "Build advanced navigation systems that adapt to environments:",
+            points: [
+              "Implementing dynamic pathfinding algorithms",
+              "Creating environmental mapping capabilities",
+              "Developing obstacle classification and response strategies",
+              "Building memory systems for previously navigated areas",
+              "Testing navigation performance in complex environments"
+            ]
+          },
+          {
+            title: "Autonomous Decision Making",
+            content: "Program sophisticated decision-making capabilities:",
+            points: [
+              "Creating multi-factor decision matrices",
+              "Implementing cost-benefit analysis for different actions",
+              "Developing learning mechanisms to improve future decisions",
+              "Building in safeguards against dangerous conditions",
+              "Testing decision logic with simulation and real-world scenarios"
+            ]
+          },
+          {
+            title: "Performance Optimization",
+            content: "Fine-tune your robot's performance for maximum efficiency:",
+            points: [
+              "Implementing code optimization techniques",
+              "Creating battery management strategies",
+              "Developing diagnostic and self-testing capabilities",
+              "Building telemetry systems for performance analysis",
+              "Testing and benchmarking system performance"
+            ]
+          }
+        ],
+        exercises: [
+          {
+            title: "Mission Programming Challenge",
+            description: "Develop advanced autonomous missions with these programming exercises.",
+            steps: [
+              "Create a mission planner that breaks a complex task into sequential sub-tasks",
+              "Implement decision-making logic that adapts to environmental changes",
+              "Develop a performance monitoring system that tracks mission progress",
+              "Build in error recovery systems for handling unexpected situations"
+            ],
+            hint: "Think of your mission as a tree of possibilities rather than a linear sequence of steps."
+          }
+        ],
+        activities: [
+          {
+            title: "Search and Rescue Simulation",
+            description: "Program your robot to complete a simulated search and rescue mission autonomously.",
+            materials: [
+              "Fully equipped Inspire Bot",
+              "Small object or doll to represent the 'rescue target'",
+              "Various obstacles to create a complex environment",
+              "Boundaries to define the search area"
+            ],
+            procedure: [
+              "Define a search area with clear boundaries",
+              "Place a 'rescue target' in an unknown location within the area",
+              "Program your robot to systematically search the area",
+              "Create detection logic to identify the rescue target",
+              "Implement a 'rescue' sequence once the target is found",
+              "Add time tracking to measure mission efficiency"
+            ],
+            extension: "Add complexity with multiple targets, simulated hazards, or limited battery life requiring charging stations. Create a scoring system based on rescue speed, accuracy, and efficiency."
+          }
+        ]
+      }
+    ]
+  }
+];
+
+const Lesson = () => {
+  const { courseId, lessonId } = useParams();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState("content");
+  const [userCode, setUserCode] = useState<{[key: string]: string}>({});
+  const [codeOutput, setCodeOutput] = useState<{[key: string]: string}>({});
+  const [showSolutions, setShowSolutions] = useState<{[key: string]: boolean}>({});
+
+  const course = courses.find(c => c.id === Number(courseId));
+  const lesson = course?.lessons?.find(l => l.id === Number(lessonId));
+
+  // Initialize user code with templates when lesson changes
+  useEffect(() => {
+    if (lesson?.exercises) {
+      const initialCode: {[key: string]: string} = {};
+      lesson.exercises.forEach((exercise, index) => {
+        if (exercise.codeTemplate) {
+          initialCode[`exercise-${index}`] = exercise.codeTemplate;
+        }
+      });
+      setUserCode(initialCode);
+      setCodeOutput({});
+      setShowSolutions({});
+    }
+  }, [courseId, lessonId, lesson]);
+
+  const handleCodeChange = (exerciseIndex: number, newCode: string) => {
+    setUserCode(prev => ({
+      ...prev,
+      [`exercise-${exerciseIndex}`]: newCode
+    }));
+  };
+
+  const runCode = (exerciseIndex: number) => {
+    const code = userCode[`exercise-${exerciseIndex}`];
+    if (!code) return;
+
+    try {
+      // Capture console.log output
+      const logs: string[] = [];
+      const originalConsoleLog = console.log;
+      console.log = (...args) => {
+        logs.push(args.join(' '));
+      };
+
+      // Execute code in a safe way (this is a simplified example)
+      // In a real implementation, you'd use a sandbox or other safe execution method
+      try {
+        // This is a very simplified example - in a real app you'd need proper sandboxing
+        const OUTPUT = ''; // Will collect output
+        const HIGH = 'HIGH';
+        const LOW = 'LOW';
+        const INPUT = 'INPUT';
+        const OUTPUT_TYPE = 'OUTPUT';
+        
+        // Simple evaluation that captures console logs
+        eval(code);
+        
+        setCodeOutput(prev => ({
+          ...prev,
+          [`exercise-${exerciseIndex}`]: logs.join('\n')
+        }));
+      } catch (error) {
+        setCodeOutput(prev => ({
+          ...prev,
+          [`exercise-${exerciseIndex}`]: `Error: ${error.message}`
+        }));
+      }
+
+      // Restore console.log
+      console.log = originalConsoleLog;
+    } catch (error) {
+      console.error("Failed to run code:", error);
+      toast({
+        title: "Code Execution Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  };
+
+  const toggleSolution = (exerciseIndex: number) => {
+    setShowSolutions(prev => ({
+      ...prev,
+      [`exercise-${exerciseIndex}`]: !prev[`exercise-${exerciseIndex}`]
+    }));
+  };
+
+  const goToNextLesson = () => {
+    const currentLessonIndex = course?.lessons.findIndex(l => l.id === Number(lessonId)) ?? -1;
+    if (course && currentLessonIndex < course.lessons.length - 1) {
+      navigate(`/course/${courseId}/lesson/${course.lessons[currentLessonIndex + 1].id}`);
+      toast({
+        title: "Lesson Changed",
+        description: `Now viewing: ${course.lessons[currentLessonIndex + 1].title}`,
+      });
+    } else if (Number(courseId) < courses.length) {
+      // Move to the first lesson of the next course
+      const nextCourse = courses.find(c => c.id === Number(courseId) + 1);
+      if (nextCourse) {
+        navigate(`/course/${Number(courseId) + 1}/lesson/1`);
+        toast({
+          title: "Course Advanced",
+          description: `Now in: ${nextCourse.title}`,
+        });
+      }
+    } else {
+      toast({
+        title: "Congratulations!",
+        description: "You have completed all lessons.",
+      });
+    }
+  };
+
+  const goToPreviousLesson = () => {
+    const currentLessonIndex = course?.lessons.findIndex(l => l.id === Number(lessonId)) ?? -1;
+    if (currentLessonIndex > 0) {
+      navigate(`/course/${courseId}/lesson/${course.lessons[currentLessonIndex - 1].id}`);
+      toast({
+        title: "Lesson Changed",
+        description: `Now viewing: ${course.lessons[currentLessonIndex - 1].title}`,
+      });
+    } else if (Number(courseId) > 1) {
+      // Move to the last lesson of the previous course
+      const prevCourse = courses.find(c => c.id === Number(courseId) - 1);
+      if (prevCourse && prevCourse.lessons.length > 0) {
+        navigate(`/course/${Number(courseId) - 1}/lesson/${prevCourse.lessons[prevCourse.lessons.length - 1].id}`);
+        toast({
+          title: "Previous Course",
+          description: `Now in: ${prevCourse.title}`,
+        });
+      }
+    }
+  };
+
+  if (!course || !lesson) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
+        <div className="container py-8">
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate(`/course/${courseId}`)}
+            className="mb-6"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Course
+          </Button>
+          <div className="text-center py-16">
+            <h1 className="text-4xl font-bold tracking-tight mb-4">Lesson Not Found</h1>
+            <p className="text-lg text-muted-foreground mb-8">
+              The lesson you're looking for doesn't exist or is still under development.
+            </p>
+            <Button onClick={() => navigate(`/course/${courseId}`)}>
+              Return to Course
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const isLastLesson = course.lessons[course.lessons.length - 1].id === Number(lessonId) && course.id === courses.length;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
+      <div className="container py-8">
+        <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate(`/course/${courseId}`)}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Course
+          </Button>
+
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              onClick={goToPreviousLesson}
+              disabled={Number(lessonId) === 1 && Number(courseId) === 1}
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Previous Lesson
+            </Button>
+            
+            {!isLastLesson && (
+              <Button onClick={goToNextLesson}>
+                Next Lesson
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            )}
+          </div>
+        </div>
+
+        <div className="space-y-8">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight mb-4">
+              {lesson.title}
+            </h1>
+            <Badge variant="outline" className="mb-4">
+              {lesson.duration}
+            </Badge>
+            <p className="text-xl text-muted-foreground">{lesson.description}</p>
+          </div>
+
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid grid-cols-3 mb-6">
+              <TabsTrigger value="content" className="flex items-center gap-2">
+                <BookOpen className="h-4 w-4" /> Lesson Content
+              </TabsTrigger>
+              <TabsTrigger value="exercises" className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4" /> Exercises
+              </TabsTrigger>
+              <TabsTrigger value="activities" className="flex items-center gap-2">
+                <FlaskConical className="h-4 w-4" /> Activities
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="content" className="space-y-4">
+              <Card className="p-6">
+                <div className="prose dark:prose-invert max-w-none">
+                  <p>{lesson.content}</p>
+
+                  {lesson.sections && (
+                    <div className="mt-8 space-y-8">
+                      {lesson.sections.map((section, index) => (
+                        <div key={index} className="mt-8">
+                          <h2 className="text-2xl font-bold mb-4">{section.title}</h2>
+                          <p className="mb-4">{section.content}</p>
+                          
+                          {section.points && (
+                            <ul className="list-disc pl-6 space-y-2">
+                              {section.points.map((point, i) => (
+                                <li key={i} className="text-muted-foreground">{point}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="exercises" className="space-y-4">
+              {lesson.exercises && lesson.exercises.length > 0 ? (
+                lesson.exercises.map((exercise, index) => (
+                  <Card key={index} className="p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <CheckCircle2 className="h-5 w-5 text-primary" />
+                      <h3 className="text-2xl font-bold">{exercise.title}</h3>
+                    </div>
+                    <p className="mb-4 text-muted-foreground">{exercise.description}</p>
+                    
+                    <h4 className="font-semibold text-lg mb-2">Steps:</h4>
+                    <ol className="list-decimal pl-6 space-y-2 mb-4">
+                      {exercise.steps.map((step, i) => (
+                        <li key={i}>{step}</li>
+                      ))}
+                    </ol>
+                    
+                    {exercise.codeTemplate && (
+                      <div className="mt-6 space-y-4">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-semibold text-lg flex items-center gap-2">
+                            <Code className="h-4 w-4" /> Code Editor
+                          </h4>
+                          <Button 
+                            size="sm" 
+                            onClick={() => runCode(index)}
+                            className="flex items-center gap-2"
+                          >
+                            <Play className="h-4 w-4" /> Run Code
+                          </Button>
+                        </div>
+                        
+                        <div className="relative rounded-md border">
+                          <textarea
+                            value={userCode[`exercise-${index}`] || ''}
+                            onChange={(e) => handleCodeChange(index, e.target.value)}
+                            className="font-mono text-sm min-h-[300px] w-full rounded-md border-0 bg-muted/50 p-4 focus:outline-none"
+                            spellCheck="false"
+                          />
+                        </div>
+                        
+                        {codeOutput[`exercise-${index}`] && (
+                          <div className="mt-4">
+                            <h4 className="font-semibold text-lg mb-2">Output:</h4>
+                            <div className="bg-black text-green-400 p-4 rounded-md font-mono text-sm overflow-auto max-h-[200px]">
+                              <pre>{codeOutput[`exercise-${index}`]}</pre>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    
+                    {exercise.hint && (
+                      <div className="bg-muted p-4 rounded-md mt-4">
+                        <p className="font-semibold">Hint:</p>
+                        <p>{exercise.hint}</p>
+                      </div>
+                    )}
+                    
+                    {exercise.expectedOutput && (
+                      <div className="mt-4">
+                        <Button 
+                          variant="outline" 
+                          onClick={() => toggleSolution(index)}
+                          className="w-full"
+                        >
+                          {showSolutions[`exercise-${index}`] ? "Hide Expected Output" : "Show Expected Output"}
+                        </Button>
+                        
+                        {showSolutions[`exercise-${index}`] && (
+                          <div className="mt-2 p-4 bg-muted/50 rounded-md font-mono text-sm">
+                            <pre>{exercise.expectedOutput}</pre>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </Card>
+                ))
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No exercises available for this lesson.</p>
+                </div>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="activities" className="space-y-4">
+              {lesson.activities && lesson.activities.length > 0 ? (
+                lesson.activities.map((activity, index) => (
+                  <Card key={index} className="p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Trophy className="h-5 w-5 text-primary" />
+                      <h3 className="text-2xl font-bold">{activity.title}</h3>
+                    </div>
+                    <p className="mb-4 text-muted-foreground">{activity.description}</p>
+                    
+                    <h4 className="font-semibold text-lg mb-2">Materials Needed:</h4>
+                    <ul className="list-disc pl-6 space-y-1 mb-4">
+                      {activity.materials.map((material, i) => (
+                        <li key={i}>{material}</li>
+                      ))}
+                    </ul>
+                    
+                    <h4 className="font-semibold text-lg mb-2">Procedure:</h4>
+                    <ol className="list-decimal pl-6 space-y-2 mb-4">
+                      {activity.procedure.map((step, i) => (
+                        <li key={i}>{step}</li>
+                      ))}
+                    </ol>
+                    
+                    {activity.extension && (
+                      <div className="bg-accent/30 p-4 rounded-md mt-4">
+                        <p className="font-semibold">Extension Challenge:</p>
+                        <p>{activity.extension}</p>
+                      </div>
+                    )}
+                  </Card>
+                ))
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No activities available for this lesson.</p>
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
+
+          <div className="flex justify-between mt-8">
+            <Button 
+              variant="outline" 
+              onClick={goToPreviousLesson}
+              disabled={Number(lessonId) === 1 && Number(courseId) === 1}
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Previous Lesson
+            </Button>
+            
+            {!isLastLesson && (
+              <Button onClick={goToNextLesson}>
+                Next Lesson
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Lesson;
