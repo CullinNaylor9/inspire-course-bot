@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -112,10 +113,7 @@ Run Forever
 Run Forever
     Digital Write Pin P??? to ???
     Digital Write Pin P??? to ???
-    Wait 2000 milliseconds
-    Digital Write Pin P??? to ???
-    Digital Write Pin P??? to ???
-    Wait 1000 milliseconds`,
+    Wait ??? milliseconds`,
                   solution: `
 Run Forever
     Digital Write Pin P12 to 1
@@ -390,10 +388,69 @@ const CodeEditor = ({ challenge, onSubmit }: {
       hasPin: line.includes('P???')
     }));
 
+    // For the Basic Movement challenge and similar ones, we'll provide building blocks
+    // that the user needs to assemble, rather than just placeholders to fill in
+    const availableBlocks = [
+      ...blocks.filter(b => b.content.includes('???')),
+      // Add additional blocks if needed based on the challenge
+      ...additionalBlocksForChallenge(challenge)
+    ];
+    
     const initialBlocks = blocks.filter(b => !b.content.includes('???'));
-    const availableBlocks = blocks.filter(b => b.content.includes('???'));
 
     return { availableBlocks, initialBlocks };
+  };
+
+  // Function to add specific blocks based on the challenge
+  const additionalBlocksForChallenge = (challenge: { question: string; initialCode: string; solution: string; }) => {
+    // If this is the Basic Movement challenge, add specific blocks for it
+    if (challenge.question.includes("square movement pattern")) {
+      return [
+        {
+          id: `block-extra-1`,
+          content: 'Digital Write Pin P12 to 1',
+          type: 'servo' as BlockType,
+          hasInput: false,
+          hasPin: false
+        },
+        {
+          id: `block-extra-2`,
+          content: 'Digital Write Pin P12 to 0',
+          type: 'servo' as BlockType,
+          hasInput: false,
+          hasPin: false
+        },
+        {
+          id: `block-extra-3`,
+          content: 'Digital Write Pin P14 to 1',
+          type: 'servo' as BlockType,
+          hasInput: false,
+          hasPin: false
+        },
+        {
+          id: `block-extra-4`,
+          content: 'Digital Write Pin P14 to 0',
+          type: 'servo' as BlockType,
+          hasInput: false,
+          hasPin: false
+        },
+        {
+          id: `block-extra-5`,
+          content: 'Wait 1000 milliseconds',
+          type: 'basic' as BlockType,
+          hasInput: false,
+          hasPin: false
+        },
+        {
+          id: `block-extra-6`,
+          content: 'Wait 2000 milliseconds',
+          type: 'basic' as BlockType,
+          hasInput: false,
+          hasPin: false
+        }
+      ];
+    }
+    return [];
   };
 
   const { availableBlocks, initialBlocks } = parseCodeToBlocks(challenge.initialCode);
