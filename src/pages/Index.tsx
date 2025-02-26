@@ -6,6 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Search, Bot, ChevronRight, Zap, BookOpen, Award } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const courses = [
   {
@@ -286,6 +293,16 @@ const features = [
   }
 ];
 
+// Robot showcase images for carousel
+const robotImages = [
+  "https://files.catbox.moe/j7lphq.jpeg",
+  "https://files.catbox.moe/8uhd5i.jpeg",
+  "https://files.catbox.moe/vaye8v.jpeg",
+  "https://files.catbox.moe/3ucm97.jpeg",
+  "https://files.catbox.moe/je2hbj.jpeg",
+  "https://files.catbox.moe/x5y7kv.jpeg"
+];
+
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
@@ -368,6 +385,30 @@ const Index = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Robot Showcase Carousel */}
+      <div className="container mx-auto px-4 py-12">
+        <h2 className="text-3xl font-bold text-center mb-8">Inspire Bot in Action</h2>
+        <Carousel className="w-full max-w-5xl mx-auto">
+          <CarouselContent>
+            {robotImages.map((image, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <div className="p-2">
+                  <div className="overflow-hidden rounded-lg bg-background shadow-md border border-accent/30 aspect-square">
+                    <img 
+                      src={image} 
+                      alt={`Robot demonstration ${index + 1}`} 
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-2" />
+          <CarouselNext className="right-2" />
+        </Carousel>
       </div>
 
       {/* Features Section */}
