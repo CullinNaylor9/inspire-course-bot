@@ -1,3 +1,5 @@
+
+import { AIHelper } from "@/components/AIHelper";
 import { CourseCard } from "@/components/CourseCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -292,6 +294,7 @@ const features = [
   }
 ];
 
+// Robot showcase images for carousel - Updated with the new URLs provided
 const robotImages = [
   "https://pixeldrain.com/api/file/ftoZQ3Rj",
   "https://pixeldrain.com/api/file/7rE9RH6y",
@@ -314,6 +317,7 @@ const Index = () => {
     return matchesSearch && matchesCategory;
   });
 
+  // Set up auto-scrolling for the carousel
   useEffect(() => {
     if (!carouselApi) return;
 
@@ -325,12 +329,14 @@ const Index = () => {
   }, [carouselApi]);
 
   const handleGetStarted = () => {
+    // Navigate to the first course
     if (courses.length > 0) {
       navigate(`/course/1`);
     }
   };
 
   const handleBrowseCourses = () => {
+    // Scroll to the courses section
     const coursesSection = document.getElementById('courses-section');
     if (coursesSection) {
       coursesSection.scrollIntoView({ behavior: 'smooth' });
@@ -338,6 +344,7 @@ const Index = () => {
   };
 
   const handleGetStartedToday = () => {
+    // Navigate to the first beginner course
     const beginnerCourse = courses.find(course => course.category === "Beginner");
     if (beginnerCourse) {
       navigate(`/course/${beginnerCourse.id}`);
@@ -348,6 +355,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
+      {/* Hero Section */}
       <div className="bg-gradient-to-r from-purple-900/30 to-primary/30 py-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
@@ -411,6 +419,7 @@ const Index = () => {
         </div>
       </div>
 
+      {/* Features Section */}
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Why Learn With Us</h2>
@@ -431,6 +440,7 @@ const Index = () => {
         </div>
       </div>
 
+      {/* Course Section */}
       <div id="courses-section" className="container mx-auto px-4 py-8 space-y-8">
         <div className="text-center space-y-4">
           <h2 className="text-3xl font-bold tracking-tight">
@@ -504,6 +514,7 @@ const Index = () => {
         </div>
       </div>
       
+      {/* CTA Section */}
       <div className="bg-primary/10 py-16 mt-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Begin Your Robotics Journey?</h2>
@@ -515,6 +526,8 @@ const Index = () => {
           </Button>
         </div>
       </div>
+      
+      <AIHelper />
     </div>
   );
 };

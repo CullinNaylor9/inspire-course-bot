@@ -59,8 +59,7 @@ const courses = [
           "Forward Movement: Both motors forward",
           "Reverse Movement: Both motors reverse",
           "Left Turn: Right motor forward, left motor stop/reverse",
-          "Right Turn: Left motor forward, right motor stop/reverse",
-          "Interactive exercise: Program your first movement sequence"
+          "Right Turn: Left motor forward, right motor stop/reverse"
         ]
       },
       {
@@ -72,8 +71,7 @@ const courses = [
           "Forward: Left(P12=0, P13=1) + Right(P14=1, P15=0)",
           "Reverse: Left(P12=1, P13=0) + Right(P14=0, P15=1)",
           "Left Turn: Left(P12=1, P13=0) + Right(P14=1, P15=0)",
-          "Right Turn: Left(P12=0, P13=1) + Right(P14=0, P15=1)",
-          "Challenge: Create a dance routine with pin combinations"
+          "Right Turn: Left(P12=0, P13=1) + Right(P14=0, P15=1)"
         ]
       }
     ]
@@ -96,7 +94,7 @@ const courses = [
           "Programming the built-in servo on P0",
           "Adding an external servo on P1",
           "Creating smooth movements with timing",
-          "Activity: Build a robotic arm that waves hello"
+          "Building a grabber mechanism"
         ]
       },
       {
@@ -109,7 +107,7 @@ const courses = [
           "Calculating distance from echo time",
           "Setting up detection thresholds",
           "Implementing obstacle detection algorithms",
-          "Game: Create a 'Hot and Cold' distance detector"
+          "Creating responsive behaviors based on distance"
         ]
       }
     ]
@@ -132,7 +130,7 @@ const courses = [
           "Calibrating for different surfaces",
           "Reading and interpreting sensor values",
           "Creating control loops for line following",
-          "Challenge: Race through a line maze course"
+          "Handling intersections and gaps"
         ]
       },
       {
@@ -145,7 +143,7 @@ const courses = [
           "Color-coded status indicators",
           "Using LEDs for debugging",
           "Creating light patterns for different robot states",
-          "Project: Create a light show synchronized with movements"
+          "Implementing low-light operation modes"
         ]
       }
     ]
@@ -168,7 +166,7 @@ const courses = [
           "Creating precise turning angles (45°, 90°, 180°)",
           "Programming complex patterns (figure-8, spiral, etc.)",
           "Using timing and sequencing for choreographed movements",
-          "Competition: Program your bot to draw shapes with precision"
+          "Calibrating motor outputs for straight lines"
         ]
       },
       {
@@ -181,43 +179,43 @@ const courses = [
           "Implementing wall-following algorithms",
           "Creating decision trees for path selection",
           "Handling different surface types",
-          "Challenge: Navigate a mystery obstacle course blindfolded"
+          "Recovering from difficult positions"
         ]
       }
     ]
   },
   {
     id: 6,
-    title: "Advanced Robotics Project",
-    description: "Apply all your learned skills to build a complete, autonomous robot capable of performing complex missions and adapting to different environments.",
+    title: "Complete Robot Programming",
+    description: "Bring everything together by creating a fully autonomous robot using all sensors, motors, and LED indicators for complex behaviors.",
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800",
     category: "Advanced",
-    duration: "180 min",
+    duration: "120 min",
     lessons: [
       {
         id: 1,
-        title: "Multi-System Integration",
-        duration: "75 min",
-        description: "Combine all robot subsystems into a unified control architecture:",
+        title: "Integrating Multiple Systems",
+        duration: "55 min",
+        description: "Combine all robot components into a cohesive system:",
         points: [
-          "Implementing a state machine for behavior management",
-          "Creating a sensor fusion system for improved environmental awareness",
-          "Developing a prioritization system for conflicting inputs",
-          "Building an event-driven architecture for responsive behavior",
-          "Hackathon: Build a robot assistant that responds to multiple stimuli"
+          "Creating a sensor fusion system",
+          "Building a hierarchical control structure",
+          "Implementing priority-based decision making",
+          "Managing multiple inputs and outputs",
+          "Optimizing code for reliability"
         ]
       },
       {
         id: 2,
-        title: "Advanced Mission Programming",
-        duration: "105 min",
-        description: "Design and implement complex autonomous missions:",
+        title: "Autonomous Mission Programming",
+        duration: "65 min",
+        description: "Program your robot to complete complex missions autonomously:",
         points: [
-          "Creating objective-based mission planning",
-          "Implementing adaptive pathfinding algorithms",
-          "Developing environmental analysis capabilities",
-          "Programming complex decision-making logic",
-          "Final Project: Program a search and rescue mission simulation"
+          "Defining mission objectives and success criteria",
+          "Creating state machines for different behaviors",
+          "Implementing error detection and recovery",
+          "Building in fail-safes and timeouts",
+          "Testing and refining autonomous performance"
         ]
       }
     ]
