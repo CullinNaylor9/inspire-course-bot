@@ -30,6 +30,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   const [palette, setPalette] = useState<CodeBlock[]>(availableBlocks);
   const [blockInputs, setBlockInputs] = useState<Record<string, string[]>>({});
   const [pinInputs, setPinInputs] = useState<Record<string, string[]>>({});
+  const [waitInputs, setWaitInputs] = useState<Record<string, string>>({});
 
   const getBlockStyle = (type: BlockType) => {
     switch (type) {
@@ -66,7 +67,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
         ...palette[result.source.index],
         id: `${palette[result.source.index].id}-${Date.now()}`,
         hasInput: palette[result.source.index].content.includes('???'),
-        hasPin: palette[result.source.index].content.includes('P???'),
+        hasPin: palette[result.source.index].content.includes('P???')
       };
       setWorkspace([...workspace, newBlock]);
     }
@@ -75,12 +76,22 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   const generateCode = () => {
     const code = workspace.map(block => {
       let content = block.content;
+      
+      // Handle wait milliseconds inputs
+      if (content.includes('Wait') && content.includes('milliseconds')) {
+        const waitTime = waitInputs[block.id] || '1000';
+        return `Wait ${waitTime} milliseconds`;
+      }
+      
+      // Handle pin inputs
       if (block.hasPin) {
         const pinCount = (content.match(/P\?\?\?/g) || []).length;
         for (let i = 0; i < pinCount; i++) {
           content = content.replace('P???', `P${pinInputs[block.id]?.[i] || '0'}`);
         }
       }
+      
+      // Handle other inputs
       if (block.hasInput) {
         const inputCount = (content.match(/\?\?\?/g) || []).filter(match => !content.substring(content.indexOf(match) - 1, content.indexOf(match)).includes('P')).length;
         let inputIndex = 0;
@@ -97,6 +108,24 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   };
 
   const renderBlockContent = (block: CodeBlock) => {
+    // Special handling for wait blocks to allow custom milliseconds input
+    if (block.content.includes('Wait') && block.content.includes('milliseconds')) {
+      return (
+        <div className="flex items-center gap-2">
+          <span>Wait</span>
+          <Input
+            type="number"
+            className="w-20 h-8 px-2 py-0 bg-white/90 text-black"
+            placeholder="1000"
+            value={waitInputs[block.id] || ''}
+            onChange={(e) => setWaitInputs({ ...waitInputs, [block.id]: e.target.value })}
+          />
+          <span>milliseconds</span>
+        </div>
+      );
+    }
+    
+    // Handle other blocks with regular pin/input replacement
     const parts = block.content.split(/(\?\?\?|P\?\?\?)/g);
     
     return (

@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -66,9 +67,9 @@ const courses = [
                   initialCode: `
 Run Forever
     Digital Write Pin P??? to ???
-    Wait ??? milliseconds
+    Wait 1000 milliseconds
     Digital Write Pin P??? to ???
-    Wait ??? milliseconds`,
+    Wait 1000 milliseconds`,
                   solution: `
 Run Forever
     Digital Write Pin P0 to 0
@@ -439,140 +440,15 @@ const Lesson = () => {
     if (!detail?.codingChallenge?.solution) return;
 
     // Normalize both strings by removing all whitespace
-    const solution = detail.codingChallenge.solution.replace(/\s+/g, '');
-    const submission = code.replace(/\s+/g, '');
+    const normalizedSolution = detail.codingChallenge.solution.replace(/\s+/g, '');
     
-    console.log("Comparing submission:", submission);
-    console.log("With solution:", solution);
+    // For wait blocks, we need to allow any valid milliseconds value
+    let normalizedSubmission = code.replace(/\s+/g, '');
     
-    if (submission === solution) {
-      toast({
-        title: "Correct!",
-        description: "Your solution matches the expected output. Great job!",
-      });
-      setShowSolution({ ...showSolution, [`${sectionIndex}-${detailIndex}`]: true });
-    } else {
-      toast({
-        title: "Not quite right",
-        description: "Try again! Use the hints if you need help.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const goToNextLesson = () => {
-    const currentLessonIndex = course?.lessons.findIndex(l => l.id === Number(lessonId)) ?? -1;
-    if (course && currentLessonIndex < course.lessons.length - 1) {
-      navigate(`/course/${courseId}/lesson/${course.lessons[currentLessonIndex + 1].id}`);
-    }
-  };
-
-  if (!course || !lesson) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
-        <div className="container py-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate(-1)}
-            className="mb-6"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Course
-          </Button>
-          <h1 className="text-4xl font-bold tracking-tight">Lesson Not Found</h1>
-        </div>
-      </div>
+    // Extract wait values from both the submission and solution for comparison
+    const submissionWaitValues = (code.match(/Wait\s+(\d+)\s+milliseconds/g) || []).map(
+      m => parseInt(m.replace(/Wait\s+(\d+)\s+milliseconds/, '$1'))
     );
-  }
-
-  const isLastLesson = course.lessons[course.lessons.length - 1].id === Number(lessonId);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
-      <div className="container py-8">
-        <div className="flex justify-between items-center mb-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate(`/course/${courseId}`)}
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Course
-          </Button>
-
-          {!isLastLesson && (
-            <Button onClick={goToNextLesson}>
-              Next Lesson
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-          )}
-        </div>
-
-        <div className="space-y-8">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight mb-4">
-              {lesson.title}
-            </h1>
-            <Badge variant="outline">
-              {lesson.duration}
-            </Badge>
-          </div>
-
-          <div className="prose prose-gray dark:prose-invert max-w-none">
-            <p className="text-xl mb-8">{lesson.introduction}</p>
-
-            {lesson.sections?.map((section, sectionIndex) => (
-              <Card key={sectionIndex} className="p-6 mb-8">
-                <h2 className="text-2xl font-bold mb-4">{section.title}</h2>
-                <p className="text-lg mb-6">{section.content}</p>
-
-                {section.details?.map((detail, detailIndex) => (
-                  <div key={detailIndex} className="mb-6">
-                    <h3 className="text-xl font-semibold mb-3">{detail.subtitle}</h3>
-                    <p className="mb-4">{detail.explanation}</p>
-                    
-                    {detail.listItems && (
-                      <ul className="list-disc pl-6 space-y-2 mb-4">
-                        {detail.listItems.map((item, i) => (
-                          <li key={i} className="text-muted-foreground">{item}</li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {detail.codingChallenge && (
-                      <div className="mt-6 bg-accent/20 p-6 rounded-lg">
-                        <CodeEditor 
-                          challenge={detail.codingChallenge}
-                          onSubmit={(code) => handleCodeSubmit(code, sectionIndex, detailIndex)}
-                        />
-                        {showSolution[`${sectionIndex}-${detailIndex}`] && (
-                          <div className="mt-4">
-                            <h4 className="font-semibold mb-2">Solution:</h4>
-                            <div className="bg-black/90 text-white p-4 rounded-md font-mono whitespace-pre">
-                              {detail.codingChallenge.solution}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </Card>
-            ))}
-
-            <div className="mt-8">
-              <h2 className="text-2xl font-bold mb-4">Summary</h2>
-              <p className="text-lg mb-6">{lesson.summary}</p>
-            </div>
-
-            <div className="bg-primary/5 p-6 rounded-lg mt-8">
-              <h2 className="text-xl font-bold mb-4">Practice Exercise</h2>
-              <p className="text-lg">{lesson.practiceExercise}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Lesson;
+    
+    const solutionWaitValues = (detail.codingChallenge.solution.match(/Wait\s+(\d+)\s+milliseconds/g) || []).map(
+      m => parseInt(
