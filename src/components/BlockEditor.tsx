@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Trash2, Plus } from "lucide-react";
+import { ArrowUp, ArrowDown, Trash2, Plus } from "lucide-react";
 
 interface CodeBlock {
   id: string;
@@ -299,47 +299,35 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-move relative group`}
+                          className={`${getBlockStyle(block.type)} p-3 pr-12 rounded-lg text-white cursor-move relative group`}
                         >
                           <div {...provided.dragHandleProps} className="flex-1">
                             {renderBlockContent(block)}
                           </div>
                           
                           {/* Block control buttons */}
-                          <div className="absolute right-0 top-0 bottom-0 flex flex-col justify-center items-center space-y-1 px-2">
-                            {/* Move Up button - circular with arrow */}
+                          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex flex-col gap-1">
                             <button 
                               onClick={() => moveBlockUp(index)} 
-                              className="h-8 w-8 rounded-full flex items-center justify-center bg-white/30 hover:bg-white/50 transition-colors"
+                              className="bg-white/20 hover:bg-white/40 rounded-full p-1 text-white transition-colors"
                               title="Move Up"
                               type="button"
-                              aria-label="Move block up"
                             >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="m18 15-6-6-6 6"/>
-                              </svg>
+                              <ArrowUp size={16} />
                             </button>
-                            
-                            {/* Move Down button - circular with arrow */}
                             <button 
                               onClick={() => moveBlockDown(index)} 
-                              className="h-8 w-8 rounded-full flex items-center justify-center bg-white/30 hover:bg-white/50 transition-colors"
+                              className="bg-white/20 hover:bg-white/40 rounded-full p-1 text-white transition-colors"
                               title="Move Down"
                               type="button"
-                              aria-label="Move block down"
                             >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="m6 9 6 6 6-6"/>
-                              </svg>
+                              <ArrowDown size={16} />
                             </button>
-                            
-                            {/* Delete button - circular with trash icon */}
                             <button 
                               onClick={() => removeBlock(index)} 
-                              className="h-8 w-8 rounded-full flex items-center justify-center bg-white/30 hover:bg-red-400 transition-colors"
-                              title="Delete"
+                              className="bg-white/20 hover:bg-red-500/80 rounded-full p-1 text-white transition-colors"
+                              title="Remove Block"
                               type="button"
-                              aria-label="Delete block"
                             >
                               <Trash2 size={16} />
                             </button>
