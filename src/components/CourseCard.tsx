@@ -18,7 +18,7 @@ export function CourseCard({ id = 1, title, description, image, category, durati
 
   return (
     <Card 
-      className="overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer"
+      className="overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer h-full flex flex-col"
       onClick={() => navigate(`/course/${id}`)}
     >
       <AspectRatio ratio={16 / 9} className="bg-accent">
@@ -29,7 +29,7 @@ export function CourseCard({ id = 1, title, description, image, category, durati
           loading="lazy"
         />
       </AspectRatio>
-      <CardHeader>
+      <CardHeader className="flex-grow">
         <div className="flex items-center gap-2 mb-2">
           <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20">
             {category}
