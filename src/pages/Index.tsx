@@ -298,7 +298,7 @@ const robotImages = [
   "https://pixeldrain.com/api/file/ftoZQ3Rj",
   "https://pixeldrain.com/api/file/7rE9RH6y",
   "https://pixeldrain.com/api/file/Bp7fcBWz",
-  "https://files.catbox.moe/3ucm97.jpeg",
+  "https://pixeldrain.com/api/file/hCtDup1x",
   "https://files.catbox.moe/je2hbj.jpeg",
   "https://files.catbox.moe/x5y7kv.jpeg"
 ];
