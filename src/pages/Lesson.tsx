@@ -751,4 +751,4 @@ Run Forever
         title: "Advanced LED Control",
         duration: "15 min",
         description: "Create complex LED patterns for visual feedback.",
-        introduction: "The LED indicator
+        introduction: "The LED indicator on your Inspire Bot is a versatile tool for providing visual feedback. In this lesson, you'll learn how to create complex blinking patterns and use the LED for
