@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Course from "./pages/Course";
 import Lesson from "./pages/Lesson";
 import NotFound from "./pages/NotFound";
+import { AIHelper } from "./components/AIHelper";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <RouterProvider router={router} />
+      <AIHelper /> {/* AI Helper is now rendered at the app level */}
       <Toaster />
       <Sonner />
     </TooltipProvider>
