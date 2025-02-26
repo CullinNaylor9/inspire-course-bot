@@ -762,6 +762,439 @@ Run Forever
         practiceExercise: "Design and create your own integrated robotics project that combines at least two sensors and two servo motors. Think about a real-world problem that your robot could solve, such as sorting objects, navigating a maze, or interacting with humans. Plan the behavior, implement the code, and test your creation to see how it performs."
       }
     ]
+  },
+  {
+    id: 4,
+    title: "Line Following and LED Control",
+    lessons: [
+      {
+        id: 1,
+        title: "Line Detection Fundamentals",
+        duration: "20 min",
+        description: "Master line following techniques using the P3 sensor for autonomous robot navigation.",
+        introduction: "In this lesson, we'll explore how to use the line following sensor (P3) to create robots that can autonomously follow paths. Line following is one of the most common and useful robotics applications, allowing robots to navigate predefined routes without human intervention.",
+        sections: [
+          {
+            title: "Understanding Line Sensors",
+            content: "Learn how line sensors work and how to interpret their readings:",
+            details: [
+              {
+                subtitle: "How Line Sensors Work",
+                explanation: "Line following sensors use infrared light to detect the contrast between different surfaces. They typically consist of an infrared LED and a photodetector. The sensor emits infrared light, which bounces off the surface beneath it. Dark surfaces (like black lines) absorb more light, while light surfaces reflect more light back to the photodetector.",
+                listItems: [
+                  "P3: Line following sensor input",
+                  "Digital reading: 0 (line detected) or 1 (no line detected)",
+                  "Analog reading: Range of values indicating reflected light intensity",
+                  "Lower values indicate darker surfaces (lines)",
+                  "Higher values indicate lighter surfaces (background)"
+                ]
+              },
+              {
+                subtitle: "Calibrating Line Sensors",
+                explanation: "Before using line sensors effectively, it's important to calibrate them for the specific surface and lighting conditions you're working with. This ensures reliable line detection regardless of environmental variables.",
+                codingChallenge: {
+                  question: "Create a program to calibrate and test the line sensor. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    If Digital Read Pin P??? == ???
+        Digital Write Pin P??? to ???
+    Else
+        Digital Write Pin P??? to ???`,
+                  solution: `
+Run Forever
+    If Digital Read Pin P3 == 0
+        Digital Write Pin P16 to 1
+    Else
+        Digital Write Pin P16 to 0`,
+                  hints: [
+                    "The line sensor is connected to pin P3",
+                    "When a line is detected, the sensor typically returns 0",
+                    "Use the LED on P16 to provide visual feedback",
+                    "Turn the LED on when a line is detected, off when no line is detected"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            title: "Basic Line Following",
+            content: "Create a simple line following robot using the line sensor:",
+            details: [
+              {
+                subtitle: "Single Sensor Line Following",
+                explanation: "With a single line sensor, we can implement a basic line following behavior using a technique called 'bang-bang control'. This involves continuously checking if the sensor detects a line and adjusting the robot's direction accordingly.",
+                codingChallenge: {
+                  question: "Create a basic line following program using a single sensor. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    If Digital Read Pin P??? == ???
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+    Else
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???`,
+                  solution: `
+Run Forever
+    If Digital Read Pin P3 == 0
+        Digital Write Pin P12 to 0
+        Digital Write Pin P14 to 1
+    Else
+        Digital Write Pin P12 to 1
+        Digital Write Pin P14 to 0`,
+                  hints: [
+                    "When the line is detected (P3 reads 0), turn left (P12=0, P14=1)",
+                    "When no line is detected (P3 reads 1), turn right (P12=1, P14=0)",
+                    "This creates a zig-zag movement that keeps the robot centered on the line",
+                    "Make sure both motors are enabled (P13=1, P15=1) for movement"
+                  ]
+                }
+              },
+              {
+                subtitle: "Handling Line Intersections",
+                explanation: "When following lines, your robot will eventually encounter intersections, turns, or gaps in the line. Programming your robot to handle these scenarios requires additional logic and sometimes memory of previous states.",
+                codingChallenge: {
+                  question: "Create a program to handle a T-intersection by always turning right. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    If Digital Read Pin P??? == ??? for ??? milliseconds
+        # Intersection detected - turn right
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+        Wait 500 milliseconds
+    Else
+        # Normal line following
+        If Digital Read Pin P??? == ???
+            Digital Write Pin P??? to ???
+            Digital Write Pin P??? to ???
+        Else
+            Digital Write Pin P??? to ???
+            Digital Write Pin P??? to ???`,
+                  solution: `
+Run Forever
+    If Digital Read Pin P3 == 0 for 1000 milliseconds
+        # Intersection detected - turn right
+        Digital Write Pin P12 to 1
+        Digital Write Pin P14 to 0
+        Wait 500 milliseconds
+    Else
+        # Normal line following
+        If Digital Read Pin P3 == 0
+            Digital Write Pin P12 to 0
+            Digital Write Pin P14 to 1
+        Else
+            Digital Write Pin P12 to 1
+            Digital Write Pin P14 to 0`,
+                  hints: [
+                    "At a T-intersection, the line sensor will detect a line for a longer period",
+                    "Use a time threshold (e.g., 1000ms) to identify an intersection",
+                    "When an intersection is detected, make a deliberate right turn",
+                    "Then resume normal line following"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            title: "Advanced Line Following Techniques",
+            content: "Implement more sophisticated line following behaviors:",
+            details: [
+              {
+                subtitle: "Speed Control during Line Following",
+                explanation: "To create smoother line following behavior, you can adjust the speed of your robot based on how far it is from the line. This proportional control approach reduces the zig-zag motion and creates more efficient line following.",
+                listItems: [
+                  "Slow down when approaching sharp turns",
+                  "Speed up on straight sections",
+                  "Use the analog reading value to determine distance from line center",
+                  "Adjust motor speeds proportionally based on this distance"
+                ]
+              },
+              {
+                subtitle: "Multi-Sensor Line Following",
+                explanation: "For more advanced line following, multiple sensors can be used to provide more information about the line position. While the Inspire Bot has one built-in line sensor, understanding multi-sensor approaches will help you design more sophisticated robots in the future.",
+                listItems: [
+                  "Two sensors: Detect line edge position more accurately",
+                  "Three sensors: Detect line center and both edges",
+                  "Array of sensors: Precise line position and intersection detection",
+                  "PID control: Advanced algorithm for smooth line following"
+                ]
+              }
+            ]
+          }
+        ],
+        summary: "In this lesson, you've learned how line following sensors work and how to program your robot to follow lines autonomously. You've created basic line following algorithms and explored how to handle special cases like intersections. These skills enable your robot to navigate along predefined paths, which is useful for a wide range of applications from warehouse automation to competition robots.",
+        practiceExercise: "Try creating a more complex line following course with turns, intersections, and different line widths. Program your robot to successfully navigate the entire course. Can you modify your algorithm to handle 90-degree turns smoothly? What about obstacles on the line? Challenge yourself to create the most robust line following behavior possible."
+      },
+      {
+        id: 2,
+        title: "LED Signaling Systems",
+        duration: "25 min",
+        description: "Implement visual feedback through LED control for robot status indication and night operation.",
+        introduction: "In this lesson, we'll explore how to use the onboard LED (P16) to create visual signaling systems for your robot. LEDs are simple but powerful tools for communicating the robot's status, actions, and decisions, both to human observers and to other robots or systems.",
+        sections: [
+          {
+            title: "LED Control Basics",
+            content: "Understanding how to control the onboard LED for basic signaling:",
+            details: [
+              {
+                subtitle: "Digital LED Control",
+                explanation: "The onboard LED on pin P16 can be turned on or off using digital write. This simple control allows you to create basic visual signals.",
+                codingChallenge: {
+                  question: "Create a simple blinking pattern with the LED. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    Digital Write Pin P??? to ???
+    Wait ??? milliseconds
+    Digital Write Pin P??? to ???
+    Wait ??? milliseconds`,
+                  solution: `
+Run Forever
+    Digital Write Pin P16 to 1
+    Wait 500 milliseconds
+    Digital Write Pin P16 to 0
+    Wait 500 milliseconds`,
+                  hints: [
+                    "The LED is connected to pin P16",
+                    "1 turns the LED on, 0 turns it off",
+                    "500 milliseconds (half a second) creates a visible blink",
+                    "Adjust the timing to change the blink speed"
+                  ]
+                }
+              },
+              {
+                subtitle: "Creating Morse Code Signals",
+                explanation: "By controlling the timing of LED pulses, you can create more complex signaling patterns, including Morse code. This allows your robot to communicate specific messages visually.",
+                codingChallenge: {
+                  question: "Program the LED to flash SOS in Morse code (... --- ...). Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    # S (...)
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    
+    Wait 400 milliseconds
+    
+    # O (---)
+    Digital Write Pin P??? to ???
+    Wait 600 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 600 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 600 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    
+    Wait 400 milliseconds
+    
+    # S (...)
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    
+    Wait 1000 milliseconds`,
+                  solution: `
+Run Forever
+    # S (...)
+    Digital Write Pin P16 to 1
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 0
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 1
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 0
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 1
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 0
+    Wait 200 milliseconds
+    
+    Wait 400 milliseconds
+    
+    # O (---)
+    Digital Write Pin P16 to 1
+    Wait 600 milliseconds
+    Digital Write Pin P16 to 0
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 1
+    Wait 600 milliseconds
+    Digital Write Pin P16 to 0
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 1
+    Wait 600 milliseconds
+    Digital Write Pin P16 to 0
+    Wait 200 milliseconds
+    
+    Wait 400 milliseconds
+    
+    # S (...)
+    Digital Write Pin P16 to 1
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 0
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 1
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 0
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 1
+    Wait 200 milliseconds
+    Digital Write Pin P16 to 0
+    Wait 200 milliseconds
+    
+    Wait 1000 milliseconds`,
+                  hints: [
+                    "In Morse code, a dot is a short pulse (200ms on)",
+                    "A dash is a long pulse (600ms on)",
+                    "Spaces between dots/dashes within a letter is short (200ms off)",
+                    "Spaces between letters are longer (400ms off)",
+                    "Spaces between words are even longer (1000ms off)"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            title: "Status Indicators",
+            content: "Using the LED to communicate the robot's status and behavior:",
+            details: [
+              {
+                subtitle: "Robot State Signaling",
+                explanation: "By using different blinking patterns, you can create a visual language that communicates what your robot is doing or experiencing. This is especially useful for debugging and monitoring autonomous behaviors.",
+                codingChallenge: {
+                  question: "Create a program that signals different robot states with the LED. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    If Distance < ???
+        # Obstacle detected - rapid blinking
+        Digital Write Pin P??? to ???
+        Wait 100 milliseconds
+        Digital Write Pin P??? to ???
+        Wait 100 milliseconds
+    Else If Digital Read Pin P??? == ???
+        # Line detected - solid on
+        Digital Write Pin P??? to ???
+    Else
+        # Normal operation - slow pulse
+        Digital Write Pin P??? to ???
+        Wait 1000 milliseconds
+        Digital Write Pin P??? to ???
+        Wait 1000 milliseconds`,
+                  solution: `
+Run Forever
+    If Distance < 15
+        # Obstacle detected - rapid blinking
+        Digital Write Pin P16 to 1
+        Wait 100 milliseconds
+        Digital Write Pin P16 to 0
+        Wait 100 milliseconds
+    Else If Digital Read Pin P3 == 0
+        # Line detected - solid on
+        Digital Write Pin P16 to 1
+    Else
+        # Normal operation - slow pulse
+        Digital Write Pin P16 to 1
+        Wait 1000 milliseconds
+        Digital Write Pin P16 to 0
+        Wait 1000 milliseconds`,
+                  hints: [
+                    "Use a rapid blink (100ms intervals) for urgent states like obstacle detection",
+                    "Use solid on for stable states like successful line detection",
+                    "Use slow pulses (1000ms intervals) for normal operation",
+                    "This creates a visual language of robot states"
+                  ]
+                }
+              },
+              {
+                subtitle: "Battery Level Indication",
+                explanation: "One practical application of LED signaling is to indicate the robot's battery level. While the Inspire Bot doesn't directly provide battery level readings, you can implement this concept by tracking runtime or using external sensors.",
+                listItems: [
+                  "Solid on: Full battery",
+                  "Slow blinking: Medium battery",
+                  "Rapid blinking: Low battery",
+                  "Very brief flash: Critical battery level"
+                ]
+              }
+            ]
+          },
+          {
+            title: "Advanced LED Applications",
+            content: "Explore more sophisticated uses of LED signaling:",
+            details: [
+              {
+                subtitle: "Night Operation Mode",
+                explanation: "The LED can be used to illuminate the robot's path in low-light conditions. This is particularly useful for line following at night or in dark environments.",
+                codingChallenge: {
+                  question: "Create a program for night operation mode that uses the LED for illumination. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    # Turn on LED for illumination
+    Digital Write Pin P??? to ???
+    
+    # Read the line sensor
+    If Digital Read Pin P??? == ???
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+    Else
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???`,
+                  solution: `
+Run Forever
+    # Turn on LED for illumination
+    Digital Write Pin P16 to 1
+    
+    # Read the line sensor
+    If Digital Read Pin P3 == 0
+        Digital Write Pin P12 to 0
+        Digital Write Pin P14 to 1
+    Else
+        Digital Write Pin P12 to 1
+        Digital Write Pin P14 to 0`,
+                  hints: [
+                    "Keep the LED on continuously to illuminate the path",
+                    "Continue to perform normal line following operations",
+                    "The LED light will help the line sensor detect the line in low light",
+                    "This allows the robot to operate reliably in dark environments"
+                  ]
+                }
+              },
+              {
+                subtitle: "Communication with Other Robots",
+                explanation: "Multiple robots can use their LEDs to communicate with each other. By using a light sensor on one robot to detect the LED signals from another, you can create simple robot-to-robot communication.",
+                listItems: [
+                  "Simple signaling: Presence detection, collision avoidance",
+                  "Coordinated behaviors: Follow-the-leader, formation control",
+                  "Data transmission: Slow but reliable in environments where radio may not work",
+                  "Swarm behaviors: Emergent patterns from simple visual communication"
+                ]
+              }
+            ]
+          }
+        ],
+        summary: "In this lesson, you've learned how to use the onboard LED for visual signaling and communication. You've created different blinking patterns to communicate the robot's state, implemented Morse code for complex messaging, and explored applications like night operation mode. These skills enable your robot to provide visual feedback about its operation and communicate with human operators or other robots.",
+        practiceExercise: "Design and implement a comprehensive LED signaling system for your robot that communicates at least five different states or messages. For example, create distinct patterns for: startup, line following, obstacle detected, turning left, turning right, and low battery. Test your system to ensure that each pattern is clearly distinguishable from the others."
+      }
+    ]
   }
 ];
 
