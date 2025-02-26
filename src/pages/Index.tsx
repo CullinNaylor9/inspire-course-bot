@@ -1,4 +1,3 @@
-
 import { AIHelper } from "@/components/AIHelper";
 import { CourseCard } from "@/components/CourseCard";
 import { Input } from "@/components/ui/input";
@@ -393,18 +392,20 @@ const Index = () => {
                   className="w-full h-full" 
                   setApi={setCarouselApi}
                   opts={{
-                    align: "start",
+                    align: "center",
                     loop: true,
                   }}
                 >
                   <CarouselContent className="h-full">
                     {robotImages.map((image, index) => (
-                      <CarouselItem key={index} className="h-full w-full">
-                        <img 
-                          src={image} 
-                          alt={`Inspire Bot ${index + 1}`} 
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                        />
+                      <CarouselItem key={index} className="basis-full h-full pl-0">
+                        <div className="w-full h-full">
+                          <img 
+                            src={image} 
+                            alt={`Inspire Bot ${index + 1}`} 
+                            className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
                       </CarouselItem>
                     ))}
                   </CarouselContent>
