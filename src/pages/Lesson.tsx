@@ -47,9 +47,9 @@ const courses = [
                   "P8: Ultrasonic Sensor (Echo)",
                   "P9-P11: General Purpose I/O",
                   "P12: Left Motor Direction Control (0=Backward, 1=Forward)",
-                  "P13: Left Motor Speed Control (0=Stop, 1=Run)",
+                  "P13: Left Motor Enable Control (0=Stop, 1=Run)",
                   "P14: Right Motor Direction Control (0=Backward, 1=Forward)", 
-                  "P15: Right Motor Speed Control (0=Stop, 1=Run)",
+                  "P15: Right Motor Enable Control (0=Stop, 1=Run)",
                   "P16: Onboard LED Control (0=Off, 1=On)"
                 ]
               }
@@ -311,28 +311,30 @@ Run Forever
       },
       {
         id: 2,
-        title: "Speed Control",
+        title: "Advanced Movement Patterns",
         duration: "30 min",
-        description: "Learn to control robot speed and create smooth movements.",
-        introduction: "In this lesson, we'll explore how to control the speed of your robot's motors for precise movements.",
+        description: "Learn to control robot movement and create complex patterns.",
+        introduction: "In this lesson, we'll explore how to create advanced movement patterns with your robot by precisely controlling the motors.",
         sections: [
           {
-            title: "Variable Speed Control",
-            content: "Learn to adjust motor speeds for smooth movement:",
+            title: "Complex Movement Patterns",
+            content: "Learn to create more sophisticated movement patterns with your robot:",
             details: [
               {
-                subtitle: "Digital Pin States",
-                explanation: "Remember that each motor has a direction pin and an enable pin:",
+                subtitle: "Pattern Fundamentals",
+                explanation: "Creating complex patterns requires understanding how to sequence basic movements:",
                 listItems: [
-                  "Direction Pins (P12, P14): Control forward/backward (1=forward, 0=backward)",
-                  "Enable Pins (P13, P15): Control whether the motor runs (1=run, 0=stop)"
+                  "Sequential commands: Execute one movement after another",
+                  "Loops: Repeat movement patterns multiple times",
+                  "Timed movements: Control duration of each movement",
+                  "Direction changes: Smoothly transition between movements"
                 ]
               },
               {
-                subtitle: "Speed Adjustment",
-                explanation: "Control the speed of each motor independently for precise movements.",
+                subtitle: "Figure-Eight Pattern",
+                explanation: "A figure-eight combines alternating left and right turns in a continuous pattern.",
                 codingChallenge: {
-                  question: "Create a smooth turning pattern. Set the appropriate speed values:",
+                  question: "Create a figure-eight pattern. Fill in the missing values:",
                   initialCode: `
 Run Forever
     Digital Write Pin P??? to ???
@@ -343,267 +345,410 @@ Run Forever
     Wait ??? milliseconds`,
                   solution: `
 Run Forever
-    Digital Write Pin P12 to 1
+    Digital Write Pin P12 to 0
     Digital Write Pin P14 to 1
     Wait 2000 milliseconds
     Digital Write Pin P12 to 1
     Digital Write Pin P14 to 0
     Wait 2000 milliseconds`,
                   hints: [
-                    "Digital write pins can be set to 0 or 1",
-                    "Different pin settings create different movement patterns",
-                    "Longer wait times create wider turns"
+                    "For a figure-eight, alternate between left and right turns",
+                    "Longer wait times create wider turns",
+                    "Both motors need to be enabled (P13=1, P15=1)"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            title: "Precision Movement",
+            content: "Learn techniques for precise robot movement control:",
+            details: [
+              {
+                subtitle: "Timing Control",
+                explanation: "Precise timing allows for more accurate movements and patterns:",
+                listItems: [
+                  "Short waits (500ms) for tight turns",
+                  "Medium waits (1000-1500ms) for standard turns",
+                  "Long waits (2000ms+) for wide, sweeping turns",
+                  "Consistent timing for repeatable patterns"
+                ]
+              },
+              {
+                subtitle: "Pattern Programming",
+                explanation: "Combine multiple movement commands to create a dance pattern.",
+                codingChallenge: {
+                  question: "Create a simple dance pattern for your robot:",
+                  initialCode: `
+Run Forever
+    Digital Write Pin P??? to ???
+    Digital Write Pin P??? to ???
+    Wait ??? milliseconds
+    Digital Write Pin P??? to ???
+    Digital Write Pin P??? to ???
+    Wait ??? milliseconds
+    Digital Write Pin P??? to ???
+    Digital Write Pin P??? to ???
+    Wait ??? milliseconds`,
+                  solution: `
+Run Forever
+    Digital Write Pin P12 to 1
+    Digital Write Pin P14 to 1
+    Wait 1000 milliseconds
+    Digital Write Pin P12 to 0
+    Digital Write Pin P14 to 0
+    Wait 1000 milliseconds
+    Digital Write Pin P12 to 1
+    Digital Write Pin P14 to 0
+    Wait 2000 milliseconds`,
+                  hints: [
+                    "Include forward, backward, and turning movements",
+                    "Vary the wait times for different effects",
+                    "A good dance combines different movements in a pattern"
                   ]
                 }
               }
             ]
           }
         ],
-        summary: "You now understand how to control motor pins for precise movement control.",
-        practiceExercise: "Experiment with different pin combinations to create a smooth circular pattern."
+        summary: "You've learned advanced techniques for creating complex movement patterns with your robot. These skills will allow you to program sophisticated behaviors and routines.",
+        practiceExercise: "Try creating your own unique robot dance routine by combining different movements with varying wait times."
       }
     ]
-  }
-];
-
-const CodeEditor = ({ challenge, onSubmit }: { 
-  challenge: { 
-    question: string; 
-    initialCode: string; 
-    solution: string; 
-    hints?: string[];
-  }; 
-  onSubmit: (code: string) => void; 
-}) => {
-  const [currentHint, setCurrentHint] = useState(0);
-  const { toast } = useToast();
-
-  const parseCodeToBlocks = (code: string): { availableBlocks: any[], initialBlocks: any[] } => {
-    const lines = code.trim().split('\n').filter(line => line.trim() !== '');
-    
-    const blocks = lines.map((line, index) => ({
-      id: `block-${index}`,
-      content: line.trim(),
-      type: line.includes('Wait') ? 'basic' : 
-            line.includes('Function') || line.includes('Run Forever') || line.includes('Repeat') || line.includes('If') ? 'control' :
-            line.includes('Motor') ? 'movement' : 'servo',
-      hasInput: line.includes('???'),
-      hasPin: line.includes('P???')
-    }));
-
-    const initialBlocks = blocks.filter(b => !b.content.includes('???'));
-    const availableBlocks = blocks.filter(b => b.content.includes('???'));
-
-    return { availableBlocks, initialBlocks };
-  };
-
-  const { availableBlocks, initialBlocks } = parseCodeToBlocks(challenge.initialCode);
-
-  const showHint = () => {
-    if (challenge.hints && currentHint < challenge.hints.length) {
-      toast({
-        title: "Hint",
-        description: challenge.hints[currentHint],
-      });
-      setCurrentHint(prev => prev + 1);
-    }
-  };
-
-  return (
-    <div className="space-y-4">
-      <p className="text-lg font-medium">{challenge.question}</p>
-      <BlockEditor
-        initialBlocks={initialBlocks}
-        availableBlocks={availableBlocks}
-        onSubmit={onSubmit}
-      />
-      {challenge.hints && currentHint < challenge.hints.length && (
-        <Button variant="outline" onClick={showHint}>
-          Get Hint
-        </Button>
-      )}
-    </div>
-  );
-};
-
-const Lesson = () => {
-  const { courseId, lessonId } = useParams();
-  const navigate = useNavigate();
-  const [showSolution, setShowSolution] = useState<Record<string, boolean>>({});
-  const { toast } = useToast();
-
-  const course = courses.find(c => c.id === Number(courseId));
-  const lesson = course?.lessons.find(l => l.id === Number(lessonId));
-
-  const handleCodeSubmit = (code: string, sectionIndex: number, detailIndex: number) => {
-    const detail = lesson?.sections[sectionIndex].details[detailIndex];
-    if (!detail?.codingChallenge?.solution) return;
-
-    // Normalize both strings by removing all whitespace
-    const normalizedSolution = detail.codingChallenge.solution.replace(/\s+/g, '');
-    
-    // For wait blocks, we need to allow any valid milliseconds value
-    let normalizedSubmission = code.replace(/\s+/g, '');
-    
-    // Extract wait values from both the submission and solution for comparison
-    const submissionWaitValues = (code.match(/Wait\s+(\d+)\s+milliseconds/g) || []).map(
-      m => parseInt(m.replace(/Wait\s+(\d+)\s+milliseconds/, '$1'))
-    );
-    
-    const solutionWaitValues = (detail.codingChallenge.solution.match(/Wait\s+(\d+)\s+milliseconds/g) || []).map(
-      m => parseInt(m.replace(/Wait\s+(\d+)\s+milliseconds/, '$1'))
-    );
-    
-    // Replace wait values in normalized strings for flexible comparison
-    let normalizedSolutionForComparison = normalizedSolution;
-    let normalizedSubmissionForComparison = normalizedSubmission;
-    
-    // Allow any wait time values to match
-    if (submissionWaitValues.length === solutionWaitValues.length && submissionWaitValues.length > 0) {
-      // Replace all wait times with a fixed placeholder for comparison
-      solutionWaitValues.forEach((_, index) => {
-        normalizedSolutionForComparison = normalizedSolutionForComparison.replace(
-          new RegExp(`Wait${solutionWaitValues[index]}milliseconds`), 
-          'WaitXXXmilliseconds'
-        );
-        normalizedSubmissionForComparison = normalizedSubmissionForComparison.replace(
-          new RegExp(`Wait${submissionWaitValues[index]}milliseconds`), 
-          'WaitXXXmilliseconds'
-        );
-      });
-    }
-
-    console.log("Comparing submission:", normalizedSubmissionForComparison);
-    console.log("With solution:", normalizedSolutionForComparison);
-    
-    if (normalizedSubmissionForComparison === normalizedSolutionForComparison) {
-      toast({
-        title: "Correct!",
-        description: "Your solution matches the expected output. Great job!",
-      });
-      setShowSolution({ ...showSolution, [`${sectionIndex}-${detailIndex}`]: true });
-    } else {
-      toast({
-        title: "Not quite right",
-        description: "Try again! Use the hints if you need help.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const goToNextLesson = () => {
-    const currentLessonIndex = course?.lessons.findIndex(l => l.id === Number(lessonId)) ?? -1;
-    if (course && currentLessonIndex < course.lessons.length - 1) {
-      navigate(`/course/${courseId}/lesson/${course.lessons[currentLessonIndex + 1].id}`);
-    }
-  };
-
-  if (!course || !lesson) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
-        <div className="container py-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate(-1)}
-            className="mb-6"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Course
-          </Button>
-          <h1 className="text-4xl font-bold tracking-tight">Lesson Not Found</h1>
-        </div>
-      </div>
-    );
-  }
-
-  const isLastLesson = course.lessons[course.lessons.length - 1].id === Number(lessonId);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
-      <div className="container py-8">
-        <div className="flex justify-between items-center mb-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate("/")}
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Courses
-          </Button>
-
-          {!isLastLesson && (
-            <Button onClick={goToNextLesson}>
-              Next Lesson
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-          )}
-        </div>
-
-        <div className="space-y-8">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight mb-4">
-              {lesson.title}
-            </h1>
-            <Badge variant="outline">
-              {lesson.duration}
-            </Badge>
-          </div>
-
-          <div className="prose prose-gray dark:prose-invert max-w-none">
-            <p className="text-xl mb-8">{lesson.introduction}</p>
-
-            {lesson.sections?.map((section, sectionIndex) => (
-              <Card key={sectionIndex} className="p-6 mb-8">
-                <h2 className="text-2xl font-bold mb-4">{section.title}</h2>
-                <p className="text-lg mb-6">{section.content}</p>
-
-                {section.details?.map((detail, detailIndex) => (
-                  <div key={detailIndex} className="mb-6">
-                    <h3 className="text-xl font-semibold mb-3">{detail.subtitle}</h3>
-                    <p className="mb-4">{detail.explanation}</p>
-                    
-                    {detail.listItems && (
-                      <ul className="list-disc pl-6 space-y-2 mb-4">
-                        {detail.listItems.map((item, i) => (
-                          <li key={i} className="text-muted-foreground">{item}</li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {detail.codingChallenge && (
-                      <div className="mt-6 bg-accent/20 p-6 rounded-lg">
-                        <CodeEditor 
-                          challenge={detail.codingChallenge}
-                          onSubmit={(code) => handleCodeSubmit(code, sectionIndex, detailIndex)}
-                        />
-                        {showSolution[`${sectionIndex}-${detailIndex}`] && (
-                          <div className="mt-4">
-                            <h4 className="font-semibold mb-2">Solution:</h4>
-                            <div className="bg-black/90 text-white p-4 rounded-md font-mono whitespace-pre">
-                              {detail.codingChallenge.solution}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </Card>
-            ))}
-
-            <div className="mt-8">
-              <h2 className="text-2xl font-bold mb-4">Summary</h2>
-              <p className="text-lg mb-6">{lesson.summary}</p>
-            </div>
-
-            <div className="bg-primary/5 p-6 rounded-lg mt-8">
-              <h2 className="text-xl font-bold mb-4">Practice Exercise</h2>
-              <p className="text-lg">{lesson.practiceExercise}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Lesson;
+  },
+  {
+    id: 3,
+    title: "Servo and Sensor Integration",
+    lessons: [
+      {
+        id: 1,
+        title: "Servo Control Basics",
+        duration: "20 min",
+        description: "Learn how to control servo motors for precise positioning.",
+        introduction: "Servo motors are essential components in robotics that allow for precise angular positioning. In this lesson, you'll learn how to control servos to create articulated movements for your robot.",
+        sections: [
+          {
+            title: "Servo Fundamentals",
+            content: "Understanding how servo motors work and how to control them:",
+            details: [
+              {
+                subtitle: "Servo Pins",
+                explanation: "Your Inspire Bot has two pins dedicated to servo control:",
+                listItems: [
+                  "P0: Built-in Servo Motor (0-180 degrees)",
+                  "P1: External Servo Connection (0-180 degrees)",
+                  "Both servos require digital signal input",
+                  "The value sent determines the angle (0-180)"
+                ]
+              },
+              {
+                subtitle: "Basic Servo Control",
+                explanation: "Controlling a servo is as simple as writing a value between 0 and 180 to the appropriate pin.",
+                codingChallenge: {
+                  question: "Program the main servo to move to specific positions. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    Digital Write Pin P??? to ???
+    Wait 1000 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 1000 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 1000 milliseconds`,
+                  solution: `
+Run Forever
+    Digital Write Pin P0 to 0
+    Wait 1000 milliseconds
+    Digital Write Pin P0 to 90
+    Wait 1000 milliseconds
+    Digital Write Pin P0 to 180
+    Wait 1000 milliseconds`,
+                  hints: [
+                    "The main servo is connected to pin P0",
+                    "Use 0 for minimum position (far left)",
+                    "Use 90 for center position",
+                    "Use 180 for maximum position (far right)"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            title: "Smooth Servo Movement",
+            content: "Create fluid, natural-looking servo movements:",
+            details: [
+              {
+                subtitle: "Incremental Movement",
+                explanation: "Moving servos in small increments creates smoother motion:",
+                listItems: [
+                  "Small changes (5-15 degrees) appear more natural",
+                  "Add small waits between movements (100-200ms)",
+                  "Consistent timing helps maintain smooth operation",
+                  "Sequence of small movements provides better control"
+                ]
+              },
+              {
+                subtitle: "Sweep Pattern",
+                explanation: "Create a smooth scanning movement with the servo.",
+                codingChallenge: {
+                  question: "Program a smooth sweep pattern for the servo:",
+                  initialCode: `
+Run Forever
+    For angle from ??? to ??? in steps of ???
+        Digital Write Pin P??? to angle
+        Wait ??? milliseconds
+    For angle from ??? to ??? in steps of ???
+        Digital Write Pin P??? to angle
+        Wait ??? milliseconds`,
+                  solution: `
+Run Forever
+    For angle from 0 to 180 in steps of 10
+        Digital Write Pin P0 to angle
+        Wait 100 milliseconds
+    For angle from 180 to 0 in steps of 10
+        Digital Write Pin P0 to angle
+        Wait 100 milliseconds`,
+                  hints: [
+                    "Start at 0 degrees and go to 180 degrees",
+                    "Use small steps (5-15 degrees) for smooth movement",
+                    "Use short waits (50-150ms) between steps",
+                    "Remember to sweep back to the starting position"
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        summary: "You've learned how to control servo motors on your Inspire Bot, from basic positioning to smooth sweeping motions. These skills will allow you to create articulated robot arms, sensor platforms, and other mechanisms requiring precise angular control.",
+        practiceExercise: "Try creating a 'nodding' motion with the servo by oscillating between 45 and 135 degrees. Can you make it look natural by using small incremental steps?"
+      },
+      {
+        id: 2,
+        title: "Ultrasonic Sensing",
+        duration: "25 min",
+        description: "Master ultrasonic sensor integration for distance detection.",
+        introduction: "Ultrasonic sensors allow your robot to 'see' by detecting objects and measuring distances. In this lesson, you'll learn how to use the ultrasonic sensor to create smart, responsive behaviors.",
+        sections: [
+          {
+            title: "Ultrasonic Sensor Basics",
+            content: "Understanding how ultrasonic sensors work and how to read data from them:",
+            details: [
+              {
+                subtitle: "Sensor Pins and Function",
+                explanation: "Your robot's ultrasonic sensor uses two pins:",
+                listItems: [
+                  "P2: Trigger Pin (sends out sound pulse)",
+                  "P8: Echo Pin (receives return pulse)",
+                  "The sensor measures distance by timing sound reflections",
+                  "Range: 2cm to 400cm with 0.3cm resolution"
+                ]
+              },
+              {
+                subtitle: "Reading Distance Values",
+                explanation: "The Inspire Bot's programming system automatically calculates distance from the ultrasonic sensor and makes it available through the 'Distance' variable.",
+                codingChallenge: {
+                  question: "Create a basic distance detection program with LED feedback:",
+                  initialCode: `
+Run Forever
+    If Distance < ???
+        Digital Write Pin P??? to ???
+    Else
+        Digital Write Pin P??? to ???
+    Wait 100 milliseconds`,
+                  solution: `
+Run Forever
+    If Distance < 20
+        Digital Write Pin P16 to 1
+    Else
+        Digital Write Pin P16 to 0
+    Wait 100 milliseconds`,
+                  hints: [
+                    "20cm is a good threshold for close object detection",
+                    "The LED is connected to pin P16",
+                    "Turn on the LED when an object is detected nearby",
+                    "Regular checking (every 100ms) provides responsive detection"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            title: "Obstacle Avoidance",
+            content: "Create a simple obstacle avoidance system:",
+            details: [
+              {
+                subtitle: "Detection and Response",
+                explanation: "Combining distance sensing with motor control creates automated obstacle avoidance:",
+                listItems: [
+                  "Continuously check distance while moving",
+                  "Define a 'safe' threshold distance (typically 20-30cm)",
+                  "Implement evasive action when threshold is crossed",
+                  "Return to normal operation when path is clear"
+                ]
+              },
+              {
+                subtitle: "Basic Avoidance Algorithm",
+                explanation: "Program your robot to avoid obstacles by turning away when detected.",
+                codingChallenge: {
+                  question: "Create a complete obstacle avoidance program:",
+                  initialCode: `
+Run Forever
+    Digital Write Pin P13 to ???
+    Digital Write Pin P15 to ???
+    If Distance < ???
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+        Wait ??? milliseconds
+    Else
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+    Wait 100 milliseconds`,
+                  solution: `
+Run Forever
+    Digital Write Pin P13 to 1
+    Digital Write Pin P15 to 1
+    If Distance < 25
+        Digital Write Pin P12 to 0
+        Digital Write Pin P14 to 1
+        Wait 1000 milliseconds
+    Else
+        Digital Write Pin P12 to 1
+        Digital Write Pin P14 to 1
+    Wait 100 milliseconds`,
+                  hints: [
+                    "Enable both motors (P13=1, P15=1)",
+                    "Check if distance is less than 25cm",
+                    "Turn left when obstacle detected (P12=0, P14=1)",
+                    "Move forward when no obstacle (P12=1, P14=1)",
+                    "Wait about 1 second during turns to clear the obstacle"
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        summary: "You've learned how to integrate the ultrasonic sensor with your robot's movement system to create intelligent obstacle avoidance. This fundamental skill allows your robot to navigate environments autonomously.",
+        practiceExercise: "Modify the obstacle avoidance program to include a warning signal with the LED (P16) that blinks rapidly when an obstacle is detected before the robot changes direction."
+      }
+    ]
+  },
+  {
+    id: 4,
+    title: "Line Following and LED Control",
+    lessons: [
+      {
+        id: 1,
+        title: "Line Following Fundamentals",
+        duration: "30 min",
+        description: "Learn to use the line following sensor for automated path navigation.",
+        introduction: "Line following is one of the most common and useful robot behaviors. In this lesson, you'll learn how to use the line following sensor to make your robot automatically follow paths marked on the ground.",
+        sections: [
+          {
+            title: "Line Sensor Basics",
+            content: "Understanding how line following sensors work:",
+            details: [
+              {
+                subtitle: "Sensor Principles",
+                explanation: "The line following sensor on your Inspire Bot works by detecting contrast differences:",
+                listItems: [
+                  "Uses infrared reflection to detect dark vs. light surfaces",
+                  "Connected to pin P3 on your robot",
+                  "Returns 1 when over light surface (no line)",
+                  "Returns 0 when over dark surface (line)",
+                  "Best used with high-contrast lines (black on white)"
+                ]
+              },
+              {
+                subtitle: "Basic Line Reading",
+                explanation: "Learn to read and respond to the line sensor data.",
+                codingChallenge: {
+                  question: "Create a program that turns on the LED when a line is detected:",
+                  initialCode: `
+Run Forever
+    Digital Read Pin P??? to lineDetected
+    If lineDetected == ???
+        Digital Write Pin P16 to ???
+    Else
+        Digital Write Pin P16 to ???
+    Wait 100 milliseconds`,
+                  solution: `
+Run Forever
+    Digital Read Pin P3 to lineDetected
+    If lineDetected == 0
+        Digital Write Pin P16 to 1
+    Else
+        Digital Write Pin P16 to 0
+    Wait 100 milliseconds`,
+                  hints: [
+                    "The line sensor is connected to pin P3",
+                    "The sensor returns 0 when it detects a dark line",
+                    "Turn on the LED (P16=1) when a line is detected",
+                    "Turn off the LED (P16=0) when no line is detected"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            title: "Simple Line Following",
+            content: "Create a basic line following algorithm:",
+            details: [
+              {
+                subtitle: "Following Algorithm",
+                explanation: "The most basic line following approach uses a simple 'if-then-else' strategy:",
+                listItems: [
+                  "Check if the sensor detects a line",
+                  "If no line is detected, turn in one direction until a line is found",
+                  "If a line is detected, turn in the opposite direction",
+                  "This creates a zig-zag motion that follows the line"
+                ]
+              },
+              {
+                subtitle: "Basic Line Follower",
+                explanation: "Program the robot to follow a line using the line sensor.",
+                codingChallenge: {
+                  question: "Create a simple line following program:",
+                  initialCode: `
+Run Forever
+    Digital Write Pin P13 to ???
+    Digital Write Pin P15 to ???
+    Digital Read Pin P??? to lineDetected
+    If lineDetected == ???
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+    Else
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+    Wait 50 milliseconds`,
+                  solution: `
+Run Forever
+    Digital Write Pin P13 to 1
+    Digital Write Pin P15 to 1
+    Digital Read Pin P3 to lineDetected
+    If lineDetected == 0
+        Digital Write Pin P12 to 0
+        Digital Write Pin P14 to 1
+    Else
+        Digital Write Pin P12 to 1
+        Digital Write Pin P14 to 0
+    Wait 50 milliseconds`,
+                  hints: [
+                    "Enable both motors (P13=1, P15=1)",
+                    "Read the line sensor on P3",
+                    "When on the line (lineDetected=0), turn left",
+                    "When off the line (lineDetected=1), turn right",
+                    "Quick response time (50ms) for smoother following"
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        summary: "You've learned the fundamentals of line following with your Inspire Bot, including how the line sensor works and how to implement a basic following algorithm. This skill allows your robot to autonomously navigate predefined paths.",
+        practiceExercise: "Try modifying the line following program to move more smoothly by adjusting the wait time. Experiment with longer waits for smoother, wider turns, and shorter waits for more responsive tracking."
+      },
+      {
+        id: 2,
+        title: "Advanced LED Control",
+        duration: "15 min",
+        description: "Create complex LED patterns for visual feedback.",
+        introduction: "The LED indicator on your Inspire Bot is a versatile tool for providing visual feedback. In this lesson, you'll learn how to create complex bl
