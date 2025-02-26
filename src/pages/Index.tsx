@@ -4,7 +4,7 @@ import { CourseCard } from "@/components/CourseCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Bot, ChevronRight, Zap, BookOpen, Award } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Carousel,
@@ -12,6 +12,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 
 const courses = [
@@ -307,6 +308,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -314,6 +316,17 @@ const Index = () => {
     const matchesCategory = category ? course.category === category : true;
     return matchesSearch && matchesCategory;
   });
+
+  // Set up auto-scrolling for the carousel
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const interval = setInterval(() => {
+      carouselApi.scrollNext();
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [carouselApi]);
 
   const handleGetStarted = () => {
     // Navigate to the first course
@@ -376,17 +389,22 @@ const Index = () => {
             </div>
             <div className="md:w-1/2 relative">
               <div className="w-full h-64 md:h-96 bg-accent rounded-lg overflow-hidden shadow-xl">
-                <Carousel className="w-full h-full">
+                <Carousel 
+                  className="w-full h-full" 
+                  setApi={setCarouselApi}
+                  opts={{
+                    align: "start",
+                    loop: true,
+                  }}
+                >
                   <CarouselContent className="h-full">
                     {robotImages.map((image, index) => (
-                      <CarouselItem key={index} className="h-full">
-                        <div className="h-full w-full">
-                          <img 
-                            src={image} 
-                            alt={`Inspire Bot ${index + 1}`} 
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
+                      <CarouselItem key={index} className="h-full w-full">
+                        <img 
+                          src={image} 
+                          alt={`Inspire Bot ${index + 1}`} 
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                        />
                       </CarouselItem>
                     ))}
                   </CarouselContent>
