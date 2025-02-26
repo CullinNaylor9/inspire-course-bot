@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { ArrowUp, ArrowDown, Trash2 } from "lucide-react";
 
 interface CodeBlock {
   id: string;
@@ -73,6 +74,33 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
     }
   };
 
+  // Move a block up in the workspace
+  const moveBlockUp = (index: number) => {
+    if (index === 0) return; // Already at the top
+    const newWorkspace = [...workspace];
+    const temp = newWorkspace[index];
+    newWorkspace[index] = newWorkspace[index - 1];
+    newWorkspace[index - 1] = temp;
+    setWorkspace(newWorkspace);
+  };
+
+  // Move a block down in the workspace
+  const moveBlockDown = (index: number) => {
+    if (index === workspace.length - 1) return; // Already at the bottom
+    const newWorkspace = [...workspace];
+    const temp = newWorkspace[index];
+    newWorkspace[index] = newWorkspace[index + 1];
+    newWorkspace[index + 1] = temp;
+    setWorkspace(newWorkspace);
+  };
+
+  // Remove a block from the workspace
+  const removeBlock = (index: number) => {
+    const newWorkspace = [...workspace];
+    newWorkspace.splice(index, 1);
+    setWorkspace(newWorkspace);
+  };
+
   const generateCode = () => {
     const code = workspace.map(block => {
       let content = block.content;
@@ -111,7 +139,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
     // Special handling for wait blocks to allow custom milliseconds input
     if (block.content.includes('Wait') && block.content.includes('milliseconds')) {
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <span>Wait</span>
           <Input
             type="number"
@@ -193,9 +221,9 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   };
 
   return (
-    <div className="flex gap-4">
+    <div className="flex flex-col md:flex-row gap-4">
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="w-1/3 bg-accent/10 p-4 rounded-lg">
+        <div className="w-full md:w-1/3 bg-accent/10 p-4 rounded-lg mb-4 md:mb-0">
           <h3 className="font-bold mb-4">Code Blocks</h3>
           <Droppable droppableId="palette">
             {(provided) => (
@@ -224,7 +252,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
           </Droppable>
         </div>
 
-        <div className="w-2/3">
+        <div className="w-full md:w-2/3">
           <div className="bg-black/90 p-4 rounded-lg mb-4">
             <h3 className="font-bold text-white mb-4">Program</h3>
             <Droppable droppableId="workspace">
@@ -240,10 +268,39 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-move`}
+                          className={`${getBlockStyle(block.type)} p-3 pr-12 rounded-lg text-white cursor-move relative group`}
                         >
-                          {renderBlockContent(block)}
+                          <div {...provided.dragHandleProps} className="flex-1">
+                            {renderBlockContent(block)}
+                          </div>
+                          
+                          {/* Block control buttons */}
+                          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex flex-col gap-1">
+                            <button 
+                              onClick={() => moveBlockUp(index)} 
+                              className="bg-white/20 hover:bg-white/40 rounded-full p-1 text-white transition-colors"
+                              title="Move Up"
+                              type="button"
+                            >
+                              <ArrowUp size={16} />
+                            </button>
+                            <button 
+                              onClick={() => moveBlockDown(index)} 
+                              className="bg-white/20 hover:bg-white/40 rounded-full p-1 text-white transition-colors"
+                              title="Move Down"
+                              type="button"
+                            >
+                              <ArrowDown size={16} />
+                            </button>
+                            <button 
+                              onClick={() => removeBlock(index)} 
+                              className="bg-white/20 hover:bg-red-500/80 rounded-full p-1 text-white transition-colors"
+                              title="Remove Block"
+                              type="button"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
                         </div>
                       )}
                     </Draggable>
@@ -255,7 +312,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
           </div>
           <button
             onClick={generateCode}
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg"
+            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg w-full md:w-auto"
           >
             Run Code
           </button>
