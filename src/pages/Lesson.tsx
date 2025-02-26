@@ -5,10 +5,32 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
-import { useToast } from "@/components/ui/toast";
+import { useToast } from "@/hooks/use-toast";
+
+// Define types for our data structure
+type Section = {
+  title: string;
+  content: string;
+  points: string[];
+};
+
+type Lesson = {
+  id: number;
+  title: string;
+  duration: string;
+  description: string;
+  content: string;
+  sections?: Section[];
+};
+
+type Course = {
+  id: number;
+  title: string;
+  lessons: Lesson[];
+};
 
 // This data structure needs to match the one in Course.tsx
-const courses = [
+const courses: Course[] = [
   {
     id: 1,
     title: "Introduction to Inspire Bot Pins",
