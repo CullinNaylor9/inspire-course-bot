@@ -204,25 +204,17 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
               !block.content.substring(block.content.indexOf(match) - 1, block.content.indexOf(match)).includes('P')
             ).length;
             return (
-              <Select
+              <Input
                 key={index}
+                type="number"
+                className="w-20 h-8 px-2 py-0 bg-white/90 text-black"
+                placeholder="0"
                 value={blockInputs[block.id]?.[inputIndex] || ''}
-                onValueChange={(value) => setBlockInputs(prev => ({
+                onChange={(e) => setBlockInputs(prev => ({
                   ...prev,
-                  [block.id]: Object.assign([...(prev[block.id] || [])], { [inputIndex]: value })
+                  [block.id]: Object.assign([...(prev[block.id] || [])], { [inputIndex]: e.target.value })
                 }))}
-              >
-                <SelectTrigger className="w-20 h-8 px-2 py-0 bg-white/90 text-black border-white/20">
-                  <SelectValue placeholder="Value" />
-                </SelectTrigger>
-                <SelectContent className="bg-white border-white/20">
-                  <SelectItem value="0" className="text-black hover:bg-gray-100">0</SelectItem>
-                  <SelectItem value="1" className="text-black hover:bg-gray-100">1</SelectItem>
-                  <SelectItem value="500" className="text-black hover:bg-gray-100">500</SelectItem>
-                  <SelectItem value="1000" className="text-black hover:bg-gray-100">1000</SelectItem>
-                  <SelectItem value="2000" className="text-black hover:bg-gray-100">2000</SelectItem>
-                </SelectContent>
-              </Select>
+              />
             );
           }
           return <span key={index}>{part}</span>;
