@@ -524,10 +524,10 @@ const Lesson = () => {
         <div className="flex justify-between items-center mb-8">
           <Button 
             variant="ghost" 
-            onClick={() => navigate(`/course/${courseId}`)}
+            onClick={() => navigate("/")}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Course
+            Back to Courses
           </Button>
 
           {!isLastLesson && (
