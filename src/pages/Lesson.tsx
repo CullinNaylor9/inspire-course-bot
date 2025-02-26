@@ -363,6 +363,405 @@ Run Forever
         practiceExercise: "Experiment with different pin combinations to create a smooth circular pattern."
       }
     ]
+  },
+  {
+    id: 3,
+    title: "Servo and Sensor Integration",
+    lessons: [
+      {
+        id: 1,
+        title: "Servo Motor Programming",
+        duration: "25 min",
+        description: "Learn to control servo positioning with precision for robotic arm movements.",
+        introduction: "In this lesson, we'll explore how to program servo motors on the Inspire Bot. Servo motors allow for precise angle control, making them perfect for robot arms, sensors, and other components that need exact positioning.",
+        sections: [
+          {
+            title: "Servo Control Basics",
+            content: "Understanding how servo motors work and how to control them:",
+            details: [
+              {
+                subtitle: "Servo Angles",
+                explanation: "Servos can be positioned at specific angles between 0° and 180°. This allows for precise control of mechanical components like arms, grippers, or sensor platforms.",
+                listItems: [
+                  "0° - Fully counterclockwise position",
+                  "90° - Center position",
+                  "180° - Fully clockwise position",
+                  "Any angle in between can be specified for precise positioning"
+                ]
+              },
+              {
+                subtitle: "Main Servo Control (P0)",
+                explanation: "The Inspire Bot has a built-in servo on pin P0 that can be used for a variety of applications. This servo is perfect for creating a robotic arm, a rotating sensor platform, or even a head that can look around.",
+                codingChallenge: {
+                  question: "Program the main servo to scan back and forth like a radar. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    Digital Write Pin P??? to ???
+    Wait 500 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 500 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 500 milliseconds`,
+                  solution: `
+Run Forever
+    Digital Write Pin P0 to 0
+    Wait 500 milliseconds
+    Digital Write Pin P0 to 90
+    Wait 500 milliseconds
+    Digital Write Pin P0 to 180
+    Wait 500 milliseconds`,
+                  hints: [
+                    "The main servo is connected to pin P0",
+                    "Use angles 0, 90, and 180 for full range of motion",
+                    "500 milliseconds gives smooth movement between positions",
+                    "The servo will move from left to right and back again"
+                  ]
+                }
+              },
+              {
+                subtitle: "Secondary Servo Control (P1)",
+                explanation: "Pin P1 allows you to connect a second servo to your robot. This is useful for creating more complex mechanisms like grippers, multi-joint arms, or specialized tools. Together with the main servo, you can create sophisticated mechanisms with multiple degrees of freedom.",
+                codingChallenge: {
+                  question: "Create a gripper program using both servos. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    Digital Write Pin P??? to ???
+    Digital Write Pin P??? to ???
+    Wait 2000 milliseconds
+    Digital Write Pin P??? to ???
+    Digital Write Pin P??? to ???
+    Wait 2000 milliseconds`,
+                  solution: `
+Run Forever
+    Digital Write Pin P0 to 90
+    Digital Write Pin P1 to 0
+    Wait 2000 milliseconds
+    Digital Write Pin P0 to 45
+    Digital Write Pin P1 to 90
+    Wait 2000 milliseconds`,
+                  hints: [
+                    "Use P0 for the arm positioning servo",
+                    "Use P1 for the gripper servo",
+                    "Experiment with different angles to achieve the desired motion",
+                    "Longer wait times give the servo time to complete its movement"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            title: "Servo Movement Patterns",
+            content: "Creating smooth and coordinated servo movements:",
+            details: [
+              {
+                subtitle: "Sweep Movements",
+                explanation: "A sweep movement smoothly transitions the servo from one position to another. This is useful for scanning operations or creating natural-looking movements.",
+                codingChallenge: {
+                  question: "Create a smooth sweep movement from 0° to 180°. Fill in the missing values:",
+                  initialCode: `
+Run Once
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds`,
+                  solution: `
+Run Once
+    Digital Write Pin P0 to 0
+    Wait 200 milliseconds
+    Digital Write Pin P0 to 60
+    Wait 200 milliseconds
+    Digital Write Pin P0 to 120
+    Wait 200 milliseconds
+    Digital Write Pin P0 to 180
+    Wait 200 milliseconds`,
+                  hints: [
+                    "Start at 0° and gradually increase the angle",
+                    "Use increments of about 60° for smooth motion",
+                    "Shorter wait times create faster movement",
+                    "Make sure to wait between position changes to allow servo movement"
+                  ]
+                }
+              },
+              {
+                subtitle: "Coordinating Multiple Servos",
+                explanation: "When using both servos together, timing is crucial for coordinated movements. By carefully sequencing servo positions, you can create complex and useful mechanisms for your robot."
+              }
+            ]
+          }
+        ],
+        summary: "In this lesson, you've learned how to control servo motors for precise positioning. You now understand how to create specific servo angles, program sweep movements, and coordinate multiple servos for complex mechanisms. These skills are essential for building robotic arms, grippers, and other mechanical systems for your Inspire Bot.",
+        practiceExercise: "Try creating a program that uses both servos to simulate a robotic arm picking up an object. The arm should lower, close the gripper, raise, turn, lower again, and release the object. Think about the sequence of servo positions and timing needed to create this behavior."
+      },
+      {
+        id: 2,
+        title: "Ultrasonic Distance Sensing",
+        duration: "35 min",
+        description: "Implement distance detection using the ultrasonic sensor for obstacle avoidance and object detection.",
+        introduction: "In this lesson, we'll learn how to use the ultrasonic sensor to detect objects and measure distances. The ultrasonic sensor is a critical component for creating robots that can navigate autonomously and interact with their environment.",
+        sections: [
+          {
+            title: "Ultrasonic Sensor Fundamentals",
+            content: "Understanding how the ultrasonic sensor works and how to interpret its readings:",
+            details: [
+              {
+                subtitle: "How Ultrasonic Sensors Work",
+                explanation: "The ultrasonic sensor uses sound waves to measure distance. It sends out a sound pulse that humans can't hear and then listens for the echo. By measuring the time it takes for the echo to return, the sensor can calculate the distance to an object.",
+                listItems: [
+                  "P2: Trigger pin - Sends out the ultrasonic pulse",
+                  "P8: Echo pin - Receives the returning echo",
+                  "Sound travels at approximately 343 meters per second",
+                  "Distance = (Time × Speed of Sound) ÷ 2"
+                ]
+              },
+              {
+                subtitle: "Reading Distance Values",
+                explanation: "The Inspire Bot's programming environment provides a simplified way to read distance values from the ultrasonic sensor. The 'Distance' variable automatically calculates the distance in centimeters based on the echo time.",
+                codingChallenge: {
+                  question: "Create a program that displays different behaviors based on distance. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    If Distance < ???
+        Digital Write Pin P??? to ???
+    Else If Distance < ???
+        Digital Write Pin P??? to ???
+    Else
+        Digital Write Pin P??? to ???`,
+                  solution: `
+Run Forever
+    If Distance < 10
+        Digital Write Pin P16 to 1
+    Else If Distance < 30
+        Digital Write Pin P16 to 0
+    Else
+        Digital Write Pin P16 to 0`,
+                  hints: [
+                    "Use different distance thresholds (10cm for very close, 30cm for medium distance)",
+                    "P16 controls the onboard LED (1=On, 0=Off)",
+                    "The LED should be on when objects are very close",
+                    "This creates a proximity warning system"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            title: "Obstacle Avoidance",
+            content: "Using the ultrasonic sensor to detect and avoid obstacles:",
+            details: [
+              {
+                subtitle: "Basic Obstacle Detection",
+                explanation: "By continuously monitoring the distance to objects in front of the robot, we can program it to stop or change direction when it detects an obstacle.",
+                codingChallenge: {
+                  question: "Create a simple obstacle avoidance program. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    If Distance < ???
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+        Wait ??? milliseconds
+    Else
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???`,
+                  solution: `
+Run Forever
+    If Distance < 15
+        Digital Write Pin P12 to 0
+        Digital Write Pin P14 to 1
+        Wait 1000 milliseconds
+    Else
+        Digital Write Pin P12 to 1
+        Digital Write Pin P14 to 1`,
+                  hints: [
+                    "15cm is a good threshold for obstacle detection",
+                    "When an obstacle is detected, make the robot turn left by setting P12=0 and P14=1",
+                    "1000 milliseconds gives enough time to turn away from the obstacle",
+                    "If no obstacle is detected, the robot should move forward (P12=1, P14=1)"
+                  ]
+                }
+              },
+              {
+                subtitle: "Advanced Navigation",
+                explanation: "By combining the ultrasonic sensor with servo motors, we can create a more sophisticated navigation system. Mounting the ultrasonic sensor on a servo allows the robot to scan its environment and find the best path forward.",
+                codingChallenge: {
+                  question: "Create a scanning obstacle avoidance program using the servo and ultrasonic sensor. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    Digital Write Pin P??? to ???
+    Wait 500 milliseconds
+    If Distance < ???
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+    Else
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???`,
+                  solution: `
+Run Forever
+    Digital Write Pin P0 to 90
+    Wait 500 milliseconds
+    If Distance < 20
+        Digital Write Pin P12 to 0
+        Digital Write Pin P14 to 1
+    Else
+        Digital Write Pin P12 to 1
+        Digital Write Pin P14 to 1`,
+                  hints: [
+                    "Use the servo on P0 to position the ultrasonic sensor forward (90°)",
+                    "20cm is a good threshold for obstacle detection while moving",
+                    "When an obstacle is detected, turn left (P12=0, P14=1)",
+                    "If the path is clear, move forward (P12=1, P14=1)"
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        summary: "In this lesson, you've learned how to use the ultrasonic sensor to measure distances and detect obstacles. You've created programs that can respond to the presence of objects, enabling your robot to navigate around obstacles and interact with its environment. This is a fundamental capability for autonomous robots.",
+        practiceExercise: "Try expanding the scanning obstacle avoidance program to check for obstacles in multiple directions. Use the servo to scan left, center, and right, and have the robot choose the direction with the greatest distance. This will allow your robot to find the best path forward when faced with multiple obstacles."
+      },
+      {
+        id: 3,
+        title: "Integrated Robotics Projects",
+        duration: "45 min",
+        description: "Combine servo motors and sensors to create advanced robotic systems with intelligent behaviors.",
+        introduction: "In this final lesson of the course, we'll bring together everything we've learned about servo motors and sensors to create complete robotic systems. By integrating these components, we can create robots that can sense their environment and respond with precise, purposeful movements.",
+        sections: [
+          {
+            title: "Sensor-Driven Servo Control",
+            content: "Using sensor data to drive servo positioning:",
+            details: [
+              {
+                subtitle: "Following Movement",
+                explanation: "We can create a robot that tracks movement by mounting an ultrasonic sensor on a servo motor. When the sensor detects an object, the servo can turn to follow it, creating a tracking behavior.",
+                codingChallenge: {
+                  question: "Create a simple object tracking system. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    Digital Write Pin P??? to ???
+    Wait 200 milliseconds
+    If Distance < ???
+        Digital Write Pin P??? to ???
+        Wait 1000 milliseconds
+    Else
+        Digital Write Pin P??? to ???
+        Wait 1000 milliseconds`,
+                  solution: `
+Run Forever
+    Digital Write Pin P0 to 90
+    Wait 200 milliseconds
+    If Distance < 30
+        Digital Write Pin P0 to 45
+        Wait 1000 milliseconds
+    Else
+        Digital Write Pin P0 to 135
+        Wait 1000 milliseconds`,
+                  hints: [
+                    "Start with the servo pointing straight ahead (90°)",
+                    "If an object is detected within 30cm, turn the servo left (45°)",
+                    "If no object is detected, turn the servo right (135°)",
+                    "This creates a simple scanning behavior that looks for objects"
+                  ]
+                }
+              },
+              {
+                subtitle: "Smart Robotic Arm",
+                explanation: "By combining the ultrasonic sensor with two servo motors, we can create a smart robotic arm that can detect objects and position itself to interact with them. This is the foundation of pick-and-place operations in robotics.",
+                codingChallenge: {
+                  question: "Program a smart robotic arm that positions itself based on object distance. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    If Distance < ???
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+    Else If Distance < ???
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+    Else
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???`,
+                  solution: `
+Run Forever
+    If Distance < 10
+        Digital Write Pin P0 to 30
+        Digital Write Pin P1 to 0
+    Else If Distance < 20
+        Digital Write Pin P0 to 90
+        Digital Write Pin P1 to 45
+    Else
+        Digital Write Pin P0 to 150
+        Digital Write Pin P1 to 90`,
+                  hints: [
+                    "Use different arm positions for different object distances",
+                    "For very close objects (< 10cm), position the arm low with gripper open",
+                    "For medium distance objects (10-20cm), position the arm horizontal with gripper partially closed",
+                    "For distant objects (> 20cm), position the arm high with gripper fully closed"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            title: "Complete Robot Behaviors",
+            content: "Creating fully integrated robot behaviors that combine sensing and movement:",
+            details: [
+              {
+                subtitle: "Autonomous Navigation and Interaction",
+                explanation: "By combining motor control, servo positioning, and ultrasonic sensing, we can create a robot that can navigate its environment and interact with objects autonomously. This is the foundation of truly intelligent robots.",
+                codingChallenge: {
+                  question: "Create an integrated program that combines navigation and object interaction. Fill in the missing values:",
+                  initialCode: `
+Run Forever
+    Digital Write Pin P??? to ???
+    Wait 500 milliseconds
+    If Distance < ???
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???
+        Wait 1000 milliseconds
+        Digital Write Pin P??? to ???
+    Else
+        Digital Write Pin P??? to ???
+        Digital Write Pin P??? to ???`,
+                  solution: `
+Run Forever
+    Digital Write Pin P0 to 90
+    Wait 500 milliseconds
+    If Distance < 15
+        Digital Write Pin P12 to 0
+        Digital Write Pin P14 to 0
+        Wait 1000 milliseconds
+        Digital Write Pin P1 to 45
+    Else
+        Digital Write Pin P12 to 1
+        Digital Write Pin P14 to 1`,
+                  hints: [
+                    "Position the sensor servo forward (90°) to detect objects",
+                    "When an object is detected within 15cm, stop the robot (P12=0, P14=0)",
+                    "After stopping, activate the gripper servo (P1) to interact with the object",
+                    "If no object is detected, continue moving forward (P12=1, P14=1)"
+                  ]
+                }
+              },
+              {
+                subtitle: "Advanced Project Ideas",
+                explanation: "Now that you have a solid understanding of servo motors, sensors, and movement control, you can create a wide range of advanced robotics projects. Here are some ideas to explore:",
+                listItems: [
+                  "Object Sorter: Use the ultrasonic sensor to detect object size and sort them using servo arms",
+                  "Line Following with Obstacle Avoidance: Combine line sensors with the ultrasonic sensor",
+                  "Autonomous Explorer: Create a robot that maps its environment using sensor data",
+                  "Interactive Robot: Build a robot that responds to human presence and gestures",
+                  "Drawing Robot: Use servo motors to control a pen for automated drawing"
+                ]
+              }
+            ]
+          }
+        ],
+        summary: "In this lesson, you've learned how to integrate servo motors and sensors to create complete robotic systems. You now have the skills to build robots that can sense their environment, make decisions based on sensor data, and respond with precise movements. This opens up a world of possibilities for creating innovative and useful robotic projects.",
+        practiceExercise: "Design and create your own integrated robotics project that combines at least two sensors and two servo motors. Think about a real-world problem that your robot could solve, such as sorting objects, navigating a maze, or interacting with humans. Plan the behavior, implement the code, and test your creation to see how it performs."
+      }
+    ]
   }
 ];
 
