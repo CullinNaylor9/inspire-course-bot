@@ -375,40 +375,28 @@ const Index = () => {
               </div>
             </div>
             <div className="md:w-1/2 relative">
-              <div className="w-full h-64 md:h-96 bg-accent rounded-lg overflow-hidden shadow-xl hover-scale">
-                <img 
-                  src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800" 
-                  alt="Inspire Bot" 
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                />
+              <div className="w-full h-64 md:h-96 bg-accent rounded-lg overflow-hidden shadow-xl">
+                <Carousel className="w-full h-full">
+                  <CarouselContent className="h-full">
+                    {robotImages.map((image, index) => (
+                      <CarouselItem key={index} className="h-full">
+                        <div className="h-full w-full">
+                          <img 
+                            src={image} 
+                            alt={`Inspire Bot ${index + 1}`} 
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-2" />
+                  <CarouselNext className="right-2" />
+                </Carousel>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Robot Showcase Carousel */}
-      <div className="container mx-auto px-4 py-12">
-        <h2 className="text-3xl font-bold text-center mb-8">Inspire Bot in Action</h2>
-        <Carousel className="w-full max-w-5xl mx-auto">
-          <CarouselContent>
-            {robotImages.map((image, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <div className="p-2">
-                  <div className="overflow-hidden rounded-lg bg-background shadow-md border border-accent/30 aspect-square">
-                    <img 
-                      src={image} 
-                      alt={`Robot demonstration ${index + 1}`} 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="left-2" />
-          <CarouselNext className="right-2" />
-        </Carousel>
       </div>
 
       {/* Features Section */}
