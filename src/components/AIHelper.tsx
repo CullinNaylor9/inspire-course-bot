@@ -15,6 +15,9 @@ type Message = {
   timestamp: Date;
 }
 
+const OPENROUTER_API_KEY = "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";
+const MODEL = "openai/gpt-4o-mini";
+
 export function AIHelper() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -42,7 +45,7 @@ export function AIHelper() {
     }
   }, [isOpen]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
 
@@ -57,37 +60,71 @@ export function AIHelper() {
     setInput("");
     setIsLoading(true);
 
-    // Simulate AI response after a delay
-    setTimeout(() => {
-      // Generate a relevant response based on the input
-      let responseText = "I'm here to help with your Inspire Bot and Microbit questions!";
-      
-      const userInput = input.toLowerCase();
-      
-      if (userInput.includes("pin") || userInput.includes("gpio")) {
-        responseText = "Inspire Bot has various pins for different functions: P0 (Built-in Servo), P1 (Additional Servo), P2 & P8 (Ultrasonic), P3 (Line Following), P16 (LED), and P12-P15 (Motor Control).";
-      } else if (userInput.includes("motor") || userInput.includes("move")) {
-        responseText = "Motor control uses pins 12-15. For forward movement: Left(P12=0, P13=1) + Right(P14=1, P15=0). For turning, you'll want to adjust power to individual motors.";
-      } else if (userInput.includes("servo")) {
-        responseText = "Servos connect to P0 (built-in) and P1 (additional). You can control the angle from 0-180 degrees using the appropriate servo.write() commands.";
-      } else if (userInput.includes("sensor") || userInput.includes("ultrasonic")) {
-        responseText = "Ultrasonic sensors use pins P2 and P8. They send out ultrasonic pulses and measure the time until the echo returns to calculate distance.";
-      } else if (userInput.includes("led") || userInput.includes("light")) {
-        responseText = "LEDs connect to P16 and can be controlled with digital writes. They're great for status indicators or visual feedback from your robot.";
-      } else if (userInput.includes("hello") || userInput.includes("hi")) {
-        responseText = "Hello there! How can I help with your Inspire Bot project today?";
+    try {
+      // Prepare message history for API call
+      const messageHistory = messages.map(msg => ({
+        role: msg.isBot ? "assistant" : "user",
+        content: msg.text
+      }));
+
+      // Add the new user message
+      messageHistory.push({
+        role: "user",
+        content: input
+      });
+
+      // System prompt to guide the AI
+      const systemPrompt = {
+        role: "system",
+        content: "You are an educational assistant specializing in helping students learn about the Inspire Bot and Microbit. Provide clear, concise, and accurate information about robotics concepts, programming, pins, sensors, and functionality. Keep responses friendly and informative."
+      };
+
+      // Call OpenRouter API
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+          "HTTP-Referer": window.location.origin,
+          "X-Title": "Inspire Bot Assistant"
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          messages: [systemPrompt, ...messageHistory],
+          max_tokens: 500
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to get response from AI service");
       }
 
+      const data = await response.json();
+      const botResponse = data.choices[0]?.message?.content || "I'm having trouble connecting. Please try again later.";
+
+      // Add bot response to messages
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: responseText,
+        text: botResponse,
         isBot: true,
         timestamp: new Date()
       };
       
       setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error("Error calling AI service:", error);
+      // Fallback response in case of error
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "I'm having trouble connecting right now. Please try again later.",
+        isBot: true,
+        timestamp: new Date()
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+      toast.error("Failed to get AI response");
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const clearChat = () => {
@@ -147,7 +184,7 @@ export function AIHelper() {
           <CardContent className="p-0 flex flex-col h-[calc(100%-8rem)]">
             <ScrollArea className="flex-1 p-4">
               <div className="space-y-4">
-                {messages.map((msg, i) => (
+                {messages.map((msg) => (
                   <div
                     key={msg.id}
                     className={cn(
