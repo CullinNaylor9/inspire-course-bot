@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { ArrowUp, ArrowDown, Trash2, Plus } from "lucide-react";
+import { ArrowUp, ArrowDown, Trash2, Plus, ChevronUp, ChevronDown } from "lucide-react";
 
 interface CodeBlock {
   id: string;
@@ -313,7 +313,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
                               title="Move Up"
                               type="button"
                             >
-                              <ArrowUp size={16} />
+                              <ChevronUp size={16} />
                             </button>
                             <button 
                               onClick={() => moveBlockDown(index)} 
@@ -321,7 +321,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
                               title="Move Down"
                               type="button"
                             >
-                              <ArrowDown size={16} />
+                              <ChevronDown size={16} />
                             </button>
                             <button 
                               onClick={() => removeBlock(index)} 
