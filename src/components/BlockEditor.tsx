@@ -252,35 +252,6 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
               </div>
             ))}
           </div>
-          
-          <div className="border-t border-white/20 pt-4 mt-4">
-            <h4 className="text-sm font-medium mb-2">Or drag from here:</h4>
-            <Droppable droppableId="palette">
-              {(provided) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className="space-y-2"
-                >
-                  {palette.map((block, index) => (
-                    <Draggable key={block.id} draggableId={block.id} index={index}>
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-move`}
-                        >
-                          {renderBlockContent(block)}
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </div>
         </div>
 
         <div className="w-full md:w-2/3">
