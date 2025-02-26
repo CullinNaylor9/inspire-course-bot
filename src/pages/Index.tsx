@@ -1,3 +1,4 @@
+
 import { AIHelper } from "@/components/AIHelper";
 import { CourseCard } from "@/components/CourseCard";
 import { Input } from "@/components/ui/input";
@@ -293,7 +294,7 @@ const features = [
   }
 ];
 
-// Robot showcase images for carousel
+// Robot showcase images for carousel - Updated with the new URLs provided
 const robotImages = [
   "https://pixeldrain.com/api/file/ftoZQ3Rj",
   "https://pixeldrain.com/api/file/7rE9RH6y",
