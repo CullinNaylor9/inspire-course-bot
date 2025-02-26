@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 interface CodeBlock {
   id: string;
@@ -249,7 +249,7 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
   return (
     <div className="flex flex-col md:flex-row gap-4">
       {isMobileView ? (
-        // Mobile/iPad specific UI
+        // Mobile/iPad specific UI with tap interface instead of drag and drop
         <>
           <div className="w-full bg-accent/10 p-4 rounded-lg mb-4">
             <h3 className="font-bold mb-4">Code Blocks</h3>
