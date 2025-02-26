@@ -186,36 +186,36 @@ const courses = [
   },
   {
     id: 6,
-    title: "Complete Robot Programming",
-    description: "Bring everything together by creating a fully autonomous robot using all sensors, motors, and LED indicators for complex behaviors.",
+    title: "Advanced Robotics Project",
+    description: "Apply all your learned skills to build a complete, autonomous robot capable of performing complex missions and adapting to different environments.",
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800",
     category: "Advanced",
-    duration: "120 min",
+    duration: "180 min",
     lessons: [
       {
         id: 1,
-        title: "Integrating Multiple Systems",
-        duration: "55 min",
-        description: "Combine all robot components into a cohesive system:",
+        title: "Multi-System Integration",
+        duration: "75 min",
+        description: "Combine all robot subsystems into a unified control architecture:",
         points: [
-          "Creating a sensor fusion system",
-          "Building a hierarchical control structure",
-          "Implementing priority-based decision making",
-          "Managing multiple inputs and outputs",
-          "Optimizing code for reliability"
+          "Implementing a state machine for behavior management",
+          "Creating a sensor fusion system for improved environmental awareness",
+          "Developing a prioritization system for conflicting inputs",
+          "Building an event-driven architecture for responsive behavior",
+          "Implementing error detection and recovery systems"
         ]
       },
       {
         id: 2,
-        title: "Autonomous Mission Programming",
-        duration: "65 min",
-        description: "Program your robot to complete complex missions autonomously:",
+        title: "Advanced Mission Programming",
+        duration: "105 min",
+        description: "Design and implement complex autonomous missions:",
         points: [
-          "Defining mission objectives and success criteria",
-          "Creating state machines for different behaviors",
-          "Implementing error detection and recovery",
-          "Building in fail-safes and timeouts",
-          "Testing and refining autonomous performance"
+          "Creating objective-based mission planning",
+          "Implementing adaptive pathfinding algorithms",
+          "Developing environmental analysis capabilities",
+          "Programming complex decision-making logic",
+          "Building in self-testing and diagnostic capabilities"
         ]
       }
     ]

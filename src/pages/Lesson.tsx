@@ -197,21 +197,102 @@ const courses: Course[] = [
   },
   {
     id: 6,
-    title: "Complete Robot Programming",
+    title: "Advanced Robotics Project",
     lessons: [
       {
         id: 1,
-        title: "Integrating Multiple Systems",
-        duration: "55 min",
-        description: "Combine all robot components into a cohesive system.",
-        content: "Learn to integrate all the subsystems of your robot into a harmonious whole."
+        title: "Multi-System Integration",
+        duration: "75 min",
+        description: "Combine all robot subsystems into a unified control architecture.",
+        content: "In this comprehensive lesson, you'll learn how to integrate all the individual systems of your Inspire Bot into a cohesive control architecture that allows for sophisticated autonomous behavior. This represents the transition from individual component programming to creating a truly intelligent robot.",
+        sections: [
+          {
+            title: "State Machine Architecture",
+            content: "Implement a robust state machine to manage robot behaviors:",
+            points: [
+              "Creating clearly defined operational states (searching, following, avoiding, etc.)",
+              "Building transition conditions between states based on sensor inputs",
+              "Implementing state-specific behaviors and control logic",
+              "Developing initialization and shutdown sequences",
+              "Testing and debugging state transitions with logging"
+            ]
+          },
+          {
+            title: "Sensor Fusion Systems",
+            content: "Combine multiple sensor inputs for improved environmental awareness:",
+            points: [
+              "Integrating ultrasonic and line sensor data for comprehensive sensing",
+              "Implementing weighted sensor data interpretation",
+              "Creating confidence metrics for different sensor readings",
+              "Using historical data to improve current readings",
+              "Handling conflicting sensor information gracefully"
+            ]
+          },
+          {
+            title: "Advanced Control Architecture",
+            content: "Build sophisticated control systems for responsive behavior:",
+            points: [
+              "Implementing PID (Proportional-Integral-Derivative) control for motor precision",
+              "Creating adaptive control parameters based on environmental conditions",
+              "Developing event-driven responses to external stimuli",
+              "Building behavior hierarchies with priority management",
+              "Testing control system performance under various conditions"
+            ]
+          }
+        ]
       },
       {
         id: 2,
-        title: "Autonomous Mission Programming",
-        duration: "65 min",
-        description: "Program your robot to complete complex missions autonomously.",
-        content: "Design and implement complete autonomous missions for your robot."
+        title: "Advanced Mission Programming",
+        duration: "105 min",
+        description: "Design and implement complex autonomous missions.",
+        content: "In this advanced lesson, you'll take your robot programming skills to the next level by creating sophisticated mission programming capabilities. You'll learn how to define objectives, create decision-making frameworks, and adapt to changing environments for true autonomous operation.",
+        sections: [
+          {
+            title: "Mission Planning Systems",
+            content: "Create sophisticated mission planning capabilities for your robot:",
+            points: [
+              "Defining clear mission objectives and success criteria",
+              "Breaking complex missions into achievable sub-tasks",
+              "Implementing mission progress tracking and reporting",
+              "Creating contingency plans for handling obstacles or failures",
+              "Testing mission execution in varied environmental conditions"
+            ]
+          },
+          {
+            title: "Adaptive Navigation",
+            content: "Build advanced navigation systems that adapt to environments:",
+            points: [
+              "Implementing dynamic pathfinding algorithms",
+              "Creating environmental mapping capabilities",
+              "Developing obstacle classification and response strategies",
+              "Building memory systems for previously navigated areas",
+              "Testing navigation performance in complex environments"
+            ]
+          },
+          {
+            title: "Autonomous Decision Making",
+            content: "Program sophisticated decision-making capabilities:",
+            points: [
+              "Creating multi-factor decision matrices",
+              "Implementing cost-benefit analysis for different actions",
+              "Developing learning mechanisms to improve future decisions",
+              "Building in safeguards against dangerous conditions",
+              "Testing decision logic with simulation and real-world scenarios"
+            ]
+          },
+          {
+            title: "Performance Optimization",
+            content: "Fine-tune your robot's performance for maximum efficiency:",
+            points: [
+              "Implementing code optimization techniques",
+              "Creating battery management strategies",
+              "Developing diagnostic and self-testing capabilities",
+              "Building telemetry systems for performance analysis",
+              "Testing and benchmarking system performance"
+            ]
+          }
+        ]
       }
     ]
   }
