@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { ArrowUp, ArrowDown, Trash2 } from "lucide-react";
+import { ArrowUp, ArrowDown, Trash2, Plus } from "lucide-react";
 
 interface CodeBlock {
   id: string;
@@ -72,6 +72,17 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
       };
       setWorkspace([...workspace, newBlock]);
     }
+  };
+
+  // Function to add block by tapping
+  const addBlock = (block: CodeBlock) => {
+    const newBlock = { 
+      ...block,
+      id: `${block.id}-${Date.now()}`,
+      hasInput: block.content.includes('???'),
+      hasPin: block.content.includes('P???')
+    };
+    setWorkspace([...workspace, newBlock]);
   };
 
   // Move a block up in the workspace
@@ -225,31 +236,51 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ initialBlocks, availableBlock
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="w-full md:w-1/3 bg-accent/10 p-4 rounded-lg mb-4 md:mb-0">
           <h3 className="font-bold mb-4">Code Blocks</h3>
-          <Droppable droppableId="palette">
-            {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="space-y-2"
+          {/* Tap-to-add blocks section */}
+          <div className="mb-4 space-y-2">
+            <h4 className="text-sm font-medium mb-2">Tap to add:</h4>
+            {palette.map((block, index) => (
+              <div 
+                key={`quick-${block.id}`}
+                className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-pointer hover:opacity-90 transition-opacity relative group`}
+                onClick={() => addBlock(block)}
               >
-                {palette.map((block, index) => (
-                  <Draggable key={block.id} draggableId={block.id} index={index}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-move`}
-                      >
-                        {renderBlockContent(block)}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
+                <div className="flex justify-between items-center">
+                  <div className="flex-1">{renderBlockContent(block)}</div>
+                  <Plus size={18} className="ml-2 text-white/70 group-hover:text-white" />
+                </div>
               </div>
-            )}
-          </Droppable>
+            ))}
+          </div>
+          
+          <div className="border-t border-white/20 pt-4 mt-4">
+            <h4 className="text-sm font-medium mb-2">Or drag from here:</h4>
+            <Droppable droppableId="palette">
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="space-y-2"
+                >
+                  {palette.map((block, index) => (
+                    <Draggable key={block.id} draggableId={block.id} index={index}>
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={`${getBlockStyle(block.type)} p-3 rounded-lg text-white cursor-move`}
+                        >
+                          {renderBlockContent(block)}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
         </div>
 
         <div className="w-full md:w-2/3">
