@@ -8,6 +8,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
+// Add markdown parsing capability
+import ReactMarkdown from 'react-markdown';
+
 type Message = {
   id: string;
   text: string;
@@ -108,6 +111,8 @@ Here's detailed information about Inspire Bot pins and their functions that you 
    - Left Turn: Left(P12=1, P13=0) + Right(P14=1, P15=0)
    - Right Turn: Left(P12=0, P13=1) + Right(P14=0, P15=1)
    - Stop: All pins = 0
+
+Format your responses using markdown for better readability. Use **bold text** for emphasis, headings (## or ###) for sections, and \`\`\` code blocks for code examples. This will make your explanations clearer and easier to follow.
 
 When answering questions, refer to these specific pin configurations and provide example code snippets when appropriate. Keep responses friendly, educational, and tailored to the student's question.`
       };
@@ -234,7 +239,24 @@ When answering questions, refer to these specific pin configurations and provide
                             : "bg-primary text-primary-foreground rounded-tr-sm"
                         )}
                       >
-                        {msg.text}
+                        {msg.isBot ? (
+                          <div className="markdown-content">
+                            <ReactMarkdown
+                              components={{
+                                h1: ({node, ...props}) => <h1 className="text-lg font-bold my-2" {...props} />,
+                                h2: ({node, ...props}) => <h2 className="text-md font-bold my-1.5" {...props} />,
+                                h3: ({node, ...props}) => <h3 className="text-sm font-bold my-1" {...props} />,
+                                strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
+                                code: ({node, ...props}) => <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-xs" {...props} />,
+                                pre: ({node, ...props}) => <pre className="bg-gray-100 dark:bg-gray-800 rounded p-2 text-xs my-2 overflow-x-auto" {...props} />
+                              }}
+                            >
+                              {msg.text}
+                            </ReactMarkdown>
+                          </div>
+                        ) : (
+                          msg.text
+                        )}
                       </div>
                       <span className="text-xs text-muted-foreground px-2">
                         {formatTime(msg.timestamp)}
