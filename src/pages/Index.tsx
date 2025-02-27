@@ -296,7 +296,7 @@ const features = [
 
 // Robot showcase images for carousel - Updated with the new URLs provided
 const robotImages = [
-  "https://pixeldrain.com/api/file/ftoZQ3Rj",
+  "https://www.dropbox.com/scl/fi/bihfrczktie8fg2jd9tug/IMG_1719.jpeg?rlkey=pbfmy4fvaunz2efkt1027mwoq&e=1&st=8m1hwdh3&dl=1",
   "https://pixeldrain.com/api/file/7rE9RH6y",
   "https://pixeldrain.com/api/file/Bp7fcBWz",
   "https://pixeldrain.com/api/file/hCtDup1x",
