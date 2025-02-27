@@ -1,4 +1,3 @@
-
 import { AIHelper } from "@/components/AIHelper";
 import { CourseCard } from "@/components/CourseCard";
 import { Input } from "@/components/ui/input";
@@ -294,14 +293,14 @@ const features = [
   }
 ];
 
-// Robot showcase images for carousel - Updated with the new Dropbox URLs
+// Robot showcase images for carousel - Updated with the new Postimg URLs
 const robotImages = [
-  "https://www.dropbox.com/scl/fi/bihfrczktie8fg2jd9tug/IMG_1719.jpeg?rlkey=pbfmy4fvaunz2efkt1027mwoq&e=1&st=8m1hwdh3&dl=1",
-  "https://www.dropbox.com/scl/fi/f2jxvaz6nyw7j85lfapp1/IMG_1691.jpeg?rlkey=ccsquqfzie97tzco7j29tj2nx&st=ii545nnf&dl=1",
-  "https://www.dropbox.com/scl/fi/wef54j2no2oetpchq19ph/IMG_1702.jpeg?rlkey=pit6d4bt0w45qqg3qokxf9n3z&st=yhn80min&dl=1",
-  "https://www.dropbox.com/scl/fi/cltpvhskwjqx3d1lw8dcy/IMG_1686.jpeg?rlkey=84ineufg11977gsf7f6stw7sp&st=pjoolgxv&dl=1",
-  "https://www.dropbox.com/scl/fi/mjlyxciz9w87lvgxgtxbf/IMG_1701.jpeg?rlkey=y9rxwu408gumysl5wmaderzhs&st=s7x0uivb&dl=1",
-  "https://www.dropbox.com/scl/fi/y75sx0hiqjp55dz3twmak/IMG_1709.jpeg?rlkey=q7eajh1ke536ncoqr99m1kd2h&st=7xm87fsn&dl=1",
+  "https://i.postimg.cc/QCgrRGDv/IMG-1719.jpg",
+  "https://i.postimg.cc/ZKTkCQ4K/IMG-1691.jpg",
+  "https://i.postimg.cc/GmVSJgwD/IMG-1702.jpg",
+  "https://i.postimg.cc/ZRF7mT9P/IMG-1686.jpg",
+  "https://i.postimg.cc/VvKKSDWd/IMG-1701.jpg",
+  "https://i.postimg.cc/RF9dXjPW/IMG-1709.jpg",
 ];
 
 const Index = () => {
