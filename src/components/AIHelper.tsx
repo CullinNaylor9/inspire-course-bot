@@ -1,5 +1,6 @@
+
 import { useState, useRef, useEffect } from "react";
-import { Bot, X, Send, RefreshCw, Info } from "lucide-react";
+import { Bot, X, Send, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,8 @@ import { toast } from "sonner";
 
 // Add markdown parsing capability
 import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 type Message = {
   id: string;
@@ -91,7 +94,18 @@ Key pin information:
   Left turn: L(1,0) + R(1,0)
   Right turn: L(0,1) + R(0,1)
 
-Use markdown formatting (**bold**, ## headings) and short code examples when helpful. Limit responses to around 200 words.`
+Use markdown formatting (**bold**, ## headings) and short code examples when helpful. When showing code, use proper markdown code block syntax with language specification:
+\`\`\`python
+# Example Python code
+pins.digital_write_pin(DigitalPin.P16, 1)
+\`\`\`
+
+\`\`\`javascript
+// Example JavaScript code
+pins.digitalWritePin(DigitalPin.P16, 1)
+\`\`\`
+
+Limit responses to around 200 words.`
       };
 
       // Call OpenRouter API with reduced max_tokens for faster response
@@ -225,8 +239,25 @@ Use markdown formatting (**bold**, ## headings) and short code examples when hel
                                 h2: ({node, ...props}) => <h2 className="text-md font-bold my-1.5" {...props} />,
                                 h3: ({node, ...props}) => <h3 className="text-sm font-bold my-1" {...props} />,
                                 strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
-                                code: ({node, ...props}) => <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-xs" {...props} />,
-                                pre: ({node, ...props}) => <pre className="bg-gray-100 dark:bg-gray-800 rounded p-2 text-xs my-2 overflow-x-auto" {...props} />
+                                code: ({node, inline, className, children, ...props}) => {
+                                  const match = /language-(\w+)/.exec(className || '');
+                                  return !inline && match ? (
+                                    <SyntaxHighlighter
+                                      style={atomDark}
+                                      language={match[1]}
+                                      PreTag="div"
+                                      className="rounded-md text-xs my-2"
+                                      {...props}
+                                    >
+                                      {String(children).replace(/\n$/, '')}
+                                    </SyntaxHighlighter>
+                                  ) : (
+                                    <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-xs" {...props}>
+                                      {children}
+                                    </code>
+                                  );
+                                },
+                                pre: ({node, ...props}) => <div className="overflow-x-auto w-full" {...props} />
                               }}
                             >
                               {msg.text}

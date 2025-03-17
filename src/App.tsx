@@ -8,7 +8,6 @@ import Index from "./pages/Index";
 import Course from "./pages/Course";
 import Lesson from "./pages/Lesson";
 import NotFound from "./pages/NotFound";
-import Simulator from "./pages/Simulator";
 import { AIHelper } from "./components/AIHelper";
 
 const queryClient = new QueryClient();
@@ -25,10 +24,6 @@ const router = createBrowserRouter([
   {
     path: "/course/:courseId/lesson/:lessonId",
     element: <Lesson />
-  },
-  {
-    path: "/simulator",
-    element: <Simulator />
   },
   {
     path: "*",
