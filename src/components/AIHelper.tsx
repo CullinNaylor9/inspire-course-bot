@@ -109,7 +109,7 @@ Use markdown formatting (**bold**, ## headings) and provide code examples with p
         body: JSON.stringify({
           model: MODEL,
           messages: [systemPrompt, ...recentMessages],
-          max_tokens: 300, // Reduced from 500 for faster response
+          max_tokens: 500, // Increased from 300 for complete responses
           temperature: 0.7 // Add slight randomness for variety while maintaining accuracy
         })
       });
@@ -253,6 +253,8 @@ Use markdown formatting (**bold**, ## headings) and provide code examples with p
                                         margin: '0.5rem 0',
                                         borderRadius: '0.375rem',
                                         fontSize: '0.8rem',
+                                        overflow: 'auto',
+                                        maxWidth: '100%'
                                       }}
                                       wrapLines={true}
                                       wrapLongLines={true}
