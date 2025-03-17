@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Bot, X, Send, RefreshCw, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -94,7 +93,7 @@ Key pin information:
   Left turn: L(1,0) + R(1,0)
   Right turn: L(0,1) + R(0,1)
 
-Use markdown formatting (**bold**, ## headings) and provide code examples with proper formatting using triple backticks (```). Limit responses to around 200 words.`
+Use markdown formatting (**bold**, ## headings) and provide code examples with proper formatting using triple backticks (\`\`\`). Limit responses to around 200 words.`
       };
 
       // Call OpenRouter API with reduced max_tokens for faster response
