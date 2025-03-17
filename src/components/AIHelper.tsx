@@ -232,12 +232,17 @@ Use markdown formatting (**bold**, ## headings) and provide code examples with p
                                 ol: ({node, ...props}) => <ol className="list-decimal ml-4 mb-2" {...props} />,
                                 li: ({node, ...props}) => <li className="mb-1" {...props} />,
                                 strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
-                                code: ({node, inline, className, children, ...props}) => {
-                                  if (inline) {
-                                    return <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-xs" {...props}>{children}</code>;
+                                code: ({node, className, children, ...props}) => {
+                                  const codeProps = props as React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+                                  const codeClassName = className || '';
+                                  
+                                  // Check if this is an inline code block
+                                  if (!codeClassName.includes('language-')) {
+                                    return <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-xs" {...codeProps}>{children}</code>;
                                   }
                                   
-                                  const match = /language-(\w+)/.exec(className || '');
+                                  // Extract language from className
+                                  const match = /language-(\w+)/.exec(codeClassName);
                                   const language = match ? match[1] : 'javascript';
                                   
                                   return (
