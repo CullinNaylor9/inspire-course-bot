@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Bot, X, Send, RefreshCw, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,8 +9,6 @@ import { toast } from "sonner";
 
 // Add markdown parsing capability
 import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 type Message = {
   id: string;
@@ -94,7 +91,7 @@ Key pin information:
   Left turn: L(1,0) + R(1,0)
   Right turn: L(0,1) + R(0,1)
 
-Use markdown formatting (**bold**, ## headings) and provide code examples with proper formatting using triple backticks (\`\`\`). Limit responses to around 200 words.`
+Use markdown formatting (**bold**, ## headings) and short code examples when helpful. Limit responses to around 200 words.`
       };
 
       // Call OpenRouter API with reduced max_tokens for faster response
@@ -109,7 +106,7 @@ Use markdown formatting (**bold**, ## headings) and provide code examples with p
         body: JSON.stringify({
           model: MODEL,
           messages: [systemPrompt, ...recentMessages],
-          max_tokens: 500, // Increased from 300 for complete responses
+          max_tokens: 300, // Reduced from 500 for faster response
           temperature: 0.7 // Add slight randomness for variety while maintaining accuracy
         })
       });
@@ -227,42 +224,9 @@ Use markdown formatting (**bold**, ## headings) and provide code examples with p
                                 h1: ({node, ...props}) => <h1 className="text-lg font-bold my-2" {...props} />,
                                 h2: ({node, ...props}) => <h2 className="text-md font-bold my-1.5" {...props} />,
                                 h3: ({node, ...props}) => <h3 className="text-sm font-bold my-1" {...props} />,
-                                p: ({node, ...props}) => <p className="mb-2" {...props} />,
-                                ul: ({node, ...props}) => <ul className="list-disc ml-4 mb-2" {...props} />,
-                                ol: ({node, ...props}) => <ol className="list-decimal ml-4 mb-2" {...props} />,
-                                li: ({node, ...props}) => <li className="mb-1" {...props} />,
                                 strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
-                                code: ({node, className, children, ...props}) => {
-                                  const codeProps = props as React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
-                                  const codeClassName = className || '';
-                                  
-                                  // Check if this is an inline code block
-                                  if (!codeClassName.includes('language-')) {
-                                    return <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-xs" {...codeProps}>{children}</code>;
-                                  }
-                                  
-                                  // Extract language from className
-                                  const match = /language-(\w+)/.exec(codeClassName);
-                                  const language = match ? match[1] : 'javascript';
-                                  
-                                  return (
-                                    <SyntaxHighlighter 
-                                      language={language}
-                                      style={vscDarkPlus}
-                                      customStyle={{
-                                        margin: '0.5rem 0',
-                                        borderRadius: '0.375rem',
-                                        fontSize: '0.8rem',
-                                        overflow: 'auto',
-                                        maxWidth: '100%'
-                                      }}
-                                      wrapLines={true}
-                                      wrapLongLines={true}
-                                    >
-                                      {String(children).replace(/\n$/, '')}
-                                    </SyntaxHighlighter>
-                                  );
-                                }
+                                code: ({node, ...props}) => <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-xs" {...props} />,
+                                pre: ({node, ...props}) => <pre className="bg-gray-100 dark:bg-gray-800 rounded p-2 text-xs my-2 overflow-x-auto" {...props} />
                               }}
                             >
                               {msg.text}
